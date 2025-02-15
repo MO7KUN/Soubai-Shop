@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>الطلبات - Belletny</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-black flex flex-col min-h-screen">
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden fixed top-4 right-4 bg-yellow-400 text-black px-4 py-2 rounded-lg">
+        <i class="fas fa-bars"></i> <!-- Font Awesome Bars Icon -->
+    </button>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
+        <!-- Close Button for Mobile -->
+        <button id="close-btn" class="md:hidden absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded-lg">
+            <i class="fas fa-times"></i> <!-- Font Awesome Times Icon -->
+        </button>
+        <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
+        <nav class="space-y-2">
+            <a href="Admin Dashboard.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+            </a>
+            <a href="#orders" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-shopping-cart"></i> الطلبات
+            </a>
+            <a href="#products" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-box"></i> المنتجات
+            </a>
+            <a href="#settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-cog"></i> إعدادات
+            </a>
+        </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="p-6 md:mr-64">
+        <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">
+            <i class="fas fa-shopping-cart"></i> الطلبات
+        </h1>
+
+        <!-- Search Bar and Filters -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-2 max-w-screen">
+            <div class="flex flex-row md:flex-row gap-1 w-full justify-between">
+                <!-- Search Bar -->
+                <div class="w-auto ">
+                    <input 
+                        type="text" 
+                        placeholder="ابحث عن طلب..." 
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    />
+                </div>
+                <!-- City Filter -->
+                <div class="w-full md:w-1/4">
+                    <select class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                        <option value="">جميع المدن</option>
+                        <option value="الرياض">الرياض</option>
+                        <option value="جدة">جدة</option>
+                        <option value="مكة">مكة</option>
+                        <option value="الدمام">الدمام</option>
+                    </select>
+                </div>
+                <!-- Date Range Filter -->
+                <div class="w-full md:w-1/4 flex gap-2">
+                    <input 
+                        type="date" 
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        placeholder="من تاريخ"
+                    />
+                    <input 
+                        type="date" 
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        placeholder="إلى تاريخ"
+                    />
+                </div>
+                <!-- Status Filter -->
+                <div class="w-auto md:w-1/4">
+                    <select class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                        <option value="">جميع الحالات</option>
+                        <option value="processing">قيد المعالجة</option>
+                        <option value="shipped">تم الشحن</option>
+                        <option value="delivered">تم التوصيل</option>
+                        <option value="cancelled">ملغي</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Add New Order Button -->
+            <button class="w-full md:w-auto bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 whitespace-nowrap">
+                <i class="fas fa-plus"></i> إضافة طلب
+            </button>
+        </div>
+        <!-- Orders Table -->
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="w-full border-collapse text-right">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-3 border-b whitespace-nowrap">اسم العميل</th>
+                        <th class="p-3 border-b whitespace-nowrap">رقم الهاتف</th>
+                        <th class="p-3 border-b whitespace-nowrap">إجمالي الطلب</th>
+                        <th class="p-3 border-b whitespace-nowrap">المدينة</th>
+                        <th class="p-3 border-b whitespace-nowrap">التاريخ</th>
+                        <th class="p-3 border-b whitespace-nowrap">حالة الطلب</th>
+                        <th class="p-3 border-b whitespace-nowrap">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-3 border-b whitespace-nowrap">محمد أحمد</td>
+                        <td class="p-3 border-b whitespace-nowrap">+966 500000000</td>
+                        <td class="p-3 border-b whitespace-nowrap">$120.00</td>
+                        <td class="p-3 border-b whitespace-nowrap">الرياض</td>
+                        <td class="p-3 border-b whitespace-nowrap">2025-02-15</td>
+                        <td class="p-3 border-b whitespace-nowrap">
+                            <select class="border p-1 rounded-lg bg-gray-100">
+                                <option>قيد المعالجة</option>
+                                <option>تم الشحن</option>
+                                <option>تم التوصيل</option>
+                                <option>ملغي</option>
+                            </select>
+                        </td>
+                        <td class="p-3 border-b text-center flex flex-row gap-2">
+                            <button class="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-3 border-b whitespace-nowrap">سارة خالد</td>
+                        <td class="p-3 border-b whitespace-nowrap">+966 511111111</td>
+                        <td class="p-3 border-b whitespace-nowrap">$75.50</td>
+                        <td class="p-3 border-b whitespace-nowrap">جدة</td>
+                        <td class="p-3 border-b whitespace-nowrap">2025-02-14</td>
+                        <td class="p-3 border-b whitespace-nowrap">
+                            <select class="border p-1 rounded-lg bg-gray-100">
+                                <option>قيد المعالجة</option>
+                                <option>تم الشحن</option>
+                                <option>تم التوصيل</option>
+                                <option>ملغي</option>
+                            </select>
+                        </td>
+                        <td class="p-3 border-b text-center flex flex-row gap-2">
+                            <button class="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const sidebar = document.getElementById('sidebar');
+        
+        menuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('translate-x-full');
+        });
+        
+        closeBtn.addEventListener('click', function() {
+            sidebar.classList.add('translate-x-full');
+        });
+    </script>
+</body>
+</html>

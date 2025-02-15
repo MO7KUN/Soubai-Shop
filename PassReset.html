@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>إدخال الرمز - Belletny</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <style>
+        body { font-family: 'Tajawal', sans-serif; }
+    </style>
+    </head>
+    <body
+        class="bg-gray-100 text-black flex items-center justify-center min-h-screen p-4">
+        <!-- Token Verification Form -->
+        <div
+            class="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm sm:max-w-md md:max-w-lg text-center">
+            <h2 class="text-xl sm:text-2xl font-bold mb-4">
+                <i class="fas fa-shield-alt text-yellow-400"></i> تغيير كلمة
+                المرور
+            </h2>
+            <p class="text-gray-600 mb-6">
+                أدخل كلمة المرور الجديدة.
+            </p>
+            <p class="text-red-600 mb-6 hidden text-md" id="error-message"></p>
+            <div>
+                <!-- Token Input -->
+                <div class="mb-4">
+                    <div class="relative mb-4">
+                        <label for="token"
+                            class="block text-right text-gray-700 mb-2">
+                            كلمة المرور الجديدة
+                        </label>
+                        <input
+                            id="Pass1"
+                            type="password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            placeholder="ادخل كلمة المرور الجديدة"
+                            required>
+                        <button
+                            type="button"
+                            class="absolute left-3 top-10 text-gray-500 hover:text-gray-700 focus:outline-none"
+                            onclick="togglePasswordVisibility()">
+                            <i id="show-password-icon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="relative mb-4">
+                        <label for="token"
+                            class="block text-right text-gray-700 mb-2">
+                            تاكيد كلمة المرور
+                        </label>
+                        <input
+                            id="Pass2"
+                            type="password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            placeholder="أكد كلمة المرور الجديدة"
+                            required>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                    onclick="ResetPassword()"
+                    type="submit"
+                    class="w-full bg-yellow-400 text-black py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                    <i class="fas fa-check"></i> تأكيد
+                </button>
+
+                <!-- Back to Login Link -->
+                <p class="mt-4 text-gray-600">
+                    <a href="Login.html"
+                        class="text-yellow-500 hover:underline">
+                        <i class="fas fa-arrow-left"></i> العودة لتسجيل الدخول
+                    </a>
+                </p>
+            </div>
+        </div>
+        <script>
+        function togglePasswordVisibility() {
+            const passwordInput1 = document.getElementById('Pass1');
+            const passwordInput2 = document.getElementById('Pass2');
+            const showPasswordIcon = document.getElementById('show-password-icon');
+
+            if (passwordInput1.type === 'password') {
+                passwordInput1.type = 'text';
+                passwordInput2.type = 'text';
+                showPasswordIcon.classList.remove('fa-eye');
+                showPasswordIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput1.type = 'password';
+                passwordInput2.type = 'password';
+                showPasswordIcon.classList.remove('fa-eye-slash');
+                showPasswordIcon.classList.add('fa-eye');
+            }
+        }
+        function ResetPassword() {
+            var Pass1 = document.getElementById("Pass1");
+            var Pass2 = document.getElementById("Pass2");
+            
+            if(Pass1.value.length < 8){
+                    Pass1.classList.add("border-red-500");
+                    Pass2.classList.add("border-red-500");
+                    document.getElementById("error-message").classList.remove("hidden");
+                    document.getElementById("error-message").innerHTML = "كلمة المرور يجب ان تكون على الاقل 8 حروف";
+            } else {
+                    if (Pass1.value == Pass2.value) {
+                        window.location.href = "Login.html";   
+                    } else {
+                        Pass1.classList.add("border-red-500");
+                        Pass2.classList.add("border-red-500");
+                        document.getElementById("error-message").classList.remove("hidden");
+                        document.getElementById("error-message").innerHTML = "كلمة المرور غير متطابقة";
+                    }
+            }
+            
+        }
+    </script>
+    </body>
+</html>

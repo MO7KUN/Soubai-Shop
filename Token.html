@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>إدخال الرمز - Belletny</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-black flex items-center justify-center min-h-screen p-4">
+    <!-- Token Verification Form -->
+    <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm sm:max-w-md md:max-w-lg text-center">
+        <h2 class="text-xl sm:text-2xl font-bold mb-4">
+            <i class="fas fa-shield-alt text-yellow-400"></i> إدخال الرمز
+        </h2>
+        <p class="text-gray-600 mb-6">
+            أدخل الرمز الذي تلقيته عبر البريد الإلكتروني لإعادة تعيين كلمة المرور.
+        </p>
+        <div>
+            <!-- Token Input -->
+            <div class="mb-4">
+                <label for="token" class="block text-right text-gray-700 mb-2">
+                    <i class="fas fa-key text-gray-500"></i> الرمز
+                </label>
+                <input 
+                    id="token" 
+                    type="text" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                    placeholder="أدخل الرمز المكون من 6 أرقام"
+                    required
+                    maxlength="6"
+                >
+            </div>
+
+            <!-- Submit Button -->
+            <a href="PassReset.html"><button 
+                type="submit" 
+                class="w-full bg-yellow-400 text-black py-2 rounded-lg hover:bg-yellow-500 transition duration-300"
+            >
+                <i class="fas fa-check"></i> تأكيد الرمز
+            </button></a>
+
+            <!-- Resend Token Link -->
+            <p class="mt-4 text-gray-600">
+                لم تستلم الرمز؟ 
+                <a href="#" class="text-yellow-500 hover:underline">
+                    <i class="fas fa-redo"></i> إعادة إرسال الرمز
+                </a>
+            </p>
+
+            <!-- Back to Login Link -->
+            <p class="mt-4 text-gray-600">
+                <a href="Login.html" class="text-yellow-500 hover:underline">
+                    <i class="fas fa-arrow-left"></i> العودة لتسجيل الدخول
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
