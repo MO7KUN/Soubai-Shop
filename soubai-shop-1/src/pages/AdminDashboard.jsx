@@ -13,7 +13,7 @@ const AdminDashboard = () => {
 
   return (
     <div dir="rtl" className="bg-gray-100 text-black flex flex-col min-h-screen">
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Button (Visible only on mobile) */}
       <button
         onClick={toggleSidebar}
         className="md:hidden fixed top-16 right-4 bg-yellow-400 text-black px-4 py-2 rounded-lg z-10"

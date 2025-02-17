@@ -5,7 +5,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
     <div
       id="sidebar"
-      className={`fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform transition-transform duration-300 ${
+      className={`fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform transition-transform duration-300 md:translate-x-0 ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
