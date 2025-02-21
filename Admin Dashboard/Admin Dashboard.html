@@ -8,15 +8,55 @@
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
-        body { font-family: 'Tajawal', sans-serif; }
+        body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
     </head>
     <body class="bg-gray-100 text-black flex flex-col min-h-screen">
-        <!-- Mobile Menu Button -->
-        <button id="menu-btn"
-            class="md:hidden fixed top-4 right-4 bg-yellow-400 text-black px-4 py-2 rounded-lg">
-            <i class="fas fa-bars"></i> <!-- Font Awesome Bars Icon -->
-        </button>
+        <!-- Navbar -->
+        <!-- Navbar -->
+        <nav class="bg-gray-800 text-white p-4 fixed top-0 left-0 right-0 z-50">
+            <div class="container mx-auto flex justify-between items-center">
+                <!-- Burger Menu for Sidebar (Visible on small screens) -->
+                <button id="menu-btn" class="md:hidden text-white">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <!-- Right Side: Shop Name -->
+                <div class="text-xl font-bold">
+                    <i class="fas fa-store"></i> Soubai Shop
+                </div>
+                <!-- Left Side: Notifications and Profile Picture -->
+                <div class="flex flex-row gap-6 items-center space-x-6">
+                    <!-- Increased spacing -->
+                    <!-- Notifications -->
+                    <button class="relative">
+                        <i class="fas fa-bell"></i>
+                        <span
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+                    </button>
+
+                    <!-- Profile Picture with Dropdown -->
+                    <div class="relative">
+                        <button id="profile-btn" class="focus:outline-none">
+                            <img src="../download.png" alt="Profile"
+                                class="w-8 h-8 rounded-full">
+                        </button>
+                        <!-- Profile Dropdown -->
+                        <div id="profile-dropdown"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
+                            <a href="#"
+                                class="block px-4 py-2 hover:bg-gray-100">الملف
+                                الشخصي</a>
+                            <a href="#"
+                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</a>
+                            <a href="#"
+                                class="block px-4 py-2 hover:bg-gray-100">تسجيل
+                                الخروج</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
 
         <!-- Sidebar -->
         <div id="sidebar"
@@ -28,7 +68,7 @@
             </button>
             <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
             <nav class="space-y-2">
-                <a href="#dashboard"
+                <a href="Admin Dashboard.html"
                     class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-tachometer-alt"></i> لوحة التحكم
                 </a>
@@ -52,12 +92,11 @@
         </div>
 
         <!-- Main Content -->
-        <div class="p-6 md:mr-64">
+        <div class="p-6 md:mr-64 mt-16"> <!-- Add margin-top for navbar -->
             <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+                <i class="fas fa-tachometer-alt text-yellow-400"></i> لوحة
+                التحكم
             </h1>
-
-            <!-- Stats Cards -->
             <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                 <!-- Total Orders -->
@@ -107,7 +146,8 @@
                             <p class="text-2xl font-bold">12</p>
                         </div>
                         <div class="bg-red-500 py-1.5 px-2.5 rounded-full">
-                            <i class="fas fa-exclamation-circle text-white"></i>
+                            <i
+                                class="fas fa-exclamation-circle text-white"></i>
                         </div>
                     </div>
                 </div>
@@ -121,9 +161,11 @@
                     <table class="w-full border-collapse text-right">
                         <thead>
                             <tr class="bg-gray-200">
-                                <th class="p-3 border-b whitespace-nowrap">اسم
+                                <th
+                                    class="p-3 border-b whitespace-nowrap">اسم
                                     العميل</th>
-                                <th class="p-3 border-b whitespace-nowrap">رقم
+                                <th
+                                    class="p-3 border-b whitespace-nowrap">رقم
                                     الهاتف</th>
                                 <th
                                     class="p-3 border-b whitespace-nowrap">إجمالي
@@ -132,15 +174,18 @@
                                     class="p-3 border-b whitespace-nowrap">المدينة</th>
                                 <th
                                     class="p-3 border-b whitespace-nowrap">التاريخ</th>
-                                <th class="p-3 border-b whitespace-nowrap">حالة
+                                <th
+                                    class="p-3 border-b whitespace-nowrap">حالة
                                     الطلب</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="hover:bg-gray-50">
-                                <td class="p-3 border-b whitespace-nowrap">محمد
+                                <td
+                                    class="p-3 border-b whitespace-nowrap">محمد
                                     أحمد</td>
-                                <td class="p-3 border-b whitespace-nowrap">+966
+                                <td
+                                    class="p-3 border-b whitespace-nowrap">+966
                                     500000000</td>
                                 <td
                                     class="p-3 border-b whitespace-nowrap">$120.00</td>
@@ -155,9 +200,11 @@
                                 </td>
                             </tr>
                             <tr class="hover:bg-gray-50">
-                                <td class="p-3 border-b whitespace-nowrap">سارة
+                                <td
+                                    class="p-3 border-b whitespace-nowrap">سارة
                                     خالد</td>
-                                <td class="p-3 border-b whitespace-nowrap">+966
+                                <td
+                                    class="p-3 border-b whitespace-nowrap">+966
                                     511111111</td>
                                 <td
                                     class="p-3 border-b whitespace-nowrap">$75.50</td>
@@ -175,17 +222,34 @@
                     </table>
                 </div>
             </div>
+
         </div>
 
         <script>
+        // Toggle Profile Dropdown
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+
+        profileBtn.addEventListener('click', function() {
+            profileDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+
+        // Mobile menu toggle
         const menuBtn = document.getElementById('menu-btn');
         const closeBtn = document.getElementById('close-btn');
         const sidebar = document.getElementById('sidebar');
-        
+
         menuBtn.addEventListener('click', function() {
             sidebar.classList.toggle('translate-x-full');
         });
-        
+
         closeBtn.addEventListener('click', function() {
             sidebar.classList.add('translate-x-full');
         });
