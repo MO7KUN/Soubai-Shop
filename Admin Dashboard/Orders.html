@@ -8,15 +8,54 @@
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
-        body { font-family: 'Tajawal', sans-serif; }
+        body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
     </head>
     <body class="bg-gray-100 text-black flex flex-col min-h-screen">
-        <!-- Mobile Menu Button -->
-        <button id="menu-btn"
-            class="md:hidden fixed top-4 right-4 bg-yellow-400 text-black px-4 py-2 rounded-lg">
-            <i class="fas fa-bars"></i> <!-- Font Awesome Bars Icon -->
-        </button>
+        <!-- Navbar -->
+        <nav class="bg-gray-800 text-white p-4 fixed top-0 left-0 right-0 z-50">
+            <div class="container mx-auto flex justify-between items-center">
+                <!-- Burger Menu for Sidebar (Visible on small screens) -->
+                <button id="menu-btn" class="md:hidden text-white">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Right Side: Shop Name -->
+                <div class="text-xl font-bold">
+                    <i class="fas fa-store"></i> Soubai Shop
+                </div>
+
+                <!-- Left Side: Notifications and Profile Picture -->
+                <div class="flex flex-row gap-6 items-center space-x-2">
+                    <!-- Notifications -->
+                    <button class="relative">
+                        <i class="fas fa-bell"></i>
+                        <span
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+                    </button>
+
+                    <!-- Profile Picture with Dropdown -->
+                    <div class="relative">
+                        <button id="profile-btn" class="focus:outline-none">
+                            <img src="../download.png" alt="Profile"
+                                class="w-8 h-8 rounded-full">
+                        </button>
+                        <!-- Profile Dropdown -->
+                        <div id="profile-dropdown"
+                            class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
+                            <a href="#"
+                                class="block px-4 py-2 hover:bg-gray-100">الملف
+                                الشخصي</a>
+                            <a href="#"
+                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</a>
+                            <a href="#"
+                                class="block px-4 py-2 hover:bg-gray-100">تسجيل
+                                الخروج</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
         <!-- Sidebar -->
         <div id="sidebar"
@@ -36,7 +75,8 @@
                     class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-shopping-cart"></i> الطلبات
                 </a>
-                <a href="Clients.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Clients.html"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-users"></i> العملاء
                 </a>
                 <a href="Products.html"
@@ -51,63 +91,31 @@
         </div>
 
         <!-- Main Content -->
-        <div class="p-6 md:mr-64">
+        <div class="p-6 md:mr-64 mt-16"> <!-- Add margin-top for navbar -->
             <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-shopping-cart"></i> الطلبات
+                <i class="fas fa-shopping-cart text-yellow-400"></i> الطلبات
             </h1>
 
-            <!-- Search Bar and Filters -->
+            <!-- Search Bar and Add Order Button -->
             <div
-                class="flex flex-col md:flex-row justify-between items-center mb-4 gap-2 max-w-screen">
-                <div
-                    class="flex flex-row md:flex-row gap-1 w-full justify-between">
-                    <!-- Search Bar -->
-                    <div class="w-auto ">
-                        <input
-                            type="text"
-                            placeholder="ابحث عن طلب..."
-                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" />
-                    </div>
-                    <!-- City Filter -->
-                    <div class="w-full md:w-1/4">
-                        <select
-                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                            <option value>جميع المدن</option>
-                            <option value="الرياض">الرياض</option>
-                            <option value="جدة">جدة</option>
-                            <option value="مكة">مكة</option>
-                            <option value="الدمام">الدمام</option>
-                        </select>
-                    </div>
-                    <!-- Date Range Filter -->
-                    <div class="w-full md:w-1/4 flex gap-2">
-                        <input
-                            type="date"
-                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                            placeholder="من تاريخ" />
-                        <input
-                            type="date"
-                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                            placeholder="إلى تاريخ" />
-                    </div>
-                    <!-- Status Filter -->
-                    <div class="w-auto md:w-1/4">
-                        <select
-                            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                            <option value>جميع الحالات</option>
-                            <option value="processing">قيد المعالجة</option>
-                            <option value="shipped">تم الشحن</option>
-                            <option value="delivered">تم التوصيل</option>
-                            <option value="cancelled">ملغي</option>
-                        </select>
-                    </div>
+                class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                <!-- Search Bar -->
+                <div class="w-full md:w-1/2">
+                    <input
+                        type="text"
+                        placeholder="ابحث عن طلب..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 </div>
-                <!-- Add New Order Button -->
-                <a href="NewOrder.html"><button
+
+                <!-- Add Order Button -->
+                <a href="NewOrder.html">
+                    <button
                         class="w-full md:w-auto bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 whitespace-nowrap">
                         <i class="fas fa-plus"></i> إضافة طلب
-                    </button></a>
+                    </button>
+                </a>
             </div>
+
             <!-- Orders Table -->
             <div class="overflow-x-auto bg-white rounded-lg shadow">
                 <table class="w-full border-collapse text-right">
@@ -130,6 +138,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Order 1 -->
                         <tr class="hover:bg-gray-50">
                             <td class="p-3 border-b whitespace-nowrap">محمد
                                 أحمد</td>
@@ -142,16 +151,11 @@
                             <td
                                 class="p-3 border-b whitespace-nowrap">2025-02-15</td>
                             <td class="p-3 border-b whitespace-nowrap">
-                                <select
-                                    class="border p-1 rounded-lg bg-gray-100">
-                                    <option>قيد المعالجة</option>
-                                    <option>تم الشحن</option>
-                                    <option>تم التوصيل</option>
-                                    <option>ملغي</option>
-                                </select>
+                                <span
+                                    class="bg-yellow-400 text-white px-2 py-1 rounded-lg">قيد
+                                    المعالجة</span>
                             </td>
-                            <td
-                                class="p-3 border-b text-center flex flex-row gap-2">
+                            <td class="p-3 border-b text-center">
                                 <button
                                     class="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
@@ -162,6 +166,8 @@
                                 </button>
                             </td>
                         </tr>
+
+                        <!-- Order 2 -->
                         <tr class="hover:bg-gray-50">
                             <td class="p-3 border-b whitespace-nowrap">سارة
                                 خالد</td>
@@ -173,16 +179,11 @@
                             <td
                                 class="p-3 border-b whitespace-nowrap">2025-02-14</td>
                             <td class="p-3 border-b whitespace-nowrap">
-                                <select
-                                    class="border p-1 rounded-lg bg-gray-100">
-                                    <option>قيد المعالجة</option>
-                                    <option>تم الشحن</option>
-                                    <option>تم التوصيل</option>
-                                    <option>ملغي</option>
-                                </select>
+                                <span
+                                    class="bg-green-500 text-white px-2 py-1 rounded-lg">تم
+                                    التوصيل</span>
                             </td>
-                            <td
-                                class="p-3 border-b text-center flex flex-row gap-2">
+                            <td class="p-3 border-b text-center">
                                 <button
                                     class="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
@@ -199,14 +200,30 @@
         </div>
 
         <script>
+        // Toggle Profile Dropdown
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+
+        profileBtn.addEventListener('click', function() {
+            profileDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+
+        // Mobile menu toggle
         const menuBtn = document.getElementById('menu-btn');
         const closeBtn = document.getElementById('close-btn');
         const sidebar = document.getElementById('sidebar');
-        
+
         menuBtn.addEventListener('click', function() {
             sidebar.classList.toggle('translate-x-full');
         });
-        
+
         closeBtn.addEventListener('click', function() {
             sidebar.classList.add('translate-x-full');
         });
