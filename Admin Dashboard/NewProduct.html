@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>إضافة منتج - Soubai Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
+    </style>
+</head>
+<body class="bg-gray-100 text-black flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 text-white p-4 fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Burger Menu for Sidebar (Visible on small screens) -->
+            <button id="menu-btn" class="md:hidden text-white">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Right Side: Shop Name -->
+            <div class="text-xl font-bold">
+                <i class="fas fa-store"></i> Soubai Shop
+            </div>
+
+            <!-- Left Side: Notifications and Profile Picture -->
+            <div class="flex flex-row gap-6 items-center space-x-2">
+                <!-- Notifications -->
+                <button class="relative">
+                    <i class="fas fa-bell"></i>
+                    <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+                </button>
+
+                <!-- Profile Picture with Dropdown -->
+                <div class="relative">
+                    <button id="profile-btn" class="focus:outline-none">
+                        <img src="../download.png" alt="Profile" class="w-8 h-8 rounded-full">
+                    </button>
+                    <!-- Profile Dropdown -->
+                    <div id="profile-dropdown" class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">الملف الشخصي</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">الإعدادات</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">تسجيل الخروج</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
+        <!-- Close Button for Mobile -->
+        <button id="close-btn" class="md:hidden absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded-lg">
+            <i class="fas fa-times"></i> <!-- Font Awesome Times Icon -->
+        </button>
+        <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
+        <nav class="space-y-2">
+            <a href="Admin Dashboard.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+            </a>
+            <a href="Orders.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-shopping-cart"></i> الطلبات
+            </a>
+            <a href="Clients.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-users"></i> العملاء
+            </a>
+            <a href="Products.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-box"></i> المنتجات
+            </a>
+            <a href="#settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-cog"></i> إعدادات
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="p-6 md:mr-64 mt-16"> <!-- Add margin-top for navbar -->
+        <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">
+            <i class="fas fa-plus text-yellow-400"></i> إضافة منتج
+        </h1>
+
+        <!-- New Product Form -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <form>
+                <!-- Product Name -->
+                <div class="mb-4">
+                    <label for="product-name" class="block text-gray-700 mb-2">اسم المنتج</label>
+                    <input 
+                        id="product-name" 
+                        type="text" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                        placeholder="أدخل اسم المنتج"
+                        required
+                    >
+                </div>
+
+                <!-- Description -->
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700 mb-2">الوصف</label>
+                    <textarea 
+                        id="description" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                        placeholder="أدخل وصف المنتج"
+                        rows="4"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Status -->
+                <div class="mb-4">
+                    <label for="status" class="block text-gray-700 mb-2">الحالة</label>
+                    <select 
+                        id="status" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        required
+                    >
+                        <option value="active">فعال</option>
+                        <option value="inactive">غير فعال</option>
+                    </select>
+                </div>
+
+                <!-- Barcode Numbers -->
+                <div class="mb-4">
+                    <label for="barcode" class="block text-gray-700 mb-2">أرقام الباركود</label>
+                    <input 
+                        id="barcode" 
+                        type="text" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                        placeholder="أدخل أرقام الباركود"
+                        required
+                    >
+                </div>
+
+                <!-- Price -->
+                <div class="mb-4">
+                    <label for="price" class="block text-gray-700 mb-2">السعر</label>
+                    <input 
+                        id="price" 
+                        type="number" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                        placeholder="أدخل السعر"
+                        required
+                    >
+                </div>
+
+                <!-- Validation -->
+                <div class="mb-4">
+                    <label for="validation" class="block text-gray-700 mb-2">تاريخ الانتهاء</label>
+                    <input 
+                        id="validation" 
+                        type="date" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                        required
+                    >
+                </div>
+
+                <!-- Variants -->
+                <div class="mb-4">
+                    <label for="variants" class="block text-gray-700 mb-2">المتغيرات</label>
+                    <input 
+                        id="variants" 
+                        type="text" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                        placeholder="أدخل المتغيرات (مفصولة بفواصل)"
+                        required
+                    >
+                </div>
+
+                <!-- Picture -->
+                <div class="mb-4">
+                    <label for="picture" class="block text-gray-700 mb-2">صورة المنتج</label>
+                    <input 
+                        id="picture" 
+                        type="file" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                        accept="image/*"
+                        required
+                    >
+                </div>
+
+                <!-- Category (Dropdown Menu) -->
+                <div class="mb-4">
+                    <label for="category" class="block text-gray-700 mb-2">الفئة</label>
+                    <select 
+                        id="category" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        required
+                    >
+                        <option value="">اختر الفئة</option>
+                        <option value="category1">الفئة 1</option>
+                        <option value="category2">الفئة 2</option>
+                        <option value="category3">الفئة 3</option>
+                    </select>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-end gap-4">
+                    <button 
+                        type="button" 
+                        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
+                    >
+                        <i class="fas fa-times"></i> إلغاء
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300"
+                    >
+                        <i class="fas fa-save"></i> حفظ المنتج
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Profile Dropdown
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+
+        profileBtn.addEventListener('click', function() {
+            profileDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        menuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('translate-x-full');
+        });
+
+        closeBtn.addEventListener('click', function() {
+            sidebar.classList.add('translate-x-full');
+        });
+    </script>
+</body>
+</html>
