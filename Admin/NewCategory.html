@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>إضافة منتج - Soubai Shop</title>
+    <title>إضافة فئة جديدة - Soubai Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -53,7 +53,7 @@
         <!-- Removed the Close Button for Mobile -->
         <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
         <nav class="space-y-2">
-            <a href="Admin Dashboard.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+            <a href="Dashboard.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                 <i class="fas fa-tachometer-alt"></i> الصفحة الرئيسية
             </a>
             <a href="Orders.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
@@ -77,121 +77,47 @@
     <!-- Main Content -->
     <div class="p-6 md:mr-64 mt-16"> <!-- Add margin-top for navbar -->
         <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">
-            <i class="fas fa-plus text-yellow-400"></i> إضافة منتج
+            <i class="fas fa-plus text-yellow-400"></i> إضافة فئة جديدة
         </h1>
 
-        <!-- New Product Form -->
+        <!-- New Category Form -->
         <div class="bg-white rounded-lg shadow p-6">
             <form>
-                <!-- Product Name -->
-                <div class="mb-4">
-                    <label for="product-name" class="block text-gray-700 mb-2">اسم المنتج</label>
+                <!-- Category Name -->
+                <div class="mb-6">
+                    <label for="category-name" class="block text-gray-700 mb-2">اسم الفئة</label>
                     <input 
-                        id="product-name" 
+                        id="category-name" 
                         type="text" 
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                        placeholder="أدخل اسم المنتج"
+                        placeholder="أدخل اسم الفئة"
                         required
                     >
                 </div>
 
-                <!-- Description -->
-                <div class="mb-4">
-                    <label for="description" class="block text-gray-700 mb-2">الوصف</label>
+                <!-- Category Description -->
+                <div class="mb-6">
+                    <label for="category-description" class="block text-gray-700 mb-2">وصف الفئة</label>
                     <textarea 
-                        id="description" 
+                        id="category-description" 
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                        placeholder="أدخل وصف المنتج"
+                        placeholder="أدخل وصف الفئة"
                         rows="4"
-                        required
                     ></textarea>
                 </div>
 
-                <!-- Status -->
-                <div class="mb-4">
-                    <label for="status" class="block text-gray-700 mb-2">الحالة</label>
-                    <select 
-                        id="status" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        required
-                    >
-                        <option value="active">فعال</option>
-                        <option value="inactive">غير فعال</option>
-                    </select>
-                </div>
-
-                <!-- Barcode Numbers -->
-                <div class="mb-4">
-                    <label for="barcode" class="block text-gray-700 mb-2">أرقام الباركود</label>
-                    <input 
-                        id="barcode" 
-                        type="text" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                        placeholder="أدخل أرقام الباركود"
-                        required
-                    >
-                </div>
-
-                <!-- Price -->
-                <div class="mb-4">
-                    <label for="price" class="block text-gray-700 mb-2">السعر</label>
-                    <input 
-                        id="price" 
-                        type="number" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                        placeholder="أدخل السعر"
-                        required
-                    >
-                </div>
-
-                <!-- Validation -->
-                <div class="mb-4">
-                    <label for="validation" class="block text-gray-700 mb-2">تاريخ الانتهاء</label>
-                    <input 
-                        id="validation" 
-                        type="date" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                        required
-                    >
-                </div>
-
-                <!-- Variants -->
-                <div class="mb-4">
-                    <label for="variants" class="block text-gray-700 mb-2">المتغيرات</label>
-                    <input 
-                        id="variants" 
-                        type="text" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                        placeholder="أدخل المتغيرات (مفصولة بفواصل)"
-                        required
-                    >
-                </div>
-
-                <!-- Picture -->
-                <div class="mb-4">
-                    <label for="picture" class="block text-gray-700 mb-2">صورة المنتج</label>
-                    <input 
-                        id="picture" 
-                        type="file" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                        accept="image/*"
-                        required
-                    >
-                </div>
-
-                <!-- Category (Dropdown Menu) -->
-                <div class="mb-4">
-                    <label for="category" class="block text-gray-700 mb-2">الفئة</label>
-                    <select 
-                        id="category" 
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        required
-                    >
-                        <option value="">اختر الفئة</option>
-                        <option value="category1">الفئة 1</option>
-                        <option value="category2">الفئة 2</option>
-                        <option value="category3">الفئة 3</option>
-                    </select>
+                <!-- Category Image Upload -->
+                <div class="mb-6">
+                    <label for="category-image" class="block text-gray-700 mb-2">صورة الفئة</label>
+                    <div class="flex items-center justify-center w-full">
+                        <label for="category-image" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-2"></i>
+                                <p class="text-sm text-gray-500">انقر لرفع صورة</p>
+                            </div>
+                            <input id="category-image" type="file" class="hidden" accept="image/*" />
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Actions -->
@@ -206,7 +132,7 @@
                         type="submit" 
                         class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300"
                     >
-                        <i class="fas fa-save"></i> حفظ المنتج
+                        <i class="fas fa-save"></i> حفظ الفئة
                     </button>
                 </div>
             </form>
@@ -231,15 +157,10 @@
 
         // Mobile menu toggle
         const menuBtn = document.getElementById('menu-btn');
-        const closeBtn = document.getElementById('close-btn');
         const sidebar = document.getElementById('sidebar');
 
         menuBtn.addEventListener('click', function() {
             sidebar.classList.toggle('translate-x-full');
-        });
-
-        closeBtn.addEventListener('click', function() {
-            sidebar.classList.add('translate-x-full');
         });
     </script>
 </body>
