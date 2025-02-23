@@ -58,33 +58,26 @@
         </nav>
 
         <!-- Sidebar -->
-        <div id="sidebar"
-            class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
-            <!-- Close Button for Mobile -->
-            <button id="close-btn"
-                class="md:hidden absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded-lg">
-                <i class="fas fa-times"></i> <!-- Font Awesome Times Icon -->
-            </button>
+        <div id="sidebar" class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
+            <!-- Removed the Close Button for Mobile -->
             <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
             <nav class="space-y-2">
-                <a href="Admin Dashboard.html"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
-                    <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+                <a href="Admin Dashboard.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                    <i class="fas fa-tachometer-alt"></i> الصفحة الرئيسية
                 </a>
-                <a href="Orders.html"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Orders.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-shopping-cart"></i> الطلبات
                 </a>
-                <a href="Clients.html"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Clients.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-users"></i> العملاء
                 </a>
-                <a href="Products.html"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Products.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-box"></i> المنتجات
                 </a>
-                <a href="#settings"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Categories.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                    <i class="fas fa-list"></i> الفئات
+                </a>
+                <a href="#settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-cog"></i> إعدادات
                 </a>
             </nav>
@@ -121,29 +114,20 @@
                 <table class="w-full border-collapse text-right">
                     <thead>
                         <tr class="bg-gray-200">
-                            <th class="p-3 border-b whitespace-nowrap">اسم
-                                العميل</th>
-                            <th class="p-3 border-b whitespace-nowrap">رقم
-                                الهاتف</th>
-                            <th class="p-3 border-b whitespace-nowrap">البريد
-                                الإلكتروني</th>
-                            <th
-                                class="p-3 border-b whitespace-nowrap">المدينة</th>
-                            <th
-                                class="p-3 border-b whitespace-nowrap">الإجراءات</th>
+                            <th class="p-3 border-b whitespace-nowrap">اسم العميل</th>
+                            <th class="p-3 border-b whitespace-nowrap">رقم الهاتف</th>
+                            <th class="p-3 border-b whitespace-nowrap">المدينة</th>
+                            <th class="p-3 border-b whitespace-nowrap">تاريخ التسجيل</th>
+                            <th class="p-3 border-b whitespace-nowrap">الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Client 1 -->
                         <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b whitespace-nowrap">محمد
-                                أحمد</td>
-                            <td class="p-3 border-b whitespace-nowrap">+966
-                                500000000</td>
-                            <td
-                                class="p-3 border-b whitespace-nowrap">mohamed@example.com</td>
-                            <td
-                                class="p-3 border-b whitespace-nowrap">الرياض</td>
+                            <td class="p-3 border-b whitespace-nowrap">محمد أحمد</td>
+                            <td class="p-3 border-b whitespace-nowrap">+966 500000000</td>
+                            <td class="p-3 border-b whitespace-nowrap">الرياض</td>
+                            <td class="p-3 border-b whitespace-nowrap">2023-10-01</td>
                             <td class="p-3 border-b text-center">
                                 <button
                                     class="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
@@ -158,13 +142,28 @@
 
                         <!-- Client 2 -->
                         <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b whitespace-nowrap">سارة
-                                خالد</td>
-                            <td class="p-3 border-b whitespace-nowrap">+966
-                                511111111</td>
-                            <td
-                                class="p-3 border-b whitespace-nowrap">sara@example.com</td>
+                            <td class="p-3 border-b whitespace-nowrap">سارة خالد</td>
+                            <td class="p-3 border-b whitespace-nowrap">+966 511111111</td>
                             <td class="p-3 border-b whitespace-nowrap">جدة</td>
+                            <td class="p-3 border-b whitespace-nowrap">2023-09-15</td>
+                            <td class="p-3 border-b text-center">
+                                <button
+                                    class="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button
+                                    class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Client 3 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border-b whitespace-nowrap">علي حسن</td>
+                            <td class="p-3 border-b whitespace-nowrap">+966 522222222</td>
+                            <td class="p-3 border-b whitespace-nowrap">الدمام</td>
+                            <td class="p-3 border-b whitespace-nowrap">2023-08-20</td>
                             <td class="p-3 border-b text-center">
                                 <button
                                     class="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
@@ -199,15 +198,10 @@
 
         // Mobile menu toggle
         const menuBtn = document.getElementById('menu-btn');
-        const closeBtn = document.getElementById('close-btn');
         const sidebar = document.getElementById('sidebar');
 
         menuBtn.addEventListener('click', function() {
             sidebar.classList.toggle('translate-x-full');
-        });
-
-        closeBtn.addEventListener('click', function() {
-            sidebar.classList.add('translate-x-full');
         });
     </script>
     </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>إضافة عميل - Soubai Shop</title>
+    <title>الفئات - Soubai Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -77,76 +77,70 @@
     <!-- Main Content -->
     <div class="p-6 md:mr-64 mt-16"> <!-- Add margin-top for navbar -->
         <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">
-            <i class="fas fa-user-plus text-yellow-400"></i> إضافة عميل
+            <i class="fas fa-list text-yellow-400"></i> الفئات
         </h1>
 
-        <!-- New Client Form -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <form>
-                <!-- Client Information -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">
-                        <i class="fas fa-user text-yellow-400"></i> معلومات العميل
-                    </h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="client-name" class="block text-gray-700 mb-2">اسم العميل</label>
-                            <input 
-                                id="client-name" 
-                                type="text" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                                placeholder="أدخل اسم العميل"
-                                required
-                            >
-                        </div>
-                        <div>
-                            <label for="client-phone" class="block text-gray-700 mb-2">رقم الهاتف</label>
-                            <input 
-                                id="client-phone" 
-                                type="tel" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                                placeholder="أدخل رقم الهاتف"
-                                required
-                            >
-                        </div>
-                        <div>
-                            <label for="client-city" class="block text-gray-700 mb-2">المدينة</label>
-                            <input 
-                                id="client-city" 
-                                type="text" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                                placeholder="أدخل المدينة"
-                                required
-                            >
-                        </div>
-                        <div>
-                            <label for="client-notes" class="block text-gray-700 mb-2">ملاحظات</label>
-                            <textarea 
-                                id="client-notes" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                                placeholder="أدخل ملاحظات عن العميل"
-                                rows="3"
-                            ></textarea>
-                        </div>
-                    </div>
-                </div>
+        <!-- Add Category Button -->
+        <div class="flex justify-end mb-6">
+            <a 
+                href="NewCategory.html" 
+                class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300"
+            >
+                <i class="fas fa-plus"></i> إضافة فئة
+            </a>
+        </div>
 
-                <!-- Actions -->
-                <div class="flex justify-end gap-4">
-                    <button 
-                        type="button" 
-                        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
-                    >
-                        <i class="fas fa-times"></i> إلغاء
-                    </button>
-                    <button 
-                        type="submit" 
-                        class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300"
-                    >
-                        <i class="fas fa-save"></i> حفظ العميل
-                    </button>
+        <!-- Categories Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Skincare Category -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="../hair-cream.jpg" alt="Skincare" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold text-gray-800">العناية بالبشرة</h3>
                 </div>
-            </form>
+            </div>
+
+            <!-- Makeup Category -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="../makeup-brush.jpg" alt="Makeup" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold text-gray-800">مستحضرات التجميل</h3>
+                </div>
+            </div>
+
+            <!-- Fragrances Category -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="../perfume.jpg" alt="Fragrances" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold text-gray-800">العطور</h3>
+                </div>
+            </div>
+
+            <!-- Haircare Category -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="../product1.jpg" alt="Haircare" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold text-gray-800">العناية بالشعر</h3>
+                </div>
+            </div>
+
+            <!-- Bodycare Category -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="../product2.jpg" alt="Bodycare" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold text-gray-800">العناية بالجسم</h3>
+                </div>
+            </div>
+
+            <!-- Men's Grooming Category -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="../product3.jpg" alt="Men's Grooming" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold text-gray-800">عناية الرجال</h3>
+                </div>
+            </div>
+
+            <!-- Add more categories as needed -->
         </div>
     </div>
 
