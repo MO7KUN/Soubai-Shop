@@ -93,7 +93,10 @@
         <!-- Categories Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <!-- Skincare Category -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div 
+                class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
+                onclick="openUpdateModal('العناية بالبشرة', '../hair-cream.jpg')"
+            >
                 <img src="../hair-cream.jpg" alt="Skincare" class="w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-xl font-bold text-gray-800">العناية بالبشرة</h3>
@@ -101,7 +104,10 @@
             </div>
 
             <!-- Makeup Category -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div 
+                class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
+                onclick="openUpdateModal('مستحضرات التجميل', '../makeup-brush.jpg')"
+            >
                 <img src="../makeup-brush.jpg" alt="Makeup" class="w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-xl font-bold text-gray-800">مستحضرات التجميل</h3>
@@ -109,7 +115,10 @@
             </div>
 
             <!-- Fragrances Category -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div 
+                class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
+                onclick="openUpdateModal('العطور', '../perfume.jpg')"
+            >
                 <img src="../perfume.jpg" alt="Fragrances" class="w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-xl font-bold text-gray-800">العطور</h3>
@@ -117,7 +126,10 @@
             </div>
 
             <!-- Haircare Category -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div 
+                class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
+                onclick="openUpdateModal('العناية بالشعر', '../product1.jpg')"
+            >
                 <img src="../product1.jpg" alt="Haircare" class="w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-xl font-bold text-gray-800">العناية بالشعر</h3>
@@ -125,7 +137,10 @@
             </div>
 
             <!-- Bodycare Category -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div 
+                class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
+                onclick="openUpdateModal('العناية بالجسم', '../product2.jpg')"
+            >
                 <img src="../product2.jpg" alt="Bodycare" class="w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-xl font-bold text-gray-800">العناية بالجسم</h3>
@@ -133,18 +148,93 @@
             </div>
 
             <!-- Men's Grooming Category -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div 
+                class="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
+                onclick="openUpdateModal('عناية الرجال', '../product3.jpg')"
+            >
                 <img src="../product3.jpg" alt="Men's Grooming" class="w-full h-48 object-cover">
                 <div class="p-4">
                     <h3 class="text-xl font-bold text-gray-800">عناية الرجال</h3>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Add more categories as needed -->
+    <!-- Update Category Modal -->
+    <div id="updateModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+        <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">تحديث الفئة</h2>
+            <form id="updateForm">
+                <div class="mb-4">
+                    <label for="categoryName" class="block text-gray-700 mb-2">اسم الفئة</label>
+                    <input 
+                        type="text" 
+                        id="categoryName" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        required
+                    >
+                </div>
+                <div class="mb-4">
+                    <label for="categoryImage" class="block text-gray-700 mb-2">صورة الفئة</label>
+                    <input 
+                        type="file" 
+                        id="categoryImage" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        accept="image/*"
+                    >
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button 
+                        type="button" 
+                        onclick="closeUpdateModal()" 
+                        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
+                    >
+                        إلغاء
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300"
+                    >
+                        حفظ التغييرات
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
+        // Function to open the update modal
+        function openUpdateModal(name, image) {
+            document.getElementById('categoryName').value = name;
+            document.getElementById('categoryImage').value = ''; // Clear file input
+            document.getElementById('updateModal').classList.remove('hidden');
+        }
+
+        // Function to close the update modal
+        function closeUpdateModal() {
+            document.getElementById('updateModal').classList.add('hidden');
+        }
+
+        // Handle form submission
+        document.getElementById('updateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const newName = document.getElementById('categoryName').value;
+            const imageFile = document.getElementById('categoryImage').files[0];
+
+            if (imageFile) {
+                // Handle the uploaded file (e.g., upload to server)
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    alert(`تم التحديث:\nالاسم: ${newName}\nالصورة: ${e.target.result}`);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                alert(`تم التحديث:\nالاسم: ${newName}\nالصورة: لم يتم تغييرها`);
+            }
+
+            closeUpdateModal();
+        });
+
         // Toggle Profile Dropdown
         const profileBtn = document.getElementById('profile-btn');
         const profileDropdown = document.getElementById('profile-dropdown');
