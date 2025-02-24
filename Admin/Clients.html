@@ -10,6 +10,32 @@
         <style>
         body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
+        <script>
+        const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
+            const permissions = localStorage.getItem("permissions") || sessionStorage.getItem("permissions");
+            let token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        document.addEventListener("DOMContentLoaded", function () {
+
+            if (!userId || !permissions || !token) {
+                window.location.href = "index.html";
+            } else {
+                const PermissionsArray = permissions.split('&');
+                if (!PermissionsArray.includes('gererDashboard')) document.getElementById('dashboard').remove();
+                if (!PermissionsArray.includes('gererClients')){
+                    if (window.history.length > 1) {
+                        window.history.back();
+                    }else {
+                        window.location.href = "index.html";
+                    }
+                }
+                if (!PermissionsArray.includes('gererProducts')) document.getElementById('products').remove();
+                if (!PermissionsArray.includes('gererCategories')) document.getElementById('categories').remove();
+                if (!PermissionsArray.includes('gererOrders')) document.getElementById('orders').remove();
+                // if (!PermissionsArray.includes('gererUsers')) document.getElementById('users').remove();
+                if (!PermissionsArray.includes('gererSettings')) document.getElementById('settings').remove();
+            }
+        })
+    </script>
     </head>
     <body class="bg-gray-100 text-black flex flex-col min-h-screen">
         <!-- Navbar -->
@@ -58,26 +84,33 @@
         </nav>
 
         <!-- Sidebar -->
-        <div id="sidebar" class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
+        <div id="sidebar"
+            class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
             <!-- Removed the Close Button for Mobile -->
             <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
             <nav class="space-y-2">
-                <a href="Dashboard.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Dashboard.html" id="dashboard"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-tachometer-alt"></i> الصفحة الرئيسية
                 </a>
-                <a href="Orders.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Orders.html" id="orders"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-shopping-cart"></i> الطلبات
                 </a>
-                <a href="Clients.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Clients.html" id="clients"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-users"></i> العملاء
                 </a>
-                <a href="Products.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Products.html" id="products"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-box"></i> المنتجات
                 </a>
-                <a href="Categories.html" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Categories.html" id="categories"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-list"></i> الفئات
                 </a>
-                <a href="#settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="#settings" id="settings"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-cog"></i> إعدادات
                 </a>
             </nav>
@@ -114,21 +147,31 @@
                 <table class="w-full border-collapse text-right">
                     <thead>
                         <tr class="bg-gray-200">
-                            <th class="p-3 border-b whitespace-nowrap">اسم العميل</th>
-                            <th class="p-3 border-b whitespace-nowrap">رقم الهاتف</th>
-                            <th class="p-3 border-b whitespace-nowrap">المدينة</th>
-                            <th class="p-3 border-b whitespace-nowrap">تاريخ التسجيل</th>
-                            <th class="p-3 border-b whitespace-nowrap">الإجراءات</th>
+                            <th class="p-3 border-b whitespace-nowrap">اسم
+                                العميل</th>
+                            <th class="p-3 border-b whitespace-nowrap">رقم
+                                الهاتف</th>
+                            <th
+                                class="p-3 border-b whitespace-nowrap">المدينة</th>
+                            <th class="p-3 border-b whitespace-nowrap">تاريخ
+                                التسجيل</th>
+                            <th
+                                class="p-3 border-b whitespace-nowrap">الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Client 1 -->
                         <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b whitespace-nowrap">محمد أحمد</td>
-                            <td class="p-3 border-b whitespace-nowrap">+966 500000000</td>
-                            <td class="p-3 border-b whitespace-nowrap">الرياض</td>
-                            <td class="p-3 border-b whitespace-nowrap">2023-10-01</td>
-                            <td class="p-3 border-b text-center  flex flex-row gap-2">
+                            <td class="p-3 border-b whitespace-nowrap">محمد
+                                أحمد</td>
+                            <td class="p-3 border-b whitespace-nowrap">+966
+                                500000000</td>
+                            <td
+                                class="p-3 border-b whitespace-nowrap">الرياض</td>
+                            <td
+                                class="p-3 border-b whitespace-nowrap">2023-10-01</td>
+                            <td
+                                class="p-3 border-b text-center  flex flex-row gap-2">
                                 <button
                                     class="bg-blue-500 text-white px-2 py-1 rounded-full hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
@@ -137,10 +180,12 @@
                                     class="bg-red-500 text-white px-2 py-1 rounded-full hover:bg-red-600">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="bg-green-500 text-white px-2 py-1 rounded-full hover:bg-green-600">
+                                <button
+                                    class="bg-green-500 text-white px-2 py-1 rounded-full hover:bg-green-600">
                                     <i class="fas fa-phone"></i>
                                 </button>
-                                <button class="bg-green-700 text-white px-2 py-1 rounded-full hover:bg-green-800">
+                                <button
+                                    class="bg-green-700 text-white px-2 py-1 rounded-full hover:bg-green-800">
                                     <i class="fa-brands fa-whatsapp"></i>
                                 </button>
                             </td>
@@ -148,11 +193,15 @@
 
                         <!-- Client 2 -->
                         <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b whitespace-nowrap">سارة خالد</td>
-                            <td class="p-3 border-b whitespace-nowrap">+966 511111111</td>
+                            <td class="p-3 border-b whitespace-nowrap">سارة
+                                خالد</td>
+                            <td class="p-3 border-b whitespace-nowrap">+966
+                                511111111</td>
                             <td class="p-3 border-b whitespace-nowrap">جدة</td>
-                            <td class="p-3 border-b whitespace-nowrap">2023-09-15</td>
-                            <td class="p-3 border-b text-center flex flex-row gap-2">
+                            <td
+                                class="p-3 border-b whitespace-nowrap">2023-09-15</td>
+                            <td
+                                class="p-3 border-b text-center flex flex-row gap-2">
                                 <button
                                     class="bg-blue-500 text-white px-2 py-1 rounded-full hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
@@ -161,10 +210,12 @@
                                     class="bg-red-500 text-white px-2 py-1 rounded-full hover:bg-red-600">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="bg-green-500 text-white px-2 py-1 rounded-full hover:bg-green-600">
+                                <button
+                                    class="bg-green-500 text-white px-2 py-1 rounded-full hover:bg-green-600">
                                     <i class="fas fa-phone"></i>
                                 </button>
-                                <button class="bg-green-700 text-white px-2 py-1 rounded-full hover:bg-green-800">
+                                <button
+                                    class="bg-green-700 text-white px-2 py-1 rounded-full hover:bg-green-800">
                                     <i class="fa-brands fa-whatsapp"></i>
                                 </button>
                             </td>
@@ -172,11 +223,16 @@
 
                         <!-- Client 3 -->
                         <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b whitespace-nowrap">علي حسن</td>
-                            <td class="p-3 border-b whitespace-nowrap">+966 522222222</td>
-                            <td class="p-3 border-b whitespace-nowrap">الدمام</td>
-                            <td class="p-3 border-b whitespace-nowrap">2023-08-20</td>
-                            <td class="p-3 border-b text-center  flex flex-row gap-2">
+                            <td class="p-3 border-b whitespace-nowrap">علي
+                                حسن</td>
+                            <td class="p-3 border-b whitespace-nowrap">+966
+                                522222222</td>
+                            <td
+                                class="p-3 border-b whitespace-nowrap">الدمام</td>
+                            <td
+                                class="p-3 border-b whitespace-nowrap">2023-08-20</td>
+                            <td
+                                class="p-3 border-b text-center  flex flex-row gap-2">
                                 <button
                                     class="bg-blue-500 text-white px-2 py-1 rounded-full hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
@@ -185,10 +241,12 @@
                                     class="bg-red-500 text-white px-2 py-1 rounded-full hover:bg-red-600">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button class="bg-green-500 text-white px-2 py-1 rounded-full hover:bg-green-600">
+                                <button
+                                    class="bg-green-500 text-white px-2 py-1 rounded-full hover:bg-green-600">
                                     <i class="fas fa-phone"></i>
                                 </button>
-                                <button class="bg-green-700 text-white px-2 py-1 rounded-full hover:bg-green-8s00">
+                                <button
+                                    class="bg-green-700 text-white px-2 py-1 rounded-full hover:bg-green-8s00">
                                     <i class="fa-brands fa-whatsapp"></i>
                                 </button>
                             </td>

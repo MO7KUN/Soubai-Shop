@@ -10,10 +10,10 @@
         body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
+        const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
             const permissions = localStorage.getItem("permissions") || sessionStorage.getItem("permissions");
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            let token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        document.addEventListener("DOMContentLoaded", function () {
 
             if (!userId || !permissions || !token) {
                 window.location.href = "index.html";
