@@ -19,7 +19,9 @@
             <h2 class="text-xl sm:text-2xl font-bold mb-4">
                 تسجيل الدخول
             </h2>
-            <p class="text-red-600 mb-6 hidden text-md border border-red-500 bg-red-100" id="error">
+            <p
+                class="text-red-600 mb-6 hidden text-md border border-red-500 bg-red-100"
+                id="error">
                 حدث خطأ ما. يرجى المحاولة مرة أخرى
             </p>
             <div>
@@ -54,6 +56,7 @@
                         required>
                     <!-- Show Password Button -->
                     <button
+                        title="Show Password"
                         type="button"
                         class="absolute left-3 top-10 text-gray-500 hover:text-gray-700 focus:outline-none"
                         onclick="togglePasswordVisibility()">
@@ -97,99 +100,103 @@
         <!-- JavaScript for Show Password -->
         <script>
 
-        function Login() {
-            const email = document.getElementById('email');
-            const password = document.getElementById('password');
-            const keepLoggedIn = document.getElementById('keep-logged-in').checked;
-            if(email.value.length == 0) {
-                email.classList.add('border-red-500');
-                document.getElementById('error-message').classList.remove('hidden');
-                return;
-            } else {
-                email.classList.remove('border-red-500');
-                document.getElementById('error-message').classList.add('hidden');
-            }
+function Login() {
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const keepLoggedIn = document.getElementById('keep-logged-in').checked;
 
-            if(password.value.length == 0) {
+    if (email.value.length == 0) {
+        email.classList.add('border-red-500');
+        document.getElementById('error-message').classList.remove('hidden');
+        return;
+    } else {
+        email.classList.remove('border-red-500');
+        document.getElementById('error-message').classList.add('hidden');
+    }
+
+    if (password.value.length == 0) {
+        password.classList.add('border-red-500');
+        document.getElementById('password-error-message').classList.remove('hidden');
+        document.getElementById('password-error-message').innerHTML = "الرجاء ادخال كلمة المرور";
+        return;
+    } else {
+        password.classList.remove('border-red-500');
+        document.getElementById('password-error-message').classList.add('hidden');
+    }
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(email.value)) {
+        email.classList.add('border-red-500');
+        document.getElementById('error-message').classList.remove('hidden');
+        return;
+    } else {
+        email.classList.remove('border-red-500');
+        document.getElementById('error-message').classList.add('hidden');
+    }
+
+    fetch('https://sbaishop.com/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email.value,
+            password: password.value,
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw response; // Throw the response to handle errors
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (keepLoggedIn) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('permissions', data.permissions);
+        } else {
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('userId', data.userId);
+            sessionStorage.setItem('permissions', data.permissions);
+        }
+
+        const permissions = data.permissions.split('&');
+
+        switch (permissions[0]) {
+            case 'gererDashboard':
+                window.location.href = "Dashboard.html";
+                break;
+            case 'gererProducts':
+                window.location.href = "Products.html";
+                break;
+            case 'gererOrders':
+                window.location.href = "Orders.html";
+                break;
+            case 'gererUsers':
+                window.location.href = "Clients.html";
+                break;
+            default:
+                window.location.href = "index.html";
+                break;
+        }
+    })
+    .catch(error => {
+        error.json().then(err => {
+            if (error.status == 401) {
                 password.classList.add('border-red-500');
                 document.getElementById('password-error-message').classList.remove('hidden');
-                document.getElementById('password-error-message').innerHTML = "الرجاء ادخال كلمة المرور";
-                return;
-            } else {
-                password.classList.remove('border-red-500');
-                document.getElementById('password-error-message').classList.add('hidden');
-            }
-
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if(!regex.test(email.value)) {
+                document.getElementById('password-error-message').innerHTML = "كلمة المرور غير صحيحة";
+            } else if (error.status == 404) {
                 email.classList.add('border-red-500');
                 document.getElementById('error-message').classList.remove('hidden');
-                return;
-            }else{
-                email.classList.remove('border-red-500');
-                document.getElementById('error-message').classList.add('hidden');
+                document.getElementById('error-message').innerHTML = "البريد الالكتروني غير صحيح";
+            } else {
+                document.getElementById('error').classList.remove('hidden');
             }
-
-
-            fetch('https://sbaishop.com/api/login.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email.value,
-                    password: password.value,
-                })          
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                if(response.status == 200) {
-                    if (keepLoggedIn) {
-                        localStorage.setItem('token', data.token);
-                        localStorage.setItem('userId', data.userId);
-                        localStorage.setItem('permissions', data.permissions);
-
-                    } else {
-                        sessionStorage.setItem('token', data.token);
-                        sessionStorage.setItem('userId', data.userId);
-                        sessionStorage.setItem('permissions', data.permissions);
-                    }
-
-                    const permissions = data.permissions.split('&');
-
-                    switch (permissions[0]) {
-                        case 'gererDashboard':
-                            window.location.href = "Admin/Dashboard.html";
-                            break;
-                        case 'gererProducts':
-                            window.location.href = "Admin/Products.html";
-                            break;
-                        case 'gererOrders':
-                            window.location.href = "Admin/Orders.html";
-                            break;
-                        case 'gererUsers':
-                            window.location.href = "Admin/Users.html";
-                            break;
-                        default:
-                            window.location.href = "index.html";
-                            break;
-                    }
-                } else {
-                    if (response.status == 401) {
-                    password.classList.add('border-red-500');
-                    document.getElementById('password-error-message').classList.remove('hidden');
-                    document.getElementById('password-error-message').innerHTML = "كلمة المرور غير صحيحة";
-                    } else if (response.status == 404) {
-                    email.classList.add('border-red-500');
-                    document.getElementById('error-message').classList.remove('hidden');
-                    document.getElementById('error-message').innerHTML = "البريد الالكتروني غير صحيح";
-                    } else {
-                        document.getElementById('error').classList.remove('hidden');
-                    }
-            }
-            })
-        }
+        });
+    });
+}
 
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
