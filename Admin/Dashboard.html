@@ -10,31 +10,10 @@
         <style>
         body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
+    <script src="LogOut.js"></script>
+    <script src="sidebar.js"></script>
         <script>
-            const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
-            const permissions = localStorage.getItem("permissions") || sessionStorage.getItem("permissions");
-            let token = localStorage.getItem("token") || sessionStorage.getItem("token");
-            document.addEventListener("DOMContentLoaded", function () {
-            
-                if (!userId || !permissions || !token) {
-                    window.location.href = "index.html";
-                } else {
-                    const PermissionsArray = permissions.split('&');
-                    if (!PermissionsArray.includes('gererDashboard')) {
-                        if (window.history.length > 1) {
-                            window.history.back();
-                        }else { 
-                            window.location.href = "index.html";
-                        }
-                    }
-                    if (!PermissionsArray.includes('gererProducts')) document.getElementById('products').remove();
-                    if (!PermissionsArray.includes('gererCategories')) document.getElementById('categories').remove();
-                    if (!PermissionsArray.includes('gererClients')) document.getElementById('clients').remove();
-                    if (!PermissionsArray.includes('gererOrders')) document.getElementById('orders').remove();
-                    // if (!PermissionsArray.includes('gererUsers')) document.getElementById('users').remove();
-                    if (!PermissionsArray.includes('gererSettings')) document.getElementById('settings').remove();
-            }
-        })
+            sidebarhandeler("gererDashboard");
     </script>
 
     </head>
@@ -69,14 +48,14 @@
                         <!-- Profile Dropdown -->
                         <div id="profile-dropdown"
                             class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
-                            <a href="#"
+                            <button 
                                 class="block px-4 py-2 hover:bg-gray-100">الملف
-                                الشخصي</a>
-                            <a href="#"
-                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</a>
-                            <a href="#"
+                                الشخصي</button>
+                            <button 
+                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</button>
+                            <button onclick="logout()"
                                 class="block px-4 py-2 hover:bg-gray-100">تسجيل
-                                الخروج</a>
+                                الخروج</button>
                         </div>
                     </div>
                 </div>
@@ -118,7 +97,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="p-6 md:mr-64 mt-16"> <!-- Add margin-top for navbar -->
+        <div class="p-6 md:mr-64"> <!-- Add margin-top for navbar -->
             <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">
                 <i class="fas fa-tachometer-alt text-yellow-400"></i> الصفحة
                 الرئيسية
