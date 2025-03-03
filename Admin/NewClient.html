@@ -9,32 +9,6 @@
     <style>
         body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
-    <script>
-        const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
-            const permissions = localStorage.getItem("permissions") || sessionStorage.getItem("permissions");
-            let token = localStorage.getItem("token") || sessionStorage.getItem("token");
-        document.addEventListener("DOMContentLoaded", function () {
-
-            if (!userId || !permissions || !token) {
-                window.location.href = "index.html";
-            } else {
-                const PermissionsArray = permissions.split('&');
-                if (!PermissionsArray.includes('gererDashboard')) document.getElementById('dashboard').remove();
-                if (!PermissionsArray.includes('gererClients')){
-                    if (window.history.length > 1) {
-                        window.history.back();
-                    }else {
-                        window.location.href = "index.html";
-                    }
-                }
-                if (!PermissionsArray.includes('gererProducts')) document.getElementById('products').remove();
-                if (!PermissionsArray.includes('gererCategorys')) document.getElementById('categories').remove();
-                if (!PermissionsArray.includes('gererOrders')) document.getElementById('orders').remove();
-                // if (!PermissionsArray.includes('gererUsers')) document.getElementById('users').remove();
-                if (!PermissionsArray.includes('gererSettings')) document.getElementById('settings').remove();
-            }
-        })
-    </script>
 </head>
 <body class="bg-gray-100 text-black flex flex-col min-h-screen">
     <!-- Navbar -->
@@ -65,9 +39,14 @@
                     </button>
                     <!-- Profile Dropdown -->
                     <div id="profile-dropdown" class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">الملف الشخصي</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">الإعدادات</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">تسجيل الخروج</a>
+                        <button
+                                class="block px-4 py-2 hover:bg-gray-100">الملف
+                                الشخصي</button>
+                            <button
+                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</button>
+                            <button onclick="logout()"
+                                class="block px-4 py-2 hover:bg-gray-100">تسجيل
+                                الخروج</button>
                     </div>
                 </div>
             </div>
@@ -76,7 +55,6 @@
 
     <!-- Sidebar -->
     <div id="sidebar" class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
-        <!-- Removed the Close Button for Mobile -->
         <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
         <nav class="space-y-2">
             <a href="Dashboard.html" id="dashboard" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
@@ -93,6 +71,9 @@
             </a>
             <a href="Categories.html" id="categories" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                 <i class="fas fa-list"></i> الفئات
+            </a>
+            <a href="Users.html" id="users" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <i class="fas fa-user-cog"></i> المستخدمين
             </a>
             <a href="#settings" id="settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                 <i class="fas fa-cog"></i> إعدادات
@@ -175,8 +156,12 @@
             </form>
         </div>
     </div>
-
+    <script src="sidebar.js"></script>
+    <script src="LogOut.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            sidebarhandeler("gererClients");
+        })
         // Toggle Profile Dropdown
         const profileBtn = document.getElementById('profile-btn');
         const profileDropdown = document.getElementById('profile-dropdown');

@@ -5,17 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>الفئات - Soubai Shop</title>
         <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <style>
             body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
         </style>
         <script src="sidebar.js"></script>
         <script src="LogOut.js"></script>
         <script>
-
-            // Fetch categories from the API
-            fetch('https://sbaishop.com/api/categorys', {
-                method: 'GET',
+            async function fetchCategorys() {
+                
+                fetch('https://sbaishop.com/api/categorys', {
+                    method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
@@ -46,6 +47,8 @@
                         const cardTitle = document.createElement('h3');
 
                         // Add classes and content
+                        cardTitlePlace.classList.add('card-title-place');
+                        cardTitlePlace.classList.add('text-center');
                         cardTitlePlace.classList.add('p-4');
                         cardTitle.classList.add('text-lg', 'font-semibold', 'mb-2');
                         cardTitle.textContent = category.label;
@@ -53,17 +56,17 @@
                         cardImage.alt = category.label;
                         cardImage.classList.add('w-full', 'h-48', 'object-cover');
                         card.classList.add('bg-white', 'rounded-lg', 'shadow-lg', 'overflow-hidden', 'cursor-pointer');
-
+                        
                         // Add click event to open update modal
                         card.addEventListener('click', () => {
-                            openUpdateModal(category.label, category.image_url);
+                            openUpdateModal(category);
                         });
-
+                        
                         // Append elements to the card
                         card.appendChild(cardImage);
                         cardTitlePlace.appendChild(cardTitle);
                         card.appendChild(cardTitlePlace);
-
+                        
                         // Append the card to the grid
                         categorySelect.appendChild(card);
                     });
@@ -90,6 +93,12 @@
                     document.getElementById('error-message').classList.remove('hidden'); // Show error message
                 }
             });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            sidebarhandeler("gererCategorys");
+            // Fetch categories from the API
+            fetchCategorys();
+        })
 
             
         </script>
@@ -113,19 +122,27 @@
                     <!-- Notifications -->
                     <button class="relative">
                         <i class="fas fa-bell"></i>
-                        <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+                        <span
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">3</span>
                     </button>
 
                     <!-- Profile Picture with Dropdown -->
                     <div class="relative">
                         <button id="profile-btn" class="focus:outline-none">
-                            <img src="../download.png" alt="Profile" class="w-8 h-8 rounded-full">
+                            <img src="../download.png" alt="Profile"
+                                class="w-8 h-8 rounded-full">
                         </button>
                         <!-- Profile Dropdown -->
-                        <div id="profile-dropdown" class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">الملف الشخصي</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">الإعدادات</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">تسجيل الخروج</a>
+                        <div id="profile-dropdown"
+                            class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
+                            <button
+                                class="block px-4 py-2 hover:bg-gray-100">الملف
+                                الشخصي</button>
+                            <button
+                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</button>
+                            <button onclick="logout()"
+                                class="block px-4 py-2 hover:bg-gray-100">تسجيل
+                                الخروج</button>
                         </div>
                     </div>
                 </div>
@@ -133,25 +150,36 @@
         </nav>
 
         <!-- Sidebar -->
-        <div id="sidebar" class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
+        <div id="sidebar"
+            class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
             <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
             <nav class="space-y-2">
-                <a href="Dashboard.html" id="dashboard" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Dashboard.html" id="dashboard"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-tachometer-alt"></i> الصفحة الرئيسية
                 </a>
-                <a href="Orders.html" id="orders" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Orders.html" id="orders"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-shopping-cart"></i> الطلبات
                 </a>
-                <a href="Clients.html" id="clients" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Clients.html" id="clients"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-users"></i> العملاء
                 </a>
-                <a href="Products.html" id="products" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Products.html" id="products"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-box"></i> المنتجات
                 </a>
-                <a href="Categories.html" id="categories" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Categories.html" id="categories"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-list"></i> الفئات
                 </a>
-                <a href="#settings" id="settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Users.html" id="users"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                    <i class="fas fa-user-cog"></i> المستخدمين
+                </a>
+                <a href="#settings" id="settings"
+                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-cog"></i> إعدادات
                 </a>
             </nav>
@@ -161,78 +189,190 @@
         <div class="p-6 md:mr-64">
             <!-- Add Category Button -->
             <div class="flex justify-between align-center mb-6">
-                <h1 class="text-center text-2xl font-bold text-black md:text-800 mb-4">
+                <h1
+                    class="text-center text-2xl font-bold text-black md:text-800 mb-4">
                     <i class="fas fa-list text-yellow-400"></i> الفئات
                 </h1>
-                <a href="NewCategory.html" class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                <a href="NewCategory.html"
+                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                     <i class="fas fa-plus"></i> إضافة فئة
                 </a>
             </div>
 
             <!-- Error Message -->
-            <div id="error-message" class="hidden border border-red-500 rounded-lg p-4 mb-4">
+            <div id="error-message"
+                class="hidden border border-red-500 rounded-lg p-4 mb-4">
                 <p class="text-red-500">حدث خطأ ما. يرجى المحاولة مرة أخرى</p>
             </div>
 
+            <!-- success Message -->
+            <div id="success-message"
+                class="hidden border border-green-500 rounded-lg p-4 mb-4">
+                <p class="text-green-500">تمت العملية بنجاح</p>
+            </div>
+
             <!-- Categories Grid -->
-            <div id="categories-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                
+            <div id="categories-grid"
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
             </div>
         </div>
 
         <!-- Update Category Modal -->
-        <div id="updateModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
-            <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">تحديث الفئة</h2>
-                <form id="updateForm">
+        <div id="updateModal"
+            class="fixed inset-0 bg-black bg-opacity-50 hidden place-items-center h-screen grid justify-center items-center z-50">
+            <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">تحديث
+                        الفئة</h2>
+                    <button type="button" onclick="closeUpdateModal()"
+                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"><i
+                            class="fas fa-times"></i></button>
+                </div>
+                <div id="updateForm">
                     <div class="mb-4">
-                        <label for="categoryName" class="block text-gray-700 mb-2">اسم الفئة</label>
-                        <input type="text" id="categoryName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" required>
+                        <label for="categoryName"
+                            class="block text-gray-700 mb-2">اسم الفئة</label>
+                        <input type="text" id="categoryName"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            required>
+                        <p id="categoryNameError"
+                            class="text-red-500 hidden mt-1"> يرجى ادخال اسم
+                            الفئة </p>
                     </div>
                     <div class="mb-4">
-                        <label for="categoryImage" class="block text-gray-700 mb-2">صورة الفئة</label>
-                        <input type="file" id="categoryImage" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" accept="image/*">
+                        <div class="relative w-full">
+                            <label for="fileInput2"
+                                class="cursor-pointer w-full h-full rounded-sm flex items-center justify-center bg-gray-100 ">
+                                <img id="preview_img2"
+                                    class="h-32 w-full object-contain rounded-sm p-0"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/500px-Plus_symbol.svg.png"
+                                    alt />
+                                <div
+                                    class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 rounded-sm opacity-0 hover:opacity-100 transition-opacity">
+                                    <span class="text-white text-3xl">+</span>
+                                </div>
+                            </label>
+                            <button type="button" id="deleteButton2"
+                                class="hidden absolute top-0 right-0 p-0 text-yellow-500 font-black shadow-lg"
+                                onclick="deleteImage(2)">
+                                <span class="sr-only">Delete</span>
+                                <span class="text-lg">&times;</span>
+                            </button>
+                            <input id="fileInput2" name="fileInput2" type="file"
+                                accept="image/*" onchange="loadFile(event, 2)"
+                                hidden>
+                        </div>
+                        <p id="categoryImageError"
+                            class="text-red-500 hidden mt-1"> الصورة لا يجب ان
+                            تتخطى 2 ميغابايت </p>
                     </div>
                     <div class="flex justify-end gap-4">
-                        <button type="button" onclick="closeUpdateModal()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">إلغاء</button>
-                        <button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">حفظ التغييرات</button>
+                        <button type="button" onclick="deleteCategory()"
+                            class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-300"><i
+                                class="fas fa-trash"></i></button>
+                        <button type="submit" onclick="updateCategory()"
+                            class="bg-green-400 text-black px-4 py-2 rounded-lg hover:bg-green-500 transition duration-300"><i
+                                class="fas fa-save"></i></button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
 
         <script>
+            let categoryID = null;
+
+            function updateCategory() {
+                const successMessage = document.getElementById('success-message');
+                const categoryName = document.getElementById('categoryName').value;
+                const categoryImage = document.getElementById('fileInput2').files[0];
+
+                if (!categoryName) {
+                    document.getElementById('categoryNameError').classList.remove('hidden');
+                    return;
+                }
+
+                if (categoryImage && categoryImage.size > 2 * 1024 * 1024) {
+                    document.getElementById('categoryImageError').classList.remove('hidden');
+                    return;
+                }
+
+                let imageUrl = null;
+
+                // Upload image if provided
+                const formData = new FormData();
+                if (categoryImage) {
+                formData.append('image', categoryImage);
+            }
+            formData.append('label', categoryName);
+                fetch(`https://sbaishop.com/api/category/${categoryID}/edit`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: formData
+                }).then(response => {
+                    if (response.ok) {
+                        closeUpdateModal();
+                        successMessage.classList.remove('hidden');
+                        fetchCategorys();
+                    } else {
+                        alert('حدث خطأ ما. يرجى المحاولة مرة أخرى');
+                    }
+                }).catch(error => {
+                    
+                })
+            }
+
+            // img upload 
+var loadFile = function (event, uploaderId) {
+    var input = event.target;
+    var file = input.files[0];
+    var type = file.type;
+    var output = document.getElementById('preview_img' + uploaderId);
+    var deleteButton = document.getElementById('deleteButton' + uploaderId);
+
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function () {
+        URL.revokeObjectURL(output.src); // free memory
+        deleteButton.classList.remove('hidden');
+    }
+};
+
+function deleteImage(uploaderId) {
+    event.preventDefault(); // Prevent page refresh
+
+    var output = document.getElementById('preview_img' + uploaderId);
+    var deleteButton = document.getElementById('deleteButton' + uploaderId);
+    var fileInput = document.getElementById('fileInput' + uploaderId);
+    var defaultImageURL =
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/500px-Plus_symbol.svg.png';
+
+    output.src = defaultImageURL;
+    deleteButton.classList.add('hidden');
+    fileInput.value = null; // Clear the file input
+
+    // Check if the default image is displayed
+    if (output.src.endsWith(defaultImageURL)) {
+        deleteButton.classList.add('hidden');
+    } else {
+        deleteButton.classList.remove('hidden');
+    }
+}
+        
             // Function to open the update modal
-            function openUpdateModal(name, image) {
-                document.getElementById('categoryName').value = name;
-                document.getElementById('categoryImage').value = ''; // Clear file input
+            function openUpdateModal(category) {
+                categoryID = category.id;
+                document.getElementById('categoryName').value = category.label;
+                document.getElementById('preview_img2').src = category.image_url; // Clear file input
                 document.getElementById('updateModal').classList.remove('hidden');
             }
 
             // Function to close the update modal
             function closeUpdateModal() {
                 document.getElementById('updateModal').classList.add('hidden');
+                categoryID = null;
             }
-
-            // Handle form submission
-            document.getElementById('updateForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const newName = document.getElementById('categoryName').value;
-                const imageFile = document.getElementById('categoryImage').files[0];
-
-                if (imageFile) {
-                    // Handle the uploaded file (e.g., upload to server)
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        alert(`تم التحديث:\nالاسم: ${newName}\nالصورة: ${e.target.result}`);
-                    };
-                    reader.readAsDataURL(imageFile);
-                } else {
-                    alert(`تم التحديث:\nالاسم: ${newName}\nالصورة: لم يتم تغييرها`);
-                }
-
-                closeUpdateModal();
-            });
 
             // Toggle Profile Dropdown
             const profileBtn = document.getElementById('profile-btn');

@@ -10,11 +10,7 @@
         <style>
         body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
-    <script src="LogOut.js"></script>
-    <script src="sidebar.js"></script>
-        <script>
-            sidebarhandeler("gererDashboard");
-    </script>
+     
 
     </head>
     <body class="bg-gray-100 text-black flex flex-col min-h-screen">
@@ -48,10 +44,10 @@
                         <!-- Profile Dropdown -->
                         <div id="profile-dropdown"
                             class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
-                            <button 
+                            <button
                                 class="block px-4 py-2 hover:bg-gray-100">الملف
                                 الشخصي</button>
-                            <button 
+                            <button
                                 class="block px-4 py-2 hover:bg-gray-100">الإعدادات</button>
                             <button onclick="logout()"
                                 class="block px-4 py-2 hover:bg-gray-100">تسجيل
@@ -64,33 +60,28 @@
         </nav>
 
         <!-- Sidebar -->
-        <div id="sidebar"
-            class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
-            <!-- Removed the Close Button for Mobile -->
+        <div id="sidebar" class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
             <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
             <nav class="space-y-2">
-                <a href="Dashboard.html" id="dashboard"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Dashboard.html" id="dashboard" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-tachometer-alt"></i> الصفحة الرئيسية
                 </a>
-                <a href="Orders.html" id="orders"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Orders.html" id="orders" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-shopping-cart"></i> الطلبات
                 </a>
-                <a href="Clients.html" id="clients"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Clients.html" id="clients" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-users"></i> العملاء
                 </a>
-                <a href="Products.html" id="products"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Products.html" id="products" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-box"></i> المنتجات
                 </a>
-                <a href="Categories.html" id="categories"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Categories.html" id="categories" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-list"></i> الفئات
                 </a>
-                <a href="#settings" id="settings"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Users.html" id="users" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                    <i class="fas fa-user-cog"></i> المستخدمين
+                </a>
+                <a href="#settings" id="settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-cog"></i> إعدادات
                 </a>
             </nav>
@@ -256,5 +247,14 @@
             sidebar.classList.toggle('translate-x-full');
         });
     </script>
+
+<script src="LogOut.js"></script>
+<script src="sidebar.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        sidebarhandeler("gererDashboard");
+    })
+    
+</script>
     </body>
 </html>

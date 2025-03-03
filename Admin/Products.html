@@ -10,34 +10,6 @@
         <style>
         body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
-        <script>
-
-        
-        document.addEventListener("DOMContentLoaded", function () {
-            const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
-            const permissions = localStorage.getItem("permissions") || sessionStorage.getItem("permissions");
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-
-            if (!userId || !permissions || !token) {
-                window.location.href = "index.html";
-            } else {
-                const PermissionsArray = permissions.split('&');
-                if (!PermissionsArray.includes('gererDashboard')) document.getElementById('dashboard').remove();
-                if (!PermissionsArray.includes('gererProducts')){
-                    if (window.history.length > 1) {
-                        window.history.back();
-                    }else {
-                        window.location.href = "index.html";
-                    }
-                }
-                if (!PermissionsArray.includes('gererCategorys')) document.getElementById('categories').remove();
-                if (!PermissionsArray.includes('gererClients')) document.getElementById('clients').remove();
-                if (!PermissionsArray.includes('gererOrders')) document.getElementById('orders').remove();
-                // if (!PermissionsArray.includes('gererUsers')) document.getElementById('users').remove();
-                if (!PermissionsArray.includes('gererSettings')) document.getElementById('settings').remove();
-            }
-        })
-    </script>
     </head>
     <body class="bg-gray-100 text-black flex flex-col min-h-screen">
         <!-- Navbar -->
@@ -71,14 +43,14 @@
                         <!-- Profile Dropdown -->
                         <div id="profile-dropdown"
                             class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
-                            <a href="#"
+                            <button
                                 class="block px-4 py-2 hover:bg-gray-100">الملف
-                                الشخصي</a>
-                            <a href="#"
-                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</a>
-                            <a href="#"
+                                الشخصي</button>
+                            <button
+                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</button>
+                            <button onclick="logout()"
                                 class="block px-4 py-2 hover:bg-gray-100">تسجيل
-                                الخروج</a>
+                                الخروج</button>
                         </div>
                     </div>
                 </div>
@@ -86,33 +58,28 @@
         </nav>
 
         <!-- Sidebar -->
-        <div id="sidebar"
-            class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
-            <!-- Removed the Close Button for Mobile -->
+        <div id="sidebar" class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
             <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
             <nav class="space-y-2">
-                <a href="Dashboard.html" id="dashboard"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Dashboard.html" id="dashboard" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-tachometer-alt"></i> الصفحة الرئيسية
                 </a>
-                <a href="Orders.html" id="orders"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Orders.html" id="orders" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-shopping-cart"></i> الطلبات
                 </a>
-                <a href="Clients.html" id="clients"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Clients.html" id="clients" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-users"></i> العملاء
                 </a>
-                <a href="Products.html" id="products"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Products.html" id="products" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-box"></i> المنتجات
                 </a>
-                <a href="Categories.html" id="categories"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Categories.html" id="categories" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-list"></i> الفئات
                 </a>
-                <a href="#settings" id="settings"
-                    class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                <a href="Users.html" id="users" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
+                    <i class="fas fa-user-cog"></i> المستخدمين
+                </a>
+                <a href="#settings" id="settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
                     <i class="fas fa-cog"></i> إعدادات
                 </a>
             </nav>
@@ -156,36 +123,36 @@
                     <thead>
                         <tr class="bg-gray-200">
                             <th
-                                class="p-3 border-b whitespace-nowrap">الصورة</th>
-                            <th class="p-3 border-b whitespace-nowrap">اسم
+                                class="px-4 py-2 text-right whitespace-nowrap">الصورة</th>
+                            <th class="px-4 py-2 text-right whitespace-nowrap">اسم
                                 المنتج</th>
                             <th
-                                class="p-3 border-b whitespace-nowrap">السعر</th>
-                            <th class="p-3 border-b whitespace-nowrap">الكمية
+                                class="px-4 py-2 text-right whitespace-nowrap">السعر</th>
+                            <th class="px-4 py-2 text-right whitespace-nowrap">الكمية
                                 المتاحة</th>
                             <th
-                                class="p-3 border-b whitespace-nowrap">الحالة</th>
-                            <th class="p-3 border-b whitespace-nowrap">تاريخ
+                                class="px-4 py-2 text-right whitespace-nowrap">الحالة</th>
+                            <th class="px-4 py-2 text-right whitespace-nowrap">تاريخ
                                 الإضافة</th>
                             <th
-                                class="p-3 border-b whitespace-nowrap">الفئة</th>
+                                class="px-4 py-2 text-right whitespace-nowrap">الفئة</th>
                             <th
-                                class="p-3 border-b whitespace-nowrap">الإجراءات</th>
+                                class="px-4 py-2 text-right whitespace-nowrap">الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Product 1 -->
                         <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b">
+                            <td class="p-3 ">
                                 <img src="../product1.jpg" alt="Product 1"
                                     class="w-16 h-16 rounded-lg object-cover">
                             </td>
-                            <td class="p-3 border-b whitespace-nowrap">كريم
+                            <td class="px-4 py-2 text-right whitespace-nowrap">كريم
                                 للشعر</td>
                             <td
-                                class="p-3 border-b whitespace-nowrap">$20.00</td>
-                            <td class="p-3 border-b whitespace-nowrap">50</td>
-                            <td class="p-3 border-b">
+                                class="px-4 py-2 text-right whitespace-nowrap">$20.00</td>
+                            <td class="px-4 py-2 text-right whitespace-nowrap">50</td>
+                            <td class="p-3 ">
                                 <select class="bg-gray-100 p-1 rounded-lg">
                                     <option value="active">نشط</option>
                                     <option value="inactive">غير نشط</option>
@@ -194,11 +161,11 @@
                                 </select>
                             </td>
                             <td
-                                class="p-3 border-b whitespace-nowrap">2023-10-01</td>
-                            <td class="p-3 border-b whitespace-nowrap">العناية
+                                class="px-4 py-2 text-right whitespace-nowrap">2023-10-01</td>
+                            <td class="px-4 py-2 text-right whitespace-nowrap">العناية
                                 بالشعر</td>
                             <td
-                                class="p-3 border-b text-center  flex flex-row gap-2">
+                                class="px-4 py-2 text-right flex flex-row gap-2 items-center whitespace-nowrap justify-center">
                                 <button
                                     onclick="openUpdateModal('كريم للشعر', 50, '$20.00', 'active', '2023-10-01', 'العناية بالشعر', '../product1.jpg')"
                                     class="bg-blue-500 text-white px-2 py-1 rounded-full hover:bg-blue-600">
@@ -212,17 +179,17 @@
                         </tr>
 
                         <!-- Product 2 -->
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b">
+                        <tr class="bg-white">
+                            <td class="p-3">
                                 <img src="../product2.jpg" alt="Product 2"
                                     class="w-16 h-16 rounded-lg object-cover">
                             </td>
-                            <td class="p-3 border-b whitespace-nowrap">كريم
+                            <td class="px-4 py-2 text-right whitespace-nowrap">كريم
                                 للجسم</td>
                             <td
-                                class="p-3 border-b whitespace-nowrap">$15.00</td>
-                            <td class="p-3 border-b whitespace-nowrap">30</td>
-                            <td class="p-3 border-b">
+                                class="px-4 py-2 text-right whitespace-nowrap">$15.00</td>
+                            <td class="px-4 py-2 text-right whitespace-nowrap">30</td>
+                            <td class="p-3">
                                 <select class="bg-gray-100 p-1 rounded-lg">
                                     <option value="active">نشط</option>
                                     <option value="inactive">غير نشط</option>
@@ -231,11 +198,11 @@
                                 </select>
                             </td>
                             <td
-                                class="p-3 border-b whitespace-nowrap">2023-09-25</td>
-                            <td class="p-3 border-b whitespace-nowrap">العناية
+                                class="px-4 py-2 text-right whitespace-nowrap">2023-09-25</td>
+                            <td class="px-4 py-2 text-right whitespace-nowrap">العناية
                                 بالجسم</td>
                             <td
-                                class="p-3 border-b text-center  flex flex-row gap-2">
+                                class="px-4 py-2 text-right flex flex-row gap-2 items-center whitespace-nowrap justify-center">
                                 <button
                                     onclick="openUpdateModal('كريم للجسم', 30, '$15.00', 'active', '2023-09-25', 'العناية بالجسم', '../product2.jpg')"
                                     class="bg-blue-500 text-white px-2 py-1 rounded-full hover:bg-blue-600">
@@ -350,8 +317,12 @@
                 </form>
             </div>
         </div>
-
+        <script src="sidebar.js"></script>
+        <script src="LogOut.js"></script>
         <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                sidebarhandeler("gererProducts");
+            })
         // Toggle Profile Dropdown
         const profileBtn = document.getElementById('profile-btn');
         const profileDropdown = document.getElementById('profile-dropdown');
