@@ -39,14 +39,9 @@
                     </button>
                     <!-- Profile Dropdown -->
                     <div id="profile-dropdown" class="hidden absolute left-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
-                        <button
-                                class="block px-4 py-2 hover:bg-gray-100">الملف
-                                الشخصي</button>
-                            <button
-                                class="block px-4 py-2 hover:bg-gray-100">الإعدادات</button>
-                            <button onclick="logout()"
-                                class="block px-4 py-2 hover:bg-gray-100">تسجيل
-                                الخروج</button>
+                        <button class="block px-4 py-2 hover:bg-gray-100">الملف الشخصي</button>
+                        <button class="block px-4 py-2 hover:bg-gray-100">الإعدادات</button>
+                        <button onclick="logout()" class="block px-4 py-2 hover:bg-gray-100">تسجيل الخروج</button>
                     </div>
                 </div>
             </div>
@@ -86,10 +81,16 @@
         <h1 class="text-center text-2xl font-bold text-gray-800 mb-4">
             <i class="fas fa-user-plus text-yellow-400"></i> إضافة عميل
         </h1>
+        <div id="error-message" class="hidden border border-red-500 rounded-lg p-4 mb-4">
+            <p class="text-red-500">حدث خطأ ما. يرجى المحاولة مرة أخرى</p>
+        </div>
+        <div id="success-message" class="hidden border border-green-500 rounded-lg p-4 mb-4">
+            <p class="text-green-500">تمت العملية بنجاح</p>
+        </div>
 
         <!-- New Client Form -->
         <div class="bg-white rounded-lg shadow p-6">
-            <form>
+            <div>
                 <!-- Client Information -->
                 <div class="mb-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4">
@@ -105,6 +106,9 @@
                                 placeholder="أدخل اسم العميل"
                                 required
                             >
+                            <p id="client-name-error" class="hidden text-red-500 text-xs mt-1">
+                                اسم العميل مطلوب
+                            </p>
                         </div>
                         <div>
                             <label for="client-phone" class="block text-gray-700 mb-2">رقم الهاتف</label>
@@ -115,6 +119,9 @@
                                 placeholder="أدخل رقم الهاتف"
                                 required
                             >
+                            <p id="client-phone-error" class="hidden text-red-500 text-xs mt-1">
+                                رقم الهاتف مطلوب
+                            </p>
                         </div>
                         <div>
                             <label for="client-city" class="block text-gray-700 mb-2">المدينة</label>
@@ -125,15 +132,9 @@
                                 placeholder="أدخل المدينة"
                                 required
                             >
-                        </div>
-                        <div>
-                            <label for="client-notes" class="block text-gray-700 mb-2">ملاحظات</label>
-                            <textarea 
-                                id="client-notes" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400" 
-                                placeholder="أدخل ملاحظات عن العميل"
-                                rows="3"
-                            ></textarea>
+                            <p id="client-city-error" class="hidden text-red-500 text-xs mt-1">
+                                المدينة مطلوبة
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -141,49 +142,31 @@
                 <!-- Actions -->
                 <div class="flex justify-end gap-4">
                     <button 
+                        onclick="window.location.href = 'Clients.html'" 
                         type="button" 
                         class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
                     >
                         <i class="fas fa-times"></i> إلغاء
                     </button>
                     <button 
+                        onclick="addClient()"
                         type="submit" 
                         class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300"
                     >
                         <i class="fas fa-save"></i> حفظ العميل
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-    <script src="sidebar.js"></script>
-    <script src="LogOut.js"></script>
+    <script src="JS/sidebar.js"></script>
+    <script src="JS/LogOut.js"></script>
+    <script src="JS/mobileView.js"></script>
+    <script src="JS/ClientsManagement.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             sidebarhandeler("gererClients");
         })
-        // Toggle Profile Dropdown
-        const profileBtn = document.getElementById('profile-btn');
-        const profileDropdown = document.getElementById('profile-dropdown');
-
-        profileBtn.addEventListener('click', function() {
-            profileDropdown.classList.toggle('hidden');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-                profileDropdown.classList.add('hidden');
-            }
-        });
-
-        // Mobile menu toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const sidebar = document.getElementById('sidebar');
-
-        menuBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('translate-x-full');
-        });
     </script>
 </body>
 </html>

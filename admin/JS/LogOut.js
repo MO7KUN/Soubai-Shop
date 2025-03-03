@@ -1,5 +1,3 @@
-
-
 function logout() {
     fetch('https://sbaishop.com/api/logout', {
         method: 'POST',

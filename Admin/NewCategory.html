@@ -10,8 +10,8 @@
         <style>
         body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
     </style>
-        <script src="sidebar.js"></script>
-        <script src="LogOut.js"></script>
+        <script src="JS/sidebar.js"></script>
+        <script src="JS/LogOut.js"></script>
 
     </head>
     <body class="bg-gray-100 text-black flex flex-col min-h-screen">
@@ -62,7 +62,7 @@
 
         <!-- Sidebar -->
         <div id="sidebar"
-            class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
+            class="fixed right-0 w-64 h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration- z-50">
             <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
             <nav class="space-y-2">
                 <a href="Dashboard.html" id="dashboard"
@@ -127,10 +127,10 @@
                     </div>
 
                     <!-- Category Image Upload -->
-                    <div class="mb-4">
+                    <div id="image-preview-container" class="mb-4 ">
                         <div class="relative lg:w-1/4 w-1/2">
                             <label for="fileInput2"
-                                class="cursor-pointer w-full h-full rounded-sm flex items-center justify-center bg-gray-100 ">
+                                class="cursor-pointer w-full h-full rounded-sm flex items-center justify-center bg-gray-100">
                                 <img id="preview_img2"
                                     class="h-32 w-full object-contain rounded-sm p-0"
                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/500px-Plus_symbol.svg.png"
@@ -172,156 +172,7 @@
             </div>
         </div>
 
-        <script>
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-        sidebarhandeler("gererCategorys");
-
-        if (!userId || !permissions || !token) {
-            window.location.href = "index.html";
-            return;
-        }
-
-        const PermissionsArray = permissions.split('&');
-        if (!PermissionsArray.includes('gererCategorys')) {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.location.href = "index.html";
-            }
-            return;
-        }
-
-        const errorMessage = document.getElementById('error-message');
-        const form = document.getElementById('new-category-form');
-        const categoryNameInput = document.getElementById('category-name');
-        const categoryImageInput = document.getElementById('category-image');
-
-        form.addEventListener('submit', async function (event) {
-            event.preventDefault();
-
-            const categoryName = categoryNameInput.value.trim();
-            const categoryImageFile = categoryImageInput.files[0];
-
-            if (!categoryName) {
-                errorMessage.classList.remove('hidden');
-                errorMessage.querySelector('span').textContent = 'يرجى ادخال اسم الفئة';
-                 //TODO add it to the <p>
-                return;
-            }
-
-            if (categoryImageFile && categoryImageFile.size > 2048 * 1024) { // 2048 KB = 2048 * 1024 bytes
-                errorMessage.classList.remove('hidden');
-                errorMessage.querySelector('span').textContent = 'صورة الفئة يجب ان تكون اقل من 2MB'; // TODO add it to the <p>
-        return;
-    }
-
-            try {
-                let imageUrl = null;
-
-                // Upload image if provided
-                const formData = new FormData();
-                if (categoryImageFile) {
-                formData.append('image', categoryImageFile, categoryName + '.jpg');
-            }
-                    formData.append('label', categoryName);
-
-                    const response = await fetch('https://sbaishop.com/api/category', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                        },
-                        body: formData,
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('فشل تحميل الصورة');
-                    }
-
-                    const Data = await response.json();
-                    imageUrl = Data.imageUrl;
-
-                // Send category data
-console.log(response.errors);
-                if(response.status == 422 && response.errors.label=="The label has already been taken."){
-                    alert('اسم الفئة مستخدم من قبل');
-                }else if (response.status === 422) {
-                    throw new Error('البيانات غير صالحة، يرجى التحقق من المدخلات');
-                } else if (response.status === 500) {
-                    throw new Error('خطأ داخلي في الخادم، يرجى المحاولة لاحقًا');
-                } else if (!response.ok) {
-                    throw new Error('فشل إضافة الفئة');
-                }
-
-                alert('تمت إضافة الفئة بنجاح');
-                window.location.href = 'Categories.html';
-
-            } catch (error) {
-                console.error('حدث خطأ:', error);
-            }
-        });
-    });
-
-
-        // Toggle Profile Dropdown
-        const profileBtn = document.getElementById('profile-btn');
-        const profileDropdown = document.getElementById('profile-dropdown');
-
-        profileBtn.addEventListener('click', function() {
-            profileDropdown.classList.toggle('hidden');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-                profileDropdown.classList.add('hidden');
-            }
-        });
-
-        // Mobile menu toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const sidebar = document.getElementById('sidebar');
-
-        menuBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('translate-x-full');
-        });
-
-        // img upload 
-var loadFile = function (event, uploaderId) {
-    var input = event.target;
-    var file = input.files[0];
-    var type = file.type;
-    var output = document.getElementById('preview_img' + uploaderId);
-    var deleteButton = document.getElementById('deleteButton' + uploaderId);
-
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function () {
-        URL.revokeObjectURL(output.src); // free memory
-        deleteButton.classList.remove('hidden');
-    }
-};
-
-function deleteImage(uploaderId) {
-    event.preventDefault(); // Prevent page refresh
-
-    var output = document.getElementById('preview_img' + uploaderId);
-    var deleteButton = document.getElementById('deleteButton' + uploaderId);
-    var fileInput = document.getElementById('fileInput' + uploaderId);
-    var defaultImageURL =
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Plus_symbol.svg/500px-Plus_symbol.svg.png';
-
-    output.src = defaultImageURL;
-    deleteButton.classList.add('hidden');
-    fileInput.value = null; // Clear the file input
-
-    // Check if the default image is displayed
-    if (output.src.endsWith(defaultImageURL)) {
-        deleteButton.classList.add('hidden');
-    } else {
-        deleteButton.classList.remove('hidden');
-    }
-}
-    </script>
+        <script src="JS/CategoriesManagement.js"></script>
+        <script src="JS/mobileView.js"></script>
     </body>
 </html>

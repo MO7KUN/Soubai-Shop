@@ -10,8 +10,8 @@
         <style>
             body { font-family: 'Tajawal', sans-serif; padding-top: 64px; } /* Add padding for navbar */
         </style>
-        <script src="sidebar.js"></script>
-        <script src="LogOut.js"></script>
+        <script src="JS/sidebar.js"></script>
+        <script src="JS/LogOut.js"></script>
         <script>
             async function fetchCategorys() {
                 
@@ -229,6 +229,13 @@
                         class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"><i
                             class="fas fa-times"></i></button>
                 </div>
+                <!-- Error Message -->
+                <div id="error-message1"
+                    class="hidden border border-red-500 rounded-lg p-4 mb-4">
+                    <p class="text-red-500">
+                        <i class="fas fa-exclamation-triangle"></i>
+                         حدث خطأ في الخادم، يرجى المحاولة مرة أخرى</p>
+                </div>
                 <div id="updateForm">
                     <div class="mb-4">
                         <label for="categoryName"
@@ -237,8 +244,7 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                             required>
                         <p id="categoryNameError"
-                            class="text-red-500 hidden mt-1"> يرجى ادخال اسم
-                            الفئة </p>
+                            class="text-red-500 mt-1"> </p>
                     </div>
                     <div class="mb-4">
                         <div class="relative w-full">
@@ -288,7 +294,7 @@
                 const categoryImage = document.getElementById('fileInput2').files[0];
 
                 if (!categoryName) {
-                    document.getElementById('categoryNameError').classList.remove('hidden');
+                    document.getElementById('categoryNameError').innerText = 'يرجى ادخال اسم الفئة';
                     return;
                 }
 
@@ -317,10 +323,20 @@
                         successMessage.classList.remove('hidden');
                         fetchCategorys();
                     } else {
-                        alert('حدث خطأ ما. يرجى المحاولة مرة أخرى');
+                        throw response;
                     }
-                }).catch(error => {
-                    
+                }).catch(response => {
+                    if (response.status === 401) {
+                        logout();
+                    } else if (response.status === 422 ) {
+                        document.getElementById('categoryNameError').innerText = 'اسم الفئة موجود بالفعل';
+                    } else if (response.status === 500) {
+                        document.getElementById('error-message1').classList.remove('hidden');
+                    } else {
+                        closeUpdateModal();
+                        document.getElementById('error-message').classList.remove('hidden');
+                    }
+
                 })
             }
 
@@ -373,29 +389,7 @@ function deleteImage(uploaderId) {
                 document.getElementById('updateModal').classList.add('hidden');
                 categoryID = null;
             }
-
-            // Toggle Profile Dropdown
-            const profileBtn = document.getElementById('profile-btn');
-            const profileDropdown = document.getElementById('profile-dropdown');
-
-            profileBtn.addEventListener('click', function() {
-                profileDropdown.classList.toggle('hidden');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-                    profileDropdown.classList.add('hidden');
-                }
-            });
-
-            // Mobile menu toggle
-            const menuBtn = document.getElementById('menu-btn');
-            const sidebar = document.getElementById('sidebar');
-
-            menuBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('translate-x-full');
-            });
         </script>
+        <script src="JS/mobileView.js"></script>
     </body>
 </html>
