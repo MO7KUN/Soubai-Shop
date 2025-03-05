@@ -116,3 +116,73 @@ function deleteImage(uploaderId) {
   deleteButton.classList.add("hidden");
   fileInput.value = ""; // Clear the file input
 }
+let categoryID = null;
+
+function updateCategory() {
+  const successMessage = document.getElementById("success-message");
+  const categoryName = document.getElementById("categoryName").value;
+  const categoryImage = document.getElementById("fileInput2").files[0];
+
+  if (!categoryName) {
+    document.getElementById("categoryNameError").innerText =
+      "يرجى ادخال اسم الفئة";
+    return;
+  }
+
+  if (categoryImage && categoryImage.size > 2 * 1024 * 1024) {
+    document.getElementById("categoryImageError").classList.remove("hidden");
+    return;
+  }
+
+  let imageUrl = null;
+
+  // Upload image if provided
+  const formData = new FormData();
+  if (categoryImage) {
+    formData.append("image", categoryImage);
+  }
+  formData.append("label", categoryName);
+  fetch(`https://sbaishop.com/api/category/${categoryID}/edit`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  })
+    .then((response) => {
+      if (response.ok) {
+        closeUpdateModal();
+        successMessage.classList.remove("hidden");
+        fetchCategorys();
+      } else {
+        throw response;
+      }
+    })
+    .catch((response) => {
+      if (response.status === 401) {
+        logout();
+      } else if (response.status === 422) {
+        document.getElementById("categoryNameError").innerText =
+          "اسم الفئة موجود بالفعل";
+      } else if (response.status === 500) {
+        document.getElementById("error-message1").classList.remove("hidden");
+      } else {
+        closeUpdateModal();
+        document.getElementById("error-message").classList.remove("hidden");
+      }
+    });
+}
+
+// Function to open the update modal
+function openUpdateModal(category) {
+  categoryID = category.id;
+  document.getElementById("categoryName").value = category.label;
+  document.getElementById("preview_img2").src = category.image_url; // Clear file input
+  document.getElementById("updateModal").classList.remove("hidden");
+}
+
+// Function to close the update modal
+function closeUpdateModal() {
+  document.getElementById("updateModal").classList.add("hidden");
+  categoryID = null;
+}

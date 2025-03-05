@@ -116,6 +116,13 @@
                     حدث خطأ ما. يرجى المحاولة مرة أخرى</p>
             </div>
 
+            <!-- success Message -->
+            <div id="success-message"
+                class="hidden border border-green-500 rounded-lg p-4 mb-4">
+                <p class="text-green-500">
+                    <i class="fas fa-check-circle"></i> تمت العملية بنجاح</p>
+            </div>
+
             <!-- Search Bar and Add Client Button -->
             <div
                 class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
@@ -130,7 +137,7 @@
             </div>
 
             <!-- Clients Table -->
-            <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <div  class="overflow-x-auto bg-white rounded-lg shadow">
                 <table class="w-full border-collapse text-right">
                     <thead>
                         <tr class="bg-gray-200">
@@ -144,21 +151,89 @@
                                 class="p-3 border-b whitespace-nowrap">الإجراءات</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="clients-table">
                     
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <!-- Update Modal -->
+        <div id="updateModal"
+            class="fixed inset-0 bg-black bg-opacity-50 hidden place-items-center h-screen grid justify-center items-center z-50">
+            <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">تحديث
+                        معلومات العميل</h2>
+                    <button type="button" onclick="closeUpdateModal()"
+                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"><i
+                            class="fas fa-times"></i></button>
+                </div>
+                <!-- Error Message -->
+                <div id="error-message1"
+                    class="hidden border border-red-500 rounded-lg p-4 mb-4">
+                    <p class="text-red-500">
+                        <i class="fas fa-exclamation-triangle"></i>
+                         حدث خطأ في الخادم، يرجى المحاولة مرة أخرى</p>
+                </div>
+                <div id="updateForm">
+                    <div class="mb-4">
+                        <label for="ClientName"
+                            class="block text-gray-700 mb-2">اسم العميل</label>
+                        <input type="text" id="ClientName"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            required>
+                        <p id="ClientNameError"
+                            class="text-red-500 mt-1"> </p>
+                    </div>
+                    <div class="mb-4">
+                        <label for="ClientPhone" class="block text-gray-700 mb-2">رقم الهاتف</label>
+                        <input type="text" id="ClientPhone"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            required>
+                        <p id="ClientPhoneError" class="text-red-500 mt-1"> </p>
+                    </div>
+                    <div class="mb-4">
+                        <label for="ClientCity" class="block text-gray-700 mb-2">المدينة</label>
+                        <input type="text" id="ClientCity"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            required>
+                        <p id="ClientCityError" class="text-red-500 mt-1"> </p>
+                    </div>
+                    <div class="flex justify-end gap-4">
+                        <button type="submit" onclick="updateClient()"
+                            class="bg-green-400 text-black px-4 py-2 rounded-lg hover:bg-green-500 transition duration-300"><i
+                                class="fas fa-save"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <script src="JS/LogOut.js"></script>
         <script src="JS/sidebar.js"></script>
         <script src="JS/mobileView.js"></script>
         <script src="JS/ClientsManagement.js"></script>
         <script>
+            clientID = null;
             document.addEventListener('DOMContentLoaded', function() {
                 sidebarhandeler("gererClients");
                 fetchClients();
             })
+
+            function openUpdateModal(client) {
+                clientID = client.id;
+                document.getElementById('ClientName').value = client.name;
+                document.getElementById('ClientPhone').value = client.tel;
+                document.getElementById('ClientCity').value = client.city;
+                document.getElementById('updateModal').classList.remove('hidden');
+
+            }
+
+            function closeUpdateModal() {
+                document.getElementById('updateModal').classList.add('hidden');
+                categoryID = null;
+            }
     </script>
     </body>
 </html>
