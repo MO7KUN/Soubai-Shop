@@ -78,7 +78,7 @@ function fetchClients() {
         );
         deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
         deleteButton.addEventListener("click", () => {
-          // Handle delete button click
+          
         });
 
         const callButton = document.createElement("button");
@@ -178,6 +178,37 @@ function addClient() {
       } else {
         // Handle other errors
         document.getElementById("error-message").classList.remove("hidden");
+      }
+    });
+}
+
+
+function deleteClient(clientId) {
+  // Delete client logic here
+  fetch(`https://sbaishop.com/api/client/${clientId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw response; // Throw the response to handle errors
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Log the response for debugging
+      document.getElementById("success-message").classList.remove("hidden");
+      // Handle success or error response
+    })
+    .catch((response) => {
+      if (response.status === 401) {
+        logout();
+      } else {
+        // Handle other errors
+        document.getElementById("error-message1").classList.remove("hidden");
       }
     });
 }
