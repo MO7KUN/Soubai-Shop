@@ -210,6 +210,27 @@
         </div>
 
 
+        <!-- Delete Modal -->
+        <div id="deleteModal"
+            class="fixed inset-0 bg-black bg-opacity-50 hidden place-items-center h-screen grid justify-center items-center z-50">
+            <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">حذف
+                        العميل</h2>
+                    <button type="button" onclick="closeDeleteModal()"
+                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"><i
+                            class="fas fa-times"></i></button>
+                </div>
+                <p class="text-gray-700 mb-4">هل تريد حذف هذا العميل؟</p>
+                <div class="flex justify-end gap-4">
+                    <button type="submit" onclick="deleteClient()"
+                        class="bg-red-400 text-black px-4 py-2 rounded-lg hover:bg-red-500 transition duration-300"><i
+                            class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+
+
         <script src="JS/LogOut.js"></script>
         <script src="JS/sidebar.js"></script>
         <script src="JS/mobileView.js"></script>
@@ -228,6 +249,16 @@
                 document.getElementById('ClientCity').value = client.city;
                 document.getElementById('updateModal').classList.remove('hidden');
 
+            }
+
+            function openDeleteModal(client) {
+                clientID = client.id;
+                document.getElementById('deleteModal').classList.remove('hidden');
+            }
+
+            function closeDeleteModal() {
+                document.getElementById('deleteModal').classList.add('hidden');
+                clientID = null;
             }
 
             function closeUpdateModal() {
