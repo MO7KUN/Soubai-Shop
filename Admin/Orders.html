@@ -113,256 +113,61 @@
 
 
 
-        <!-- Search Bar and Add Order Button -->
-        <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-            <!-- Search Bar -->
-            <div class="w-full md:w-1/2">
-                <input type="text" placeholder="ابحث عن طلب..."
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-            </div>
 
-
-        </div>
 
         <!-- Orders Table -->
         <div class="overflow-x-auto bg-white rounded-lg shadow">
-            <!-- <table class="w-full border-collapse text-right">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="p-3 border-b whitespace-nowrap">اسم
-                                العميل</th>
-                            <th class="p-3 border-b whitespace-nowrap">رقم
-                                الهاتف</th>
-                            <th class="p-3 border-b whitespace-nowrap">إجمالي
-                                الطلب</th>
-                            <th
-                                class="p-3 border-b whitespace-nowrap">المدينة</th>
-                            <th
-                                class="p-3 border-b whitespace-nowrap">التاريخ</th>
-                            <th class="p-3 border-b whitespace-nowrap">حالة
-                                الطلب</th>
-                            <th
-                                class="p-3 border-b whitespace-nowrap">الإجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b whitespace-nowrap">محمد
-                                أحمد</td>
-                            <td class="p-3 border-b whitespace-nowrap">+966
-                                500000000</td>
-                            <td
-                                class="p-3 border-b whitespace-nowrap">$120.00</td>
-                            <td
-                                class="p-3 border-b whitespace-nowrap">الرياض</td>
-                            <td
-                                class="p-3 border-b whitespace-nowrap">2025-02-15</td>
-                            <td class="p-3 border-b whitespace-nowrap">
-                                <span
-                                    class="bg-yellow-400 text-white px-2 py-1 rounded-lg">قيد
-                                    المعالجة</span>
-                            </td>
-                            <td class="p-3 border-b text-center">
-                                <button
-                                    class="bg-blue-500 text-white px-2 py-1 rounded-full hover:bg-blue-600">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button
-                                    class="bg-red-500 text-white px-2 py-1 rounded-full hover:bg-red-600">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table> -->
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <!-- Controls -->
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
-                    <input type="text" id="searchInput" placeholder="Rechercher..."
+                    <input type="text" id="ordersTable-search" placeholder="ابحث عن طلب..."
                         class="w-full p-2 border rounded-lg">
-
-                    <select id="itemsPerPage" class="p-2 border rounded-lg bg-white">
-                        <option value="10">10 éléments/page</option>
-                        <option value="25">25 éléments/page</option>
-                        <option value="50">50 éléments/page</option>
-                        <option value="100">100 éléments/page</option>
-                    </select>
                 </div>
 
                 <!-- Table -->
                 <div class="overflow-x-auto rounded-lg border">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200" id="ordersTable">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 cursor-pointer" onclick="sortTable('reference')">
-                                    Référence ↑↓
+                                <th class="px-6 py-3 cursor-pointer">
+                                    رقم الطلب
                                 </th>
-                                <th class="px-6 py-3 cursor-pointer" onclick="sortTable('client.name')">
-                                    Client ↑↓
+                                <th class="px-6 py-3 cursor-pointer">
+                                    العميل
                                 </th>
-                                <th class="px-6 py-3 cursor-pointer" onclick="sortTable('status')">
-                                    Statut ↑↓
+                                <th class="px-6 py-3 cursor-pointer">
+                                    الحالة
                                 </th>
-                                <th class="px-6 py-3 cursor-pointer" onclick="sortTable('total_price')">
-                                    Total ↑↓
+                                <th class="px-6 py-3 cursor-pointer">
+                                    المبلغ الإجمالي
                                 </th>
-                                <th class="px-6 py-3 cursor-pointer" onclick="sortTable('created_at')">
-                                    Date ↑↓
+                                <th class="px-6 py-3 cursor-pointer">
+                                    تاريخ الطلب
                                 </th>
-                                <th class="px-6 py-3">Actions</th>
+                                <th class="px-6 py-3">الإجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody">
-                            <!-- Content will be populated by JavaScript -->
+
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination -->
-                <div class="mt-4 flex justify-between items-center" id="paginationControls"></div>
+                <div id="customPagination" class="flex items-center justify-end gap-2 mt-2">
+                    <button id="prevPage"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition">
+                        السابق
+                    </button>
+                    <span id="pageInfo" class="text-gray-800 font-semibold">
+                        الصفحة 1
+                    </span>
+                    <button id="nextPage"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition">
+                        التالي
+                    </button>
+                </div>
             </div>
-
-            <script>
-                let allOrders = [];
-                let currentPage = 1;
-                let itemsPerPage = 10;
-                let sortField = 'created_at';
-                let sortDirection = 'desc';
-                let searchQuery = '';
-
-                async function loadOrders() {
-                    try {
-                        const response = await fetch('http://e_sahara.test/api/orders');
-                        allOrders = await response.json();
-                        updateDisplay();
-                    } catch (error) {
-                        console.error('Error loading orders:', error);
-                        alert('Erreur de chargement des commandes');
-                    }
-                }
-
-                function updateDisplay() {
-                    // Filtering
-                    let filtered = allOrders.filter(order =>
-                        Object.values(order).some(value =>
-                            String(value).toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (order.client?.name?.toLowerCase() || '').includes(searchQuery.toLowerCase())
-                        )
-                    );
-
-                    // Sorting
-                    filtered.sort((a, b) => {
-                        const fieldA = getNestedValue(a, sortField);
-                        const fieldB = getNestedValue(b, sortField);
-
-                        if (typeof fieldA === 'string') {
-                            return sortDirection === 'asc'
-                                ? fieldA.localeCompare(fieldB)
-                                : fieldB.localeCompare(fieldA);
-                        }
-                        return sortDirection === 'asc'
-                            ? fieldA - fieldB
-                            : fieldB - fieldA;
-                    });
-
-                    // Pagination
-                    const start = (currentPage - 1) * itemsPerPage;
-                    const paginated = filtered.slice(start, start + itemsPerPage);
-
-                    renderTable(paginated);
-                    renderPagination(filtered.length);
-                }
-                function getNestedValue(obj, path) {
-                    return path.split('.').reduce((o, p) => o?.[p], obj);
-                }
-
-                function renderTable(orders) {
-                    const tbody = document.getElementById('ordersTableBody');
-                    tbody.innerHTML = orders.map(order => `
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4">${order.reference || 'N/A'}</td>
-                            <td class="px-6 py-4">${order.client?.name || 'N/A'}</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded-full ${getStatusColor(order.status)}">
-                                    ${order.status}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4">${order.total_price ? `${order.total_price} DH` : 'N/A'}</td>
-                            <td class="px-6 py-4">${new Date(order.created_at).toLocaleDateString()}</td>
-                            <td class="px-6 py-4">
-                                <button class="text-blue-600 hover:underline" 
-                                        onclick="viewOrder(${order.id})">
-                                    Voir
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-
-                function renderPagination(totalItems) {
-                    const totalPages = Math.ceil(totalItems / itemsPerPage);
-                    const controls = document.getElementById('paginationControls');
-
-                    controls.innerHTML = `
-                        <span>${totalItems} résultats</span>
-                        <div class="flex gap-2">
-                            <button class="px-3 py-1 border rounded" 
-                                    onclick="changePage(-1)" 
-                                    ${currentPage === 1 ? 'disabled' : ''}>
-                                Précédent
-                            </button>
-                            <span>Page ${currentPage} / ${totalPages}</span>
-                            <button class="px-3 py-1 border rounded" 
-                                    onclick="changePage(1)" 
-                                    ${currentPage === totalPages ? 'disabled' : ''}>
-                                Suivant
-                            </button>
-                        </div>
-                    `;
-                }
-
-                function getStatusColor(status) {
-                    const colors = {
-                        'En attente': 'bg-yellow-100 text-yellow-800',
-                        'Confirmée': 'bg-blue-100 text-blue-800',
-                        'Livrée': 'bg-green-100 text-green-800',
-                        'Annulée': 'bg-red-100 text-red-800'
-                    };
-                    return colors[status] || 'bg-gray-100 text-gray-800';
-                }
-
-                function sortTable(field) {
-                    if (sortField === field) {
-                        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-                    } else {
-                        sortField = field;
-                        sortDirection = 'asc';
-                    }
-                    updateDisplay();
-                }
-
-                function changePage(delta) {
-                    currentPage += delta;
-                    updateDisplay();
-                }
-
-                // Event listeners
-                document.getElementById('searchInput').addEventListener('input', e => {
-                    searchQuery = e.target.value;
-                    currentPage = 1;
-                    updateDisplay();
-                });
-
-                document.getElementById('itemsPerPage').addEventListener('change', e => {
-                    itemsPerPage = parseInt(e.target.value);
-                    currentPage = 1;
-                    updateDisplay();
-                });
-
-                // Initial load
-                loadOrders();
-            </script>
         </div>
     </div>
     <script src="JS/LogOut.js"></script>
@@ -373,6 +178,12 @@
             sidebarhandeler("gererOrders");
         })
     </script>
+
+    <!-- data table -->
+    <script src="includes/jquery-3.7.0.js"></script>
+    <script src="includes/jquery.dataTables.min.js"></script>
+    <script src="includes/datatables.tailwind.js"></script>
+    <script src="JS/orders.js"></script>
 </body>
 
 </html>
