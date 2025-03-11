@@ -101,7 +101,7 @@
                     class="order-2 md:order-1 rounded-md bg-white border border-gray-300 w-full md:w-3/5 p-2 max-h-auto">
                     <h2 class="font-semibold text-lg mb-2">ابحث عن منتج</h2>
                     <div class="relative">
-                        <input type="text" id="productSearchInput" placeholder="🔍 ابحث عن منتج"
+                        <input type="text" id="productSearchInput" placeholder="🔍 ابحث عن منتج" autocomplete="off"
                             class="w-full px-4 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <ul id="productList"
                             class="absolute w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-md hidden">
@@ -134,12 +134,15 @@
                 <!-- client list -->
                 <div class="order-1 md:order-2 rounded-md bg-white border border-gray-300 w-full md:w-2/5 p-2">
                     <h2 class="font-semibold text-lg mb-2">ابحث عن عميل أو أضف واحدا جديدا</h2>
-                    <div class="flex gap-2">
-                        <input type="text" id="clientSearchInput" placeholder="🔍 ابحث عن عميل"
-                            class="w-full px-4 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button id="addClientButton" onclick="window.open('NewClient.html', '_blank')"
-                            class="bg-transparent hover:bg-blue-500 text-blue-500 hover:text-white px-2 py-1 rounded-lg border-2 border-blue-500 font-extrabold text-xl focus:border-blue-500"><i
-                                class="fa-solid fa-plus"></i></button>
+                    <div class="relative">
+                        <div class="flex gap-2 ">
+                            <input type="text" id="clientSearchInput" placeholder="🔍 ابحث عن عميل" autocomplete="off"
+                                class="w-full px-4 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button id="addClientButton" onclick="window.open('NewClient.html', '_blank')"
+                                class="bg-transparent hover:bg-blue-500 text-blue-500 hover:text-white px-2 py-1 rounded-lg border-2 border-blue-500 font-extrabold text-xl focus:border-blue-500"><i
+                                    class="fa-solid fa-plus"></i></button>
+
+                        </div>
                         <ul id="clientList"
                             class="absolute w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-md hidden">
                             <!-- سيتم إدراج العملاء هنا ديناميكيًا -->
