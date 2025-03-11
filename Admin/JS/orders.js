@@ -6,10 +6,10 @@ async function getOrders() {
     if (allOrders.length > 0) {
         allOrders.forEach(order => {
             tbody.innerHTML += `
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4">${order.id || '---'}</td>
-                            <td class="px-6 py-4">${order.client?.name || '---'}</td>
-                            <td class="px-6 py-4">
+                        <tr class="hover:bg-gray-100">
+                            <td class="px-6 py-4 text-center">${order.id || '---'}</td>
+                            <td class="px-6 py-4 text-center">${order.client?.name || '---'}</td>
+                            <td class="px-6 py-4 text-center">
                             <select id="orderStatusSelector" class="bg-gray-100 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300" onchange="changeOrderStatus(${order.id})" >
                                 <option value="En attente" ${order.status == 'En attente' ? "selected" : ""}>En attente</option>
                                 <option value="Confirmée" ${order.status == 'Confirmée' ? "selected" : ""}>Confirmée</option>
@@ -17,8 +17,8 @@ async function getOrders() {
                                 <option value="Annulée" ${order.status == 'Annulée' ? "selected" : ""}>Annulée</option>
                             </select>
                             </td>
-                            <td class="px-6 py-4" dir="ltr">${order.total_price} DH</td>
-                            <td class="px-6 py-4">${new Date(order.created_at).toLocaleDateString()}</td>
+                            <td class="px-6 py-4 text-center" dir="ltr">${order.total_price} DH</td>
+                            <td class="px-6 py-4 text-center">${new Date(order.created_at).toLocaleDateString()}</td>
                             <td class="p-3 border-b text-center">
                                 <button onclick="window.open('NewOrder.html?action=edit&order=${order.id}','_self')"
                                     class="bg-blue-500 text-white text-center px-2 py-1 rounded-full hover:bg-blue-600">

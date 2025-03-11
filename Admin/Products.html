@@ -103,51 +103,63 @@
             </a>
         </div>
 
-
-
-        <!-- Search Bar and Add Product Button -->
-        <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-            <!-- Search Bar -->
-            <div class="w-full md:w-1/2">
-                <input type="text" placeholder="ابحث عن منتج..."
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-            </div>
-
-
-        </div>
-
         <!-- Products Table -->
         <div class="overflow-x-auto bg-white rounded-lg shadow">
-            <table class="w-full border-collapse text-right">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="px-4 py-2 text-center whitespace-nowrap">الصورة</th>
-                        <th class="px-4 py-2 text-center whitespace-nowrap">رقم
-                            الباركود</th>
-                        <th class="px-4 py-2 text-center whitespace-nowrap">اسم
-                            المنتج</th>
-                        <th class="px-4 py-2 text-center whitespace-nowrap">السعر</th>
-                        <th class="px-4 py-2 text-center whitespace-nowrap">الكمية
-                            المتاحة</th>
-                        <th class="px-4 py-2 text-center whitespace-nowrap">الحالة</th>
-                        <!-- <th class="px-4 py-2 text-center whitespace-nowrap">تاريخ
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <!-- Controls -->
+                <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                    <input type="text" id="productsTable-search" placeholder="ابحث عن طلب..."
+                        class="w-full p-2 border rounded-lg">
+                </div>
+                <!-- Table -->
+                <div class="overflow-x-auto rounded-lg border">
+                    <table class="w-full border-collapse text-right" id="productsTable">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الصورة</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">رقم
+                                    الباركود</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">اسم
+                                    المنتج</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">السعر</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الكمية
+                                    المتاحة</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الحالة</th>
+                                <!-- <th class="px-4 py-2 text-center whitespace-nowrap">تاريخ
                             الإضافة</th> -->
-                        <th class="px-4 py-2 text-center whitespace-nowrap">الفئة</th>
-                        <th class="px-4 py-2 text-center whitespace-nowrap">الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody id="products-table">
-                    <!-- Product 1 -->
-                    <tr>
-                        <td colspan="7" class="text-center">
-                            <div id="loadingAnimation" class="text-blue-500 mt-8 mb-6 items-center" dir="rtl">
-                                <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
-                                <span class="ml-2">تحميل...</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الفئة</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table">
+                            <!-- Product 1 -->
+                            <tr>
+                                <td colspan="7" class="text-center">
+                                    <div id="loadingAnimation" class="text-blue-500 mt-8 mb-6 items-center" dir="rtl">
+                                        <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                                        <span class="ml-2">تحميل...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div id="customPagination" class="flex items-center justify-end gap-2 mt-2">
+                    <button id="prevPage"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition">
+                        السابق
+                    </button>
+                    <span id="pageInfo" class="text-gray-800 font-semibold">
+                        الصفحة 1
+                    </span>
+                    <button id="nextPage"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition">
+                        التالي
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -225,6 +237,10 @@
     <script src="JS/sidebar.js"></script>
     <script src="JS/LogOut.js"></script>
     <script src="JS/mobileView.js"></script>
+    <!-- data table -->
+    <script src="includes/jquery-3.7.0.js"></script>
+    <script src="includes/jquery.dataTables.min.js"></script>
+    <script src="includes/datatables.tailwind.js"></script>
     <script src="JS/products.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {

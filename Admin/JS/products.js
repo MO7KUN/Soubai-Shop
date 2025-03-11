@@ -37,7 +37,7 @@ async function fetchProducts() {
         if (products.data.length > 0) {
             products.data.forEach(product => {
                 const row = document.createElement("tr");
-                row.className = "hover:bg-gray-50 border-b";
+                row.className = "hover:bg-gray-100 border-b";
 
                 row.innerHTML = `
                 <td class="p-3 text-center">
@@ -71,7 +71,7 @@ async function fetchProducts() {
                 tableBody.appendChild(row);
             });
             // Initialize DataTable FIRST
-            const table = $('#ordersTable').DataTable({
+            const table = $('#productsTable').DataTable({
                 dom: 't', // إخفاء عناصر التحكم الافتراضية
                 paging: true,
                 searching: true,
@@ -126,7 +126,7 @@ async function fetchProducts() {
 
             // Now connect your custom elements AFTER initialization
             // Custom search
-            $('#ordersTable-search').on('keyup', function () {
+            $('#productsTable-search').on('keyup', function () {
                 table.search(this.value).draw();
             });
 
