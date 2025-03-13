@@ -25,94 +25,109 @@ function fetchClients() {
       clientTable.innerHTML = "";
 
       // Add rows for each client
-      clients.forEach((client) => {
-        const row = clientTable.insertRow();
-        row.classList.add("border-b", "border-gray-200");
+      clients.forEach(client => {
+        const row = document.createElement("tr");
+        row.className = "hover:bg-gray-100 border-b";
 
-        const nameCell = row.insertCell();
-        nameCell.classList.add("p-3", "border-b", "whitespace-nowrap");
-        nameCell.textContent = client.name;
+        row.innerHTML = `
+            <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.name}</td>
+            <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.tel}</td>
+            <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.city}</td>
+            <td class="px-4 py-3 text-center">
+                <div class="flex items-center justify-center gap-2">
+                    <button onclick="openUpdateModal(${client.id})" class="bg-blue-500 text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="deleteClient(${client.id})" class="bg-red-500 text-white px-3 py-1.5 rounded-full hover:bg-red-600 transition">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <a href="tel:${client.tel}" class="bg-green-500 text-white px-3 py-1.5 rounded-full hover:bg-green-600 transition">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                    <a href="https://wa.me/${client.tel}" target="_blank" class="bg-green-700 text-white px-3 py-1.5 rounded-full hover:bg-green-800 transition">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                </div>
+            </td>
+        `;
 
-        const telCell = row.insertCell();
-        telCell.classList.add("p-3", "border-b", "whitespace-nowrap");
-        telCell.textContent = client.tel;
+        clientTable.appendChild(row);
+      });
 
-        const cityCell = row.insertCell();
-        cityCell.classList.add("p-3", "border-b", "whitespace-nowrap");
-        cityCell.textContent = client.city;
 
-        const actionsCell = row.insertCell();
-        actionsCell.classList.add(
-          "p-3",
-          "border-b",
-          "text-center",
-          "flex",
-          "flex-row",
-          "items-center",
-          "justify-center",
-          "gap-2"
-        );
+      // Initialize DataTable FIRST
+      const table = $('#clientsTable').DataTable({
+        dom: 't', // إخفاء عناصر التحكم الافتراضية
+        paging: true,
+        searching: true,
+        info: true, // تفعيل معلومات العناصر
+        lengthMenu: [10, 25, 50, 100], // خيارات عدد الصفوف
+        lengthChange: true, // تفعيل تغيير عدد الصفوف
+        pageLength: 10, // القيمة الافتراضية
+        pagingType: 'full_numbers',
+        language: {
+          "paginate": {
+            "previous": "السابق",
+            "next": "التالي"
+          },
+          "search": "ابحث:",
+          "emptyTable": "لا توجد بيانات متاحة",
+          "zeroRecords": "لم يتم العثور على نتائج مطابقة",
+          "info": "عرض _START_ إلى _END_ من إجمالي _TOTAL_ عنصر",
+          "infoEmpty": "عرض 0 إلى 0 من 0 عنصر",
+          "infoFiltered": "(تمت التصفية من إجمالي _MAX_ عنصر)",
+          "lengthMenu": "عرض _MENU_ عنصر لكل صفحة"
+        }
+      });
 
-        const editButton = document.createElement("button");
-        editButton.classList.add(
-          "bg-blue-500",
-          "text-white",
-          "px-2",
-          "py-1",
-          "rounded-full",
-          "hover:bg-blue-600"
-        );
-        editButton.innerHTML = '<i class="fas fa-edit"></i>';
-        editButton.addEventListener("click", () => {
-          openUpdateModal(client);
-        });
+      // إضافة عنصر اختيار عدد الصفوف المخصص
+      $('#customPagination').prepend(`
+<div class="page-length-selector">
+  <select id="rowCountSelect" class="your-select-style">
+      <option value="10">10 عناصر/الصفحة</option>
+      <option value="25">25 عناصر/الصفحة</option>
+      <option value="50">50 عناصر/الصفحة</option>
+      <option value="100">100 عناصر/الصفحة</option>
+  </select>
+</div>
+`);
 
-        const deleteButton = document.createElement("button");
-        deleteButton.classList.add(
-          "bg-red-500",
-          "text-white",
-          "px-2",
-          "py-1",
-          "rounded-full",
-          "hover:bg-red-600"
-        );
-        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-        deleteButton.addEventListener("click", () => {
-          
-        });
+      // تحديث عدد الصفوف عند التغيير
+      $('#rowCountSelect').on('change', function () {
+        table.page.len(this.value).draw();
+      });
 
-        const callButton = document.createElement("button");
-        callButton.classList.add(
-          "bg-green-500",
-          "text-white",
-          "px-2",
-          "py-1",
-          "rounded-full",
-          "hover:bg-green-600"
-        );
-        callButton.innerHTML = '<i class="fas fa-phone"></i>';
-        callButton.addEventListener("click", () => {
-          // Handle call button click
-        });
+      // تحديث المعلومات عند التغيير
+      table.on('draw', function () {
+        const info = table.page.info();
+        $('#pageInfo').html(`
+  عرض ${info.start + 1} إلى ${info.end} 
+  من إجمالي ${info.recordsTotal} عنصر
+`);
 
-        const whatsappButton = document.createElement("button");
-        whatsappButton.classList.add(
-          "bg-green-700",
-          "text-white",
-          "px-2",
-          "py-1",
-          "rounded-full",
-          "hover:bg-green-800"
-        );
-        whatsappButton.innerHTML = '<i class="fa-brands fa-whatsapp"></i>';
-        whatsappButton.addEventListener("click", () => {
-          // Handle WhatsApp button click
-        });
+        // تحديث القيمة المحددة في ال select
+        $('#rowCountSelect').val(info.length);
+      });
 
-        actionsCell.appendChild(editButton);
-        actionsCell.appendChild(deleteButton);
-        actionsCell.appendChild(callButton);
-        actionsCell.appendChild(whatsappButton);
+      // Now connect your custom elements AFTER initialization
+      // Custom search
+      $('#clientsTable-search').on('keyup', function () {
+        table.search(this.value).draw();
+      });
+
+      // Custom pagination controls
+      $('#prevPage').on('click', function () {
+        table.page('previous').draw('page');
+      });
+
+      $('#nextPage').on('click', function () {
+        table.page('next').draw('page');
+      });
+
+      // Update page info on page change
+      table.on('draw', function () {
+        const info = table.page.info();
+        $('#pageInfo').text(`الصفحة ${info.page + 1} من ${info.pages}`);
       });
     })
     .catch((error) => {

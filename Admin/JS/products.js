@@ -105,7 +105,7 @@ async function fetchProducts() {
                     <option value="100">100 عناصر/الصفحة</option>
                 </select>
             </div>
-        `);
+            `);
 
             // تحديث عدد الصفوف عند التغيير
             $('#rowCountSelect').on('change', function () {

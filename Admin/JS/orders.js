@@ -10,7 +10,7 @@ async function getOrders() {
                             <td class="px-6 py-4 text-center">${order.id || '---'}</td>
                             <td class="px-6 py-4 text-center">${order.client?.name || '---'}</td>
                             <td class="px-6 py-4 text-center">
-                            <select id="orderStatusSelector" class="bg-gray-100 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300" onchange="changeOrderStatus(${order.id})" >
+                            <select id="orderStatusSelector" class="bg-gray-100 p-2 rounded-lg border border-gray-300 focus:outline-none            focus:ring-2 focus:ring-blue-300" onchange="changeOrderStatus(${order.id}, this.value)">
                                 <option value="En attente" ${order.status == 'En attente' ? "selected" : ""}>En attente</option>
                                 <option value="Confirmée" ${order.status == 'Confirmée' ? "selected" : ""}>Confirmée</option>
                                 <option value="Livrée" ${order.status == 'Livrée' ? "selected" : ""}>Livrée</option>
@@ -19,15 +19,23 @@ async function getOrders() {
                             </td>
                             <td class="px-6 py-4 text-center" dir="ltr">${order.total_price} DH</td>
                             <td class="px-6 py-4 text-center">${new Date(order.created_at).toLocaleDateString()}</td>
-                            <td class="p-3 border-b text-center">
+                            <td class="p-3 border-b text-center whitespace-nowrap">
                                 <button onclick="window.open('NewOrder.html?action=edit&order=${order.id}','_self')"
                                     class="bg-blue-500 text-white text-center px-2 py-1 rounded-full hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 <button
-                                    class="bg-red-500 text-white px-2 py-1 rounded-full hover:bg-red-600">
+                                    class="bg-red-500 text-white text-center px-2 py-1 rounded-full hover:bg-red-600">
                                     <i class="fas fa-trash"></i>
                                 </button>
+                                <a href="tel:${order.client?.phone}"
+                                    class="bg-cyan-400 text-white text-center ml-2 px-1 py-1 rounded-full hover:bg-cyan-600">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="https://wa.me/${order.client?.phone}" target="_blank"
+                                    class="bg-green-500 text-white text-center  px-2 py-1 rounded-full hover:bg-green-600">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a> 
                             </td>
                         </tr>
                     `;
@@ -118,11 +126,35 @@ async function getOrders() {
 
 document.addEventListener('DOMContentLoaded', getOrders)
 
-// async function changeOrderStatus(orderId) {
-//     const response = await fetch('/change-order-status', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Bearer ' + token,
-//         },
-//         body: JSON.stringify({ orderId })
+async function changeOrderStatus(orderId, newStatus) {
+    console.log(orderId, newStatus);
+    if (!confirm("هل تريد فعلا تغيير حالة الطلب?")) return;
+    try {
+        const response = await fetch('http://e_sahara.test/api/order/' + orderId + '/edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ status: newStatus }),
+        });
+
+        if (response.status === 200) {
+            const data = await response.json();
+            alert(data.message || "Order status updated successfully");
+        } else if (response.status === 404) {
+            alert("Order not found");
+        } else if (response.status === 403) {
+            alert("Unauthorized action");
+        } else if (response.status === 422) {
+            const errorData = await response.json();
+            alert(errorData.message || "Invalid data");
+        } else {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Failed to change order status");
+        }
+    } catch (error) {
+        console.error("Error:", error.message);
+        alert(error.message || "An error occurred. Please try again later.");
+    }
+}
