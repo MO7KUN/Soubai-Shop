@@ -92,10 +92,24 @@ function fetchClients() {
 </div>
 `);
 
+<<<<<<< Updated upstream
       // تحديث عدد الصفوف عند التغيير
       $('#rowCountSelect').on('change', function () {
         table.page.len(this.value).draw();
       });
+=======
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add(
+          "bg-red-500",
+          "text-white",
+          "px-2",
+          "py-1",
+          "rounded-full",
+          "hover:bg-red-600"
+        );
+        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteButton.addEventListener("click", () => {});
+>>>>>>> Stashed changes
 
       // تحديث المعلومات عند التغيير
       table.on('draw', function () {
@@ -197,7 +211,6 @@ function addClient() {
     });
 }
 
-
 function deleteClient(clientId) {
   // Delete client logic here
   fetch(`https://sbaishop.com/api/client/${clientId}`, {
@@ -227,7 +240,6 @@ function deleteClient(clientId) {
       }
     });
 }
-
 
 function updateClient() {
   const ClientName = document.getElementById("ClientName").value;
