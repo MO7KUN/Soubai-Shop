@@ -153,7 +153,7 @@
         <div class="bg-white rounded-lg shadow">
             <h2 class="p-4 text-xl font-bold text-gray-800">الطلبات
                 الأخيرة</h2>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto p-2">
                 <table class="w-full border-collapse text-right">
                     <thead>
                         <tr class="bg-gray-200">
@@ -167,6 +167,7 @@
                             <th class="p-3 border-b whitespace-nowrap">التاريخ</th>
                             <th class="p-3 border-b whitespace-nowrap">حالة
                                 الطلب</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -181,6 +182,14 @@
                             <td class="p-3 border-b whitespace-nowrap">
                                 <span class="bg-yellow-400 text-white px-2 py-1 rounded-lg">قيد
                                     المعالجة</span>
+                            </td>
+                            <td class="p-3 border-b whitespace-nowrap text-center">
+                                <span class="bg-blue-500 text-white pr-1 py-1 rounded-lg ml-2">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                                <span class="bg-green-500 text-white px-2 py-1 rounded-lg">
+                                    <i class="fas fa-phone"></i>
+                                </span>
                             </td>
                         </tr>
                         <tr class="hover:bg-gray-50">
@@ -201,7 +210,75 @@
             </div>
         </div>
 
-        <!-- TODO best selling products -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+            <!-- best selling products -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h1 class="text-xl font-bold mb-2 text-right text-gray-800">المنتجات الأكثر مبيعا</h1>
+                <div class="overflow-x-auto rounded-lg border">
+                    <table class="w-full border-collapse text-right" id="productsTable">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الصورة</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">اسم
+                                    المنتج</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الكمية
+                                    المباعة</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">اجمالي الأرباح</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table">
+                            <!-- Product 1 -->
+                            <tr class="">
+                                <td class="p-3 text-center">
+                                    <img src="../product1.jpg" alt="" class="w-16 h-16 rounded-lg object-cover shadow">
+                                </td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap font-meduim">Produit 1</td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">150</td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap font-semibold" dir="ltr">1500 DH</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- items low on stock -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h1 class="text-xl font-bold mb-2 text-right text-gray-800">
+                    المنتجات القليلة في المخزن</h1>
+                <div class="overflow-x-auto rounded-lg border">
+                    <table class="w-full border-collapse text-center" id="productsLowOnStock">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="px-4 py-2 text-center whitespace-nowrap">اسم
+                                    المنتج</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">رقم
+                                    الباركود</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الكمية
+                                    المتبقية</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap">الحالة</th>
+                                <th class="px-4 py-2 text-center whitespace-nowrap"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Product 2 -->
+                            <tr class="">
+                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">Produit 2</td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">123456789</td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">5</td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">visible</td>
+                                <td class="px-4 py-3 text-center whitespace-nowrap">
+                                    <button class="bg-blue-500 text-white px-2 py-1 rounded-full">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
 
     </div>
 

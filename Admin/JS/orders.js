@@ -12,9 +12,9 @@ async function getOrders() {
                             <td class="px-6 py-4 text-center">
                             <select id="orderStatusSelector" class="bg-gray-100 p-2 rounded-lg border border-gray-300 focus:outline-none            focus:ring-2 focus:ring-blue-300" onchange="changeOrderStatus(${order.id}, this.value)">
                                 <option value="En attente" ${order.status == 'En attente' ? "selected" : ""}>En attente</option>
-                                <option value="Confirmée" ${order.status == 'Confirmée' ? "selected" : ""}>Confirmée</option>
-                                <option value="Livrée" ${order.status == 'Livrée' ? "selected" : ""}>Livrée</option>
-                                <option value="Annulée" ${order.status == 'Annulée' ? "selected" : ""}>Annulée</option>
+                                <option value="Confirmé" ${order.status == 'Confirmé' ? "selected" : ""}>Confirmé</option>
+                                <option value="Livrée" ${order.status == 'Livré' ? "selected" : ""}>Livré</option>
+                                <option value="Annulée" ${order.status == 'Annulé' ? "selected" : ""}>Annulé</option>
                             </select>
                             </td>
                             <td class="px-6 py-4 text-center" dir="ltr">${order.total_price} DH</td>
