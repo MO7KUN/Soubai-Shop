@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    sidebarhandeler("gererUsers");
     fetchUsers();
 })
 

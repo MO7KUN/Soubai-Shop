@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    sidebarhandeler("gererCategorys");
-
     if (!userId || !permissions || !token) {
         window.location.href = "index.html";
         return;

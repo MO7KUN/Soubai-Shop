@@ -82,42 +82,28 @@ function fetchClients() {
 
       // إضافة عنصر اختيار عدد الصفوف المخصص
       $('#customPagination').prepend(`
-<div class="page-length-selector">
-  <select id="rowCountSelect" class="your-select-style">
-      <option value="10">10 عناصر/الصفحة</option>
-      <option value="25">25 عناصر/الصفحة</option>
-      <option value="50">50 عناصر/الصفحة</option>
-      <option value="100">100 عناصر/الصفحة</option>
-  </select>
-</div>
-`);
+      <div class="page-length-selector">
+        <select id="rowCountSelect" class="your-select-style">
+            <option value="10">10 عناصر/الصفحة</option>
+            <option value="25">25 عناصر/الصفحة</option>
+            <option value="50">50 عناصر/الصفحة</option>
+            <option value="100">100 عناصر/الصفحة</option>
+        </select>
+      </div>
+      `);
 
-<<<<<<< Updated upstream
       // تحديث عدد الصفوف عند التغيير
       $('#rowCountSelect').on('change', function () {
         table.page.len(this.value).draw();
       });
-=======
-        const deleteButton = document.createElement("button");
-        deleteButton.classList.add(
-          "bg-red-500",
-          "text-white",
-          "px-2",
-          "py-1",
-          "rounded-full",
-          "hover:bg-red-600"
-        );
-        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-        deleteButton.addEventListener("click", () => {});
->>>>>>> Stashed changes
 
       // تحديث المعلومات عند التغيير
       table.on('draw', function () {
         const info = table.page.info();
         $('#pageInfo').html(`
-  عرض ${info.start + 1} إلى ${info.end} 
-  من إجمالي ${info.recordsTotal} عنصر
-`);
+          عرض ${info.start + 1} إلى ${info.end} 
+          من إجمالي ${info.recordsTotal} عنصر
+          `);
 
         // تحديث القيمة المحددة في ال select
         $('#rowCountSelect').val(info.length);
