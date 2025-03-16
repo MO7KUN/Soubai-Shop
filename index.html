@@ -7,36 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="Client CSS/Swiper.css">
+    <!-- Scroller CSS -->
+    <link rel="stylesheet" href="Client CSS/Scroller.css">
     <style>
-        body { font-family: 'Tajawal', sans-serif; }
-        .swiper-container {
-            height: auto; /* Adjusted to auto for better responsiveness */
-            padding: 20px 0; /* Added padding for better spacing */
-            overflow: hidden; /* Hide overflowing slides */
-        }
-        .swiper-button-next, .swiper-button-prev {
-            top: 50%;
-            transform: translateY(-50%);
-            color: #000; /* Ensure buttons are visible */
-            background-color: rgba(255, 255, 255, 0.8); /* Add background for better visibility */
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10; /* Ensure buttons are above slides */
-        }
-        .swiper-button-next::after, .swiper-button-prev::after {
-            font-size: 20px; /* Adjust arrow size */
-        }
-        .swiper-slide {
-            width: 200px; /* Fixed width for each slide */
-            opacity: 0.5; /* Partially hide non-active slides */
-            transition: opacity 0.3s ease; /* Smooth transition */
-        }
-        .swiper-slide-active {
-            opacity: 1; /* Fully visible active slide */
+        body { 
+            font-family: 'Tajawal', sans-serif; 
         }
     </style>
 </head>
@@ -168,7 +145,7 @@
                         <h3 class="text-xl font-bold text-gray-800">كريم الشعر</h3>
                         <p class="text-gray-600 mt-2">كريم لترطيب الشعر وتغذيته.</p>
                         <div class="flex justify-between items-center mt-4">
-                            <span class="text-lg font-bold text-yellow-400">50.00 ر.س</span>
+                            <span class="text-lg font-bold text-yellow-400">50.00 درهم</span>
                             <button class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                                 <i class="fas fa-cart-plus"></i> إضافة إلى السلة
                             </button>
@@ -183,7 +160,7 @@
                         <h3 class="text-xl font-bold text-gray-800">فرشاة المكياج</h3>
                         <p class="text-gray-600 mt-2">فرشاة عالية الجودة لتطبيق المكياج.</p>
                         <div class="flex justify-between items-center mt-4">
-                            <span class="text-lg font-bold text-yellow-400">30.00 ر.س</span>
+                            <span class="text-lg font-bold text-yellow-400">30.00 درهم</span>
                             <button class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                                 <i class="fas fa-cart-plus"></i> إضافة إلى السلة
                             </button>
@@ -198,7 +175,7 @@
                         <h3 class="text-xl font-bold text-gray-800">عطر فاخر</h3>
                         <p class="text-gray-600 mt-2">عطر برائحة مميزة يدوم طويلاً.</p>
                         <div class="flex justify-between items-center mt-4">
-                            <span class="text-lg font-bold text-yellow-400">120.00 ر.س</span>
+                            <span class="text-lg font-bold text-yellow-400">120.00 درهم</span>
                             <button class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                                 <i class="fas fa-cart-plus"></i> إضافة إلى السلة
                             </button>
@@ -213,7 +190,7 @@
                         <h3 class="text-xl font-bold text-gray-800">مصل الشعر</h3>
                         <p class="text-gray-600 mt-2">مصل لتقوية الشعر ومنع التساقط.</p>
                         <div class="flex justify-between items-center mt-4">
-                            <span class="text-lg font-bold text-yellow-400">80.00 ر.س</span>
+                            <span class="text-lg font-bold text-yellow-400">80.00 درهم</span>
                             <button class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                                 <i class="fas fa-cart-plus"></i> إضافة إلى السلة
                             </button>
@@ -230,32 +207,8 @@
             <p>&copy; 2023 Soubai Shop. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-
+    <!-- Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 'auto', // Automatically adjust slides per view
-            centeredSlides: true, // Center the active slide
-            spaceBetween: 20, // Space between slides
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                },
-                768: {
-                    slidesPerView: 3,
-                    spaceBetween: 30,
-                },
-                1024: {
-                    slidesPerView: 4,
-                    spaceBetween: 40,
-                },
-            },
-        });
-    </script>
+    <script src="Client JS/Swiper.js"></script>
 </body>
 </html>
