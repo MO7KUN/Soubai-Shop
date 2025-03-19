@@ -8,17 +8,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    body {
-        font-family: 'Tajawal', sans-serif;
-        padding-top: 64px;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            padding-top: 64px;
+        }
 
-    /* Add padding for navbar */
+        /* Add padding for navbar */
     </style>
 </head>
 
 <body class="bg-gray-100 text-black flex flex-col min-h-screen">
-    <? include 'components/header.html'; ?>
+    <?php include 'components/header.html'; ?>
 
     <!-- Main Content -->
     <div class="p-6 md:mr-64">
@@ -67,7 +67,7 @@
 
             <!-- Buttons -->
             <div class="flex justify-end gap-4">
-                <button type="button" onclick="window.location.href = 'Users.html'"
+                <button type="button" onclick="window.location.href = 'users.php'"
                     class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">إلغاء</button>
                 <button type="button" onclick="submitForm()" id="submitButton"
                     class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">

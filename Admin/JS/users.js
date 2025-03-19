@@ -40,7 +40,7 @@ function displayUsers(users) {
         <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${user.email}</td>
         <td class="px-4 py-3 text-center">
             <div class="flex items-center justify-center gap-2">
-                <a href="NewUser.html?action=edit&id=${user.id}" class="bg-yellow-400 text-black px-3 py-1.5 rounded-full hover:bg-yellow-500 transition">
+                <a href="newUser.php?action=edit&id=${user.id}" class="bg-yellow-400 text-black px-3 py-1.5 rounded-full hover:bg-yellow-500 transition">
                     <i class="fas fa-edit"></i>
                 </a>
                 <button onclick="openPopUp('pop-up-1',${user.id})" class="bg-red-500 text-white px-3 py-1.5 rounded-full hover:bg-red-600 transition">

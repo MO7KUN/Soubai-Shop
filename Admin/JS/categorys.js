@@ -1,90 +1,150 @@
-document.addEventListener("DOMContentLoaded", function () {
-    if (!userId || !permissions || !token) {
-        window.location.href = "index.html";
-        return;
-    }
+async function fetchCategorys() {
+    try {
+        const response = await fetch('http://e_sahara.test/api/categorys', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        });
 
-    const PermissionsArray = permissions.split("&");
-    if (!PermissionsArray.includes("gererCategorys")) {
-        if (window.history.length > 1) {
-            window.history.back();
-        } else {
-            window.location.href = "index.html";
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Attempt to parse error response
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب الفئات" };
         }
-        return;
-    }
 
-    const errorMessage = document.getElementById("error-message");
-    const form = document.getElementById("updateForm");
+        const data = await response.json();
+        console.log('✅ API response:', data); // Log for debugging
+
+        if (!data || !Array.isArray(data.categories)) {
+            console.error('❌ Invalid data structure:', data);
+            document.getElementById('error-message').classList.remove('hidden'); // Show error message
+            return;
+        }
+
+        const categorySelect = document.getElementById('categories-grid');
+        categorySelect.innerHTML = ''; // Clear existing content
+
+        data.categories.forEach(category => {
+            const card = document.createElement('div');
+            card.classList.add('bg-white', 'rounded-lg', 'shadow-lg', 'overflow-hidden', 'cursor-pointer');
+            card.addEventListener('click', () => openUpdateModal(category));
+
+            const cardImage = document.createElement('img');
+            cardImage.src = category.image_url;
+            cardImage.alt = category.label;
+            cardImage.classList.add('w-full', 'h-48', 'object-cover');
+
+            const cardTitlePlace = document.createElement('div');
+            cardTitlePlace.classList.add('card-title-place', 'text-center', 'p-4');
+
+            const cardTitle = document.createElement('h3');
+            cardTitle.classList.add('text-lg', 'font-semibold', 'mb-2');
+            cardTitle.textContent = category.label;
+
+            cardTitlePlace.appendChild(cardTitle);
+            card.appendChild(cardImage);
+            card.appendChild(cardTitlePlace);
+            categorySelect.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error('❌ Error fetching categories:', error);
+
+        if (error.status === 401 || error.status === 403) {
+            window.location.href = "index.html"; // Redirect if unauthorized
+        } else {
+            document.getElementById('error-message').classList.remove('hidden'); // Show error message
+        }
+    }
+}
+
+async function addCategory() {
     const categoryNameInput = document.getElementById("category-name");
     const categoryImageInput = document.getElementById("fileInput2");
 
-    form.addEventListener("submit", async function (event) {
-        event.preventDefault();
+    const categoryName = categoryNameInput.value.trim();
+    const categoryImageFile = categoryImageInput.files[0];
 
-        const categoryName = categoryNameInput.value.trim();
-        const categoryImageFile = categoryImageInput.files[0];
+    // Validate Category Name
+    if (!categoryName) {
+        return Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: "يرجى إدخال اسم الفئة",
+        });
+    }
 
-        if (!categoryName) {
-            errorMessage.classList.remove("hidden");
-            errorMessage.querySelector("span").textContent = "يرجى ادخال اسم الفئة";
-            return;
+    // Validate Image Size
+    if (categoryImageFile && categoryImageFile.size > 2048 * 1024) {
+        return Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: "صورة الفئة يجب أن تكون أقل من 2MB",
+        });
+    }
+
+    try {
+        // Prepare FormData
+        const formData = new FormData();
+        formData.append("label", categoryName);
+        if (categoryImageFile) {
+            formData.append("image", categoryImageFile, categoryName + ".jpg");
         }
 
-        if (categoryImageFile && categoryImageFile.size > 2048 * 1024) {
-            // 2048 KB = 2048 * 1024 bytes
-            errorMessage.classList.remove("hidden");
-            errorMessage.querySelector("span").textContent =
-                "صورة الفئة يجب ان تكون اقل من 2MB";
-            return;
-        }
+        const response = await fetch("http://e_sahara.test/api/category", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+        });
 
-        try {
-            let imageUrl = null;
+        const data = await response.json().catch(() => ({})); // Handle invalid JSON response
 
-            // Upload image if provided
-            const formData = new FormData();
-            if (categoryImageFile) {
-                formData.append("image", categoryImageFile, categoryName + ".jpg");
-            }
-            formData.append("label", categoryName);
-
-            const response = await fetch("https://sbaishop.com/api/category", {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw new Error("فشل تحميل الصورة");
-            }
-
-            const Data = await response.json();
-            imageUrl = Data.imageUrl;
-
-            // Send category data
-            if (
-                response.status == 422 &&
-                response.errors.label == "The label has already been taken."
-            ) {
-                alert("اسم الفئة مستخدم من قبل");
-            } else if (response.status === 422) {
-                throw new Error("البيانات غير صالحة، يرجى التحقق من المدخلات");
+        if (!response.ok) {
+            if (response.status === 422) {
+                if (data.errors?.label?.includes("has already been taken")) {
+                    return Swal.fire({
+                        icon: "error",
+                        title: "خطأ",
+                        text: "اسم الفئة مستخدم من قبل",
+                    });
+                } else {
+                    return Swal.fire({
+                        icon: "error",
+                        title: "خطأ",
+                        text: "البيانات غير صالحة، يرجى التحقق من المدخلات",
+                    });
+                }
             } else if (response.status === 500) {
-                throw new Error("خطأ داخلي في الخادم، يرجى المحاولة لاحقًا");
-            } else if (!response.ok) {
-                throw new Error("فشل إضافة الفئة");
+                return Swal.fire({
+                    icon: "error",
+                    title: "خطأ داخلي",
+                    text: "خطأ داخلي في الخادم، يرجى المحاولة لاحقًا",
+                });
+            } else {
+                errorsHandler(response.status);
             }
-
-            alert("تمت إضافة الفئة بنجاح");
-            window.location.href = "Categories.html";
-        } catch (error) {
-            console.error("حدث خطأ:", error);
         }
-    });
-});
+
+        // Success Message
+        Swal.fire({
+            icon: "success",
+            title: "تم التسجيل",
+            text: "تم تسجيل معلومات الفئة بنجاح",
+            showConfirmButton: false,
+            timer: 1200,
+        });
+
+    } catch (error) {
+        console.error("❌ حدث خطأ:", error);
+        Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: "تعذر تسجيل الفئة، يرجى المحاولة لاحقًا",
+        });
+    }
+}
+
 
 // Image upload and preview
 var loadFile = function (event, uploaderId) {
@@ -117,7 +177,6 @@ function deleteImage(uploaderId) {
 let categoryID = null;
 
 function updateCategory() {
-    const successMessage = document.getElementById("success-message");
     const categoryName = document.getElementById("categoryName").value;
     const categoryImage = document.getElementById("fileInput2").files[0];
 
@@ -140,7 +199,7 @@ function updateCategory() {
         formData.append("image", categoryImage);
     }
     formData.append("label", categoryName);
-    fetch(`https://sbaishop.com/api/category/${categoryID}/edit`, {
+    fetch(`http://e_sahara.test/api/category/${categoryID}/edit`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`,
@@ -150,28 +209,25 @@ function updateCategory() {
         .then((response) => {
             if (response.ok) {
                 closeUpdateModal();
-                successMessage.classList.remove("hidden");
+                Swal.fire({
+                    icon: "success",
+                    title: "تم تحديث الفئة",
+                    text: "تم تحديث معلومات الفئة بنجاح",
+                    showConfirmButton: false,
+                    timer: 1200,
+                });
                 fetchCategorys();
             } else {
                 throw response;
             }
         })
         .catch((response) => {
-            if (response.status === 401) {
-                logout();
-            } else if (response.status === 422) {
-                document.getElementById("categoryNameError").innerText =
-                    "اسم الفئة موجود بالفعل";
-            } else if (response.status === 500) {
-                document.getElementById("error-message1").classList.remove("hidden");
-            } else {
-                closeUpdateModal();
-                document.getElementById("error-message").classList.remove("hidden");
-            }
+            errorsHandler(response.status); // Pass only response.status
         });
 }
 
 //TODO add the delete catgeory function
+
 
 // Function to open the update modal
 function openUpdateModal(category) {

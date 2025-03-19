@@ -1,6 +1,6 @@
 // Check URL parameters on page load for edit mode
 document.addEventListener("DOMContentLoaded", function () {
-    sidebarhandeler("gererOrders");
+    sidebarHandler("gererOrders");
     getClients(); // تحميل العملاء عند تحميل الصفحة
     getProducts();
     if (!permissions.includes('gererClients')) {
@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (params.get("action") === "edit" && params.get("order")) {
         const orderId = params.get("order");
         fetchOrder(orderId);
+        document.getElementById('submitOrder').innerText = "تطبيق التعديلات"
     }
 });
 
@@ -88,33 +89,41 @@ function selectClient(client) {
 
 // Fetch clients from API
 async function getClients() {
-    fetch('http://e_sahara.test/api/clients', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
-    })
-        .then(response => response.json())
-        .then(result => {
-            clients = result.data.map(client => ({
-                name: client.name,
-                id: client.id,
-                phone: client.phone || "",
-                city: client.city || ""
-            }));
+    try {
+
+        const response = await fetch('http://e_sahara.test/api/clients', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
         })
-        .catch(error => {
-            console.error('Error fetching clients:', error);
-            document.getElementById('error-message').classList.remove('hidden');
-        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
+        }
+
+        const result = await response.json()
+
+        clients = result.map(client => ({
+            name: client.name,
+            id: client.id,
+            phone: client.tel || "",
+            city: client.city || ""
+        }));
+    } catch (error) {
+        console.error("❌ Error fetching products:", error); // Log the full error for debugging
+        errorsHandler(error.status || 500);
+        throw new Error(`Error occurred while fetching products: ${error.message}`);
+    }
 }
 
 // Open modal and pre-fill with selected client info
 editButton.addEventListener("click", function () {
     if (!selectedClientId) return; // Ensure a client is selected
     const client = clients.find(c => c.id === selectedClientId);
-
+    console.log(client)
     editName.value = client.name || "";
     editPhone.value = client.phone || "";
     editCity.value = client.city || "";
@@ -135,45 +144,58 @@ window.addEventListener("click", function (event) {
 });
 
 // Save changes and update client info
-function editClientInfos() {
+async function editClientInfos() {
     if (!selectedClientId) return;
+    try {
 
-    fetch(`http://e_sahara.test/api/client/${selectedClientId}/edit`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify({
-            name: editName.value,
-            tel: editPhone.value,
-            city: editCity.value
+        const response = await fetch(`http://e_sahara.test/api/client/${selectedClientId}/edit`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                name: editName.value,
+                tel: editPhone.value,
+                city: editCity.value
+            })
         })
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Client updated:", data);
 
-            // Update local client data
-            const clientIndex = clients.findIndex(c => c.id === selectedClientId);
-            if (clientIndex !== -1) {
-                clients[clientIndex] = {
-                    id: selectedClientId,
-                    name: editName.value,
-                    phone: editPhone.value,
-                    city: editCity.value
-                };
-            }
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
+        }
 
-            // Update displayed client info
-            selectClient(clients[clientIndex]);
+        // Update local client data
+        const clientIndex = clients.findIndex(c => c.id === selectedClientId);
+        if (clientIndex !== -1) {
+            clients[clientIndex] = {
+                id: selectedClientId,
+                name: editName.value,
+                phone: editPhone.value,
+                city: editCity.value
+            };
+        }
 
+        // Update displayed client info
+        selectClient(clients[clientIndex]);
+
+        Swal.fire({
+            icon: "success",
+            title: "تم تسجيل العميل بنجاح",
+            text: "تم تسجيل معلومات العميل بنجاح",
+            showConfirmButton: false,
+            timer: 1200, // The timer is 1200 ms (1.2 seconds)
+        }).then(() => {
             // Close modal
             editModal.classList.add("hidden");
-        })
-        .catch(error => {
-            console.error("Error updating client:", error);
         });
+
+    } catch (error) {
+        console.error("❌ Error fetching products:", error); // Log the full error for debugging
+        errorsHandler(error.status || 500);
+        throw new Error(`Error occurred while fetching products: ${error.message}`);
+    }
 }
 
 // --------------------------
@@ -230,27 +252,35 @@ function updateProductList(filteredProducts) {
     productList.classList.remove("hidden");
 }
 
-function getProducts() {
-    fetch('http://e_sahara.test/api/products', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
-    })
-        .then(response => response.json())
-        .then(result => {
-            products = result.data.map(product => ({
-                name: product.label,
-                id: product.id,
-                price: product.discount_price || product.selling_price,
-                stock: product.qte ?? "غير متعقب",
-                image: product.image_url
-            }));
+async function getProducts() {
+    try {
+
+        const response = await fetch('http://e_sahara.test/api/products', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
         })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
+        }
+        const result = await response.json()
+
+        products = result.map(product => ({
+            name: product.label,
+            id: product.id,
+            price: product.discount_price || product.selling_price,
+            stock: product.qte ?? "غير متعقب",
+            image: product.image_url
+        }));
+
+    } catch (error) {
+        console.error("❌ Error fetching products:", error); // Log the full error for debugging
+        errorsHandler(error.status || 500);
+        throw new Error(`Error occurred while fetching products: ${error.message}`);
+    }
 }
 
 function addProductToTable(product) {
@@ -323,9 +353,13 @@ function updateOrderTotal() {
 // ORDER SAVE & EDIT FUNCTIONS
 // --------------------------
 
-function saveOrder() {
+async function saveOrder() {
     if (!selectedClientId || Object.keys(selectedProducts).length === 0) {
-        alert("Veuillez sélectionner un client et ajouter au moins un produit.");
+        Swal.fire({
+            icon: "warning",
+            title: "تنبيه",
+            text: "الرجاء تحديد العميل وإضافة منتج واحد على الأقل.",
+        });
         return;
     }
 
@@ -346,7 +380,11 @@ function saveOrder() {
     });
 
     if (orderedProducts.length === 0) {
-        alert("Veuillez ajouter des produits valides.");
+        Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: "الرجاء إضافة منتجات الى الطلب.",
+        });
         return;
     }
 
@@ -364,35 +402,32 @@ function saveOrder() {
         url = `http://e_sahara.test/api/order/${orderId}/edit`;
     }
 
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify(orderData)
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.errors) {
-                console.error("Erreur de validation:", data.errors);
-                alert("Erreur de validation. Vérifiez les données saisies.");
-                return;
-            }
-            console.log("Commande enregistrée avec succès:", data);
-            alert("Commande enregistrée avec succès !");
-
-            // Reset order form after saving
-            // selectedProducts = {};
-            // productsTableBody.innerHTML = "";
-            // clientSearchInput.value = "";
-            // clientInfoContainer.classList.add("hidden");
-            // orderTotalElement.textContent = "0 DH";
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(orderData)
         })
-        .catch(error => {
-            console.error("Erreur lors de l'enregistrement de la commande:", error);
-            alert("Une erreur est survenue lors de l'enregistrement.");
-        });
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
+        }
+
+        Swal.fire({
+            icon: "success",
+            title: "تم تسجيل الطلب بنجاح",
+            text: "تم تسجيل معلومات الطلب بنجاح",
+            showConfirmButton: false,
+            timer: 1200, // The timer is 1200 ms (1.2 seconds)
+        })
+    } catch (error) {
+        console.error("❌ Error fetching products:", error); // Log the full error for debugging
+        errorsHandler(error.status || 500);
+        throw new Error(`Error occurred while fetching products: ${error.message}`);
+    }
 }
 
 // New helper function for editing: add product rows pre-filled from order data
@@ -437,22 +472,27 @@ function addProductToTableForEdit(product, qty) {
 }
 
 // Function to fetch the order details in edit mode
-function fetchOrder(orderId) {
-    fetch(`http://e_sahara.test/api/order/${orderId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
-    })
-        .then(response => response.json())
-        .then(order => {
-            console.log("Order fetched for editing:", order);
-            populateOrderFromData(order);
+async function fetchOrder(orderId) {
+    try {
+
+        const response = await fetch(`http://e_sahara.test/api/order/${orderId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
         })
-        .catch(error => {
-            console.error("Erreur lors de la récupération de la commande:", error);
-        });
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
+        }
+        const order = await response.json()
+        populateOrderFromData(order);
+    } catch (error) {
+        console.error("❌ Error fetching products:", error); // Log the full error for debugging
+        errorsHandler(error.status || 500);
+        throw new Error(`Error occurred while fetching products: ${error.message}`);
+    }
 }
 
 // Function to populate the order form using fetched order data
