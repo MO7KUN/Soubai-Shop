@@ -7,6 +7,7 @@
     <title>لوحة التحكم - Soubai Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         body {
             font-family: 'Tajawal', sans-serif;
@@ -35,7 +36,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">إجمالي الطلبات</p>
-                        <p class="text-2xl font-bold">120</p>
+                        <p class="text-2xl font-bold" id="totalOrders"></p>
                     </div>
                     <div class="bg-yellow-400 py-1.5 px-2 rounded-full">
                         <i class="fas fa-shopping-cart text-white rounded-full"></i>
@@ -48,7 +49,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">إجمالي الإيرادات</p>
-                        <p class="text-2xl font-bold">$5,000</p>
+                        <p class="text-2xl font-bold"><span id="totalRevenue" dir="ltr"></span></p>
                     </div>
                     <div class="bg-green-500 py-1.5 px-3 rounded-full">
                         <i class="fas fa-dollar-sign text-white rounded-full"></i>
@@ -61,7 +62,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">إجمالي العملاء</p>
-                        <p class="text-2xl font-bold">85</p>
+                        <p class="text-2xl font-bold" id="totalCustomers"></p>
                     </div>
                     <div class="bg-blue-500 py-1.5 px-2 rounded-full">
                         <i class="fas fa-users text-white rounded-full"></i>
@@ -74,7 +75,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500">الطلبات المعلقة</p>
-                        <p class="text-2xl font-bold">12</p>
+                        <p class="text-2xl font-bold" id="pendingOrders"></p>
                     </div>
                     <div class="bg-red-500 py-1.5 px-2.5 rounded-full">
                         <i class="fas fa-exclamation-circle text-white rounded-full"></i>
@@ -91,52 +92,26 @@
                 <table class="w-full border-collapse text-right">
                     <thead>
                         <tr class="bg-gray-200">
-                            <th class="p-3 border-b whitespace-nowrap">اسم
+                            <th class="p-3 text-center border-b whitespace-nowrap">اسم
                                 العميل</th>
-                            <th class="p-3 border-b whitespace-nowrap">رقم
+                            <th class="p-3 text-center border-b whitespace-nowrap">رقم
                                 الهاتف</th>
-                            <th class="p-3 border-b whitespace-nowrap">إجمالي
+                            <th class="p-3 text-center border-b whitespace-nowrap">إجمالي
                                 الطلب</th>
-                            <th class="p-3 border-b whitespace-nowrap">المدينة</th>
-                            <th class="p-3 border-b whitespace-nowrap">التاريخ</th>
-                            <th class="p-3 border-b whitespace-nowrap">حالة
+                            <th class="p-3 text-center border-b whitespace-nowrap">المدينة</th>
+                            <th class="p-3 text-center border-b whitespace-nowrap">التاريخ</th>
+                            <th class="p-3 text-center border-b whitespace-nowrap">حالة
                                 الطلب</th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b whitespace-nowrap">محمد
-                                أحمد</td>
-                            <td class="p-3 border-b whitespace-nowrap">+966
-                                500000000</td>
-                            <td class="p-3 border-b whitespace-nowrap">$120.00</td>
-                            <td class="p-3 border-b whitespace-nowrap">الرياض</td>
-                            <td class="p-3 border-b whitespace-nowrap">2025-02-15</td>
-                            <td class="p-3 border-b whitespace-nowrap">
-                                <span class="bg-yellow-400 text-white px-2 py-1 rounded-lg">قيد
-                                    المعالجة</span>
-                            </td>
-                            <td class="p-3 border-b whitespace-nowrap text-center">
-                                <span class="bg-blue-500 text-white pr-1 py-1 rounded-lg ml-2">
-                                    <i class="fas fa-eye"></i>
-                                </span>
-                                <span class="bg-green-500 text-white px-2 py-1 rounded-lg">
-                                    <i class="fas fa-phone"></i>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="p-3 border-b whitespace-nowrap">سارة
-                                خالد</td>
-                            <td class="p-3 border-b whitespace-nowrap">+966
-                                511111111</td>
-                            <td class="p-3 border-b whitespace-nowrap">$75.50</td>
-                            <td class="p-3 border-b whitespace-nowrap">جدة</td>
-                            <td class="p-3 border-b whitespace-nowrap">2025-02-14</td>
-                            <td class="p-3 border-b whitespace-nowrap">
-                                <span class="bg-green-500 text-white px-2 py-1 rounded-lg">تم
-                                    التوصيل</span>
+                    <tbody id="recentOrders">
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                <div id="loadingAnimation" class="text-blue-500 mt-8 mb-6 items-center" dir="rtl">
+                                    <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                                    <span class="ml-2">تحميل...</span>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -160,15 +135,15 @@
                                 <th class="px-4 py-2 text-center whitespace-nowrap">اجمالي الأرباح</th>
                             </tr>
                         </thead>
-                        <tbody id="products-table">
+                        <tbody id="bestSoldProducts">
                             <!-- Product 1 -->
-                            <tr class="">
-                                <td class="p-3 text-center">
-                                    <img src="../product1.jpg" alt="" class="w-16 h-16 rounded-lg object-cover shadow">
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <div id="loadingAnimation" class="text-blue-500 mt-8 mb-6 items-center" dir="rtl">
+                                        <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                                        <span class="ml-2">تحميل...</span>
+                                    </div>
                                 </td>
-                                <td class="px-4 py-3 text-center whitespace-nowrap font-meduim">Produit 1</td>
-                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">150</td>
-                                <td class="px-4 py-3 text-center whitespace-nowrap font-semibold" dir="ltr">1500 DH</td>
                             </tr>
                         </tbody>
                     </table>
@@ -180,7 +155,7 @@
                 <h1 class="text-xl font-bold mb-2 text-right text-gray-800">
                     المنتجات القليلة في المخزن</h1>
                 <div class="overflow-x-auto rounded-lg border">
-                    <table class="w-full border-collapse text-center" id="productsLowOnStock">
+                    <table class="w-full border-collapse text-center">
                         <thead>
                             <tr class="bg-gray-200">
                                 <th class="px-4 py-2 text-center whitespace-nowrap">اسم
@@ -193,17 +168,14 @@
                                 <th class="px-4 py-2 text-center whitespace-nowrap"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="lowStockProducts">
                             <!-- Product 2 -->
-                            <tr class="">
-                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">Produit 2</td>
-                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">123456789</td>
-                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">5</td>
-                                <td class="px-4 py-3 text-center whitespace-nowrap font-medium">visible</td>
-                                <td class="px-4 py-3 text-center whitespace-nowrap">
-                                    <button class="bg-blue-500 text-white px-2 py-1 rounded-full">
-                                        <i class="fas fa-pen"></i>
-                                    </button>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <div id="loadingAnimation" class="text-blue-500 mt-8 mb-6 items-center" dir="rtl">
+                                        <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                                        <span class="ml-2">تحميل...</span>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -216,9 +188,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            sidebarhandeler("gererDashboard");
+            sidebarHandler("gererDashboard");
         })
     </script>
+    <script src="JS/dashboard.js"></script>
 </body>
 
 </html>

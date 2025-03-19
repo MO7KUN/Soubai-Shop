@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function showProductInfos(productId) {
     try {
         const response = await fetch(`http://e_sahara.test/api/product/${productId}`);
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
+        }
         const product = await response.json();
 
         // Fill main product fields
@@ -68,8 +72,9 @@ async function showProductInfos(productId) {
         //     });
         // }
     } catch (error) {
-        alert('Failed to load product data: ' + error.message);
-        console.error('Error loading product:', error);
+        console.error("❌ Error fetching product infos:", error); // Log the full error for debugging
+        errorsHandler(error.status || 500);
+        throw new Error(`Error occurred while fetching product infos: ${error.message}`);
     }
 }
 
@@ -284,6 +289,11 @@ async function saveProduct() {
 
     if (!isValid) {
         alert('الرجاء ملء جميع الحقول المطلوبة (المميزة باللون الأحمر)');
+        Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: 'الرجاء ملء جميع الحقول المطلوبة (المميزة باللون الأحمر)',
+        });
         return;
     }
 
@@ -303,13 +313,23 @@ async function saveProduct() {
         const result = await response.json();
 
         if (response.ok) {
-            alert('تم حفظ المنتج بنجاح!');
-            // window.location.reload();
+            Swal.fire({
+                icon: "success",
+                title: "تم تسجيل الطلب بنجاح",
+                text: "تم تسجيل معلومات الطلب بنجاح",
+                showConfirmButton: false,
+                timer: 1200, // The timer is 1200 ms (1.2 seconds)
+            }).then(() => {
+                window.location.reload();
+            })
         } else {
-            alert('خطأ في الحفظ: ' + (result.message || JSON.stringify(result.errors)));
+            const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
         }
     } catch (error) {
-        alert('خطأ في الشبكة: ' + error.message);
+        console.error("❌ Error saving product:", error); // Log the full error for debugging
+        errorsHandler(error.status || 500);
+        throw new Error(`Error occurred while saving product: ${error.message}`);
     }
 }
 
@@ -367,74 +387,92 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 async function addCategory() {
-
-    const errorMessage = document.getElementById("error-message");
     const categoryNameInput = document.getElementById("categoryName");
     const categoryImageInput = document.getElementById("fileInput2");
-
 
     const categoryName = categoryNameInput.value.trim();
     const categoryImageFile = categoryImageInput.files[0];
 
+    // Validate Category Name
     if (!categoryName) {
-        errorMessage.classList.remove("hidden");
-        errorMessage.querySelector("span").textContent = "يرجى ادخال اسم الفئة";
-        return;
+        return Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: "يرجى إدخال اسم الفئة",
+        });
     }
 
+    // Validate Image Size
     if (categoryImageFile && categoryImageFile.size > 2048 * 1024) {
-        // 2048 KB = 2048 * 1024 bytes
-        errorMessage.classList.remove("hidden");
-        errorMessage.querySelector("span").textContent =
-            "صورة الفئة يجب ان تكون اقل من 2MB";
-        return;
+        return Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: "صورة الفئة يجب أن تكون أقل من 2MB",
+        });
     }
 
     try {
-        let imageUrl = null;
-
-        // Upload image if provided
+        // Prepare FormData
         const formData = new FormData();
+        formData.append("label", categoryName);
         if (categoryImageFile) {
             formData.append("image", categoryImageFile, categoryName + ".jpg");
         }
-        formData.append("label", categoryName);
 
         const response = await fetch("http://e_sahara.test/api/category", {
             method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
             body: formData,
         });
 
+        const data = await response.json().catch(() => ({})); // Handle invalid JSON response
+
         if (!response.ok) {
-            throw new Error("فشل تحميل الصورة");
+            if (response.status === 422) {
+                if (data.errors?.label?.includes("has already been taken")) {
+                    return Swal.fire({
+                        icon: "error",
+                        title: "خطأ",
+                        text: "اسم الفئة مستخدم من قبل",
+                    });
+                } else {
+                    return Swal.fire({
+                        icon: "error",
+                        title: "خطأ",
+                        text: "البيانات غير صالحة، يرجى التحقق من المدخلات",
+                    });
+                }
+            } else if (response.status === 500) {
+                return Swal.fire({
+                    icon: "error",
+                    title: "خطأ داخلي",
+                    text: "خطأ داخلي في الخادم، يرجى المحاولة لاحقًا",
+                });
+            } else {
+                errorsHandler(response.status);
+            }
         }
 
-        const Data = await response.json();
-        imageUrl = Data.imageUrl;
+        // Success Message
+        Swal.fire({
+            icon: "success",
+            title: "تم التسجيل",
+            text: "تم تسجيل معلومات الفئة بنجاح",
+            showConfirmButton: false,
+            timer: 1200,
+        }).then(() => {
+            fetchCategorys()
+            closeAddCategoryModal();
+        });
 
-        // Send category data
-        if (
-            response.status == 422 &&
-            response.errors.label == "The label has already been taken."
-        ) {
-            alert("اسم الفئة مستخدم من قبل");
-        } else if (response.status === 422) {
-            throw new Error("البيانات غير صالحة، يرجى التحقق من المدخلات");
-        } else if (response.status === 500) {
-            throw new Error("خطأ داخلي في الخادم، يرجى المحاولة لاحقًا");
-        } else if (!response.ok) {
-            throw new Error("فشل إضافة الفئة");
-        }
-        alert("تمت إضافة الفئة بنجاح");
-        fetchCategorys()
-        closeAddCategoryModal();
     } catch (error) {
-        console.error("حدث خطأ:", error);
+        console.error("❌ حدث خطأ:", error);
+        Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: "تعذر تسجيل الفئة، يرجى المحاولة لاحقًا",
+        });
     }
-
 }
 
 // Function to open the update modal

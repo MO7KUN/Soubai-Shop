@@ -1,41 +1,34 @@
-function fetchClients() {
-  fetch("https://sbaishop.com/api/clients", {
+function fetchClients(retryCount = 0) {
+  fetch("http://e_sahara.test/api/clients", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + token, // Fixed typo
+      Authorization: "Bearer " + token,
     },
   })
     .then((response) => {
       if (!response.ok) {
-        throw response; // Throw the response to handle errors
+        throw new Error(`Server responded with ${response.status}`);
       }
       return response.json();
     })
     .then((data) => {
-      // Ensure the response is an array
-      if (!Array.isArray(data.data)) {
-        throw new Error("Invalid data format: Expected an array of clients");
-      }
+      console.log(data);
 
-      const clients = data.data; // Access the array of clients
       const clientTable = document.getElementById("clients-table");
+      clientTable.innerHTML = ""; // Clear existing rows
 
-      // Clear existing rows (if any)
-      clientTable.innerHTML = "";
-
-      // Add rows for each client
-      clients.forEach(client => {
-        const row = document.createElement("tr");
-        row.className = "hover:bg-gray-100 border-b";
-
-        row.innerHTML = `
+      if (data.length > 0) {
+        data.forEach((client) => {
+          const row = document.createElement("tr");
+          row.className = "hover:bg-gray-100 border-b";
+          row.innerHTML = `
             <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.name}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.tel}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.city}</td>
             <td class="px-4 py-3 text-center">
                 <div class="flex items-center justify-center gap-2">
-                    <button onclick="openUpdateModal(${client.id})" class="bg-blue-500 text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition">
+                    <button onclick="openUpdateModal(${client.id},'${client.name}','${client.tel}','${client.city}')" class="bg-blue-500 text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button onclick="deleteClient(${client.id})" class="bg-red-500 text-white px-3 py-1.5 rounded-full hover:bg-red-600 transition">
@@ -49,157 +42,93 @@ function fetchClients() {
                     </a>
                 </div>
             </td>
+          `;
+          clientTable.appendChild(row);
+        });
+      } else {
+        clientTable.innerHTML = `
+          <tr>
+            <td colspan="100%" class="py-6 text-center text-orange-500 font-semibold bg-orange-50 border border-orange-200 rounded">
+                🚀 ليس لديك أي عملاء مسجلين بعد
+            </td>
+          </tr>
         `;
-
-        clientTable.appendChild(row);
-      });
-
-
-      // Initialize DataTable FIRST
-      const table = $('#clientsTable').DataTable({
-        dom: 't', // إخفاء عناصر التحكم الافتراضية
-        paging: true,
-        searching: true,
-        info: true, // تفعيل معلومات العناصر
-        lengthMenu: [10, 25, 50, 100], // خيارات عدد الصفوف
-        lengthChange: true, // تفعيل تغيير عدد الصفوف
-        pageLength: 10, // القيمة الافتراضية
-        pagingType: 'full_numbers',
-        language: {
-          "paginate": {
-            "previous": "السابق",
-            "next": "التالي"
-          },
-          "search": "ابحث:",
-          "emptyTable": "لا توجد بيانات متاحة",
-          "zeroRecords": "لم يتم العثور على نتائج مطابقة",
-          "info": "عرض _START_ إلى _END_ من إجمالي _TOTAL_ عنصر",
-          "infoEmpty": "عرض 0 إلى 0 من 0 عنصر",
-          "infoFiltered": "(تمت التصفية من إجمالي _MAX_ عنصر)",
-          "lengthMenu": "عرض _MENU_ عنصر لكل صفحة"
-        }
-      });
-
-      // إضافة عنصر اختيار عدد الصفوف المخصص
-      $('#customPagination').prepend(`
-      <div class="page-length-selector">
-        <select id="rowCountSelect" class="your-select-style">
-            <option value="10">10 عناصر/الصفحة</option>
-            <option value="25">25 عناصر/الصفحة</option>
-            <option value="50">50 عناصر/الصفحة</option>
-            <option value="100">100 عناصر/الصفحة</option>
-        </select>
-      </div>
-      `);
-
-      // تحديث عدد الصفوف عند التغيير
-      $('#rowCountSelect').on('change', function () {
-        table.page.len(this.value).draw();
-      });
-
-      // تحديث المعلومات عند التغيير
-      table.on('draw', function () {
-        const info = table.page.info();
-        $('#pageInfo').html(`
-          عرض ${info.start + 1} إلى ${info.end} 
-          من إجمالي ${info.recordsTotal} عنصر
-          `);
-
-        // تحديث القيمة المحددة في ال select
-        $('#rowCountSelect').val(info.length);
-      });
-
-      // Now connect your custom elements AFTER initialization
-      // Custom search
-      $('#clientsTable-search').on('keyup', function () {
-        table.search(this.value).draw();
-      });
-
-      // Custom pagination controls
-      $('#prevPage').on('click', function () {
-        table.page('previous').draw('page');
-      });
-
-      $('#nextPage').on('click', function () {
-        table.page('next').draw('page');
-      });
-
-      // Update page info on page change
-      table.on('draw', function () {
-        const info = table.page.info();
-        $('#pageInfo').text(`الصفحة ${info.page + 1} من ${info.pages}`);
-      });
+      }
     })
     .catch((error) => {
-      if (error.status === 401) {
-        logout();
-      } else if (error.status === 500) {
-        document.getElementById("error-message").classList.remove("hidden");
-        console.error("Server error:", error);
+      console.error("Fetch error:", error);
+
+      if (retryCount < 3) {
+        // Retry with a random delay (50ms - 200ms)
+        const retryDelay = Math.floor(Math.random() * (200 - 50 + 1)) + 50;
+        console.warn(`Retrying in ${retryDelay}ms...`);
+        setTimeout(() => fetchClients(retryCount + 1), retryDelay);
       } else {
-        document.getElementById("error-message").classList.remove("hidden");
-        console.error("Error fetching clients:", error);
+        // Show error message after retries fail
+        Swal.fire({
+          icon: "error",
+          title: "خطأ في الخادم",
+          text: "هناك مشكلة في الخادم، يرجى المحاولة لاحقًا أو التواصل مع الدعم الفني.",
+          confirmButtonText: "حسنًا",
+        });
+
+        // Show error message in the table
+        const clientTable = document.getElementById("clients-table");
+        clientTable.innerHTML = `
+          <tr>
+            <td colspan="100%" class="py-6 text-center text-red-500 font-semibold bg-red-50 border border-red-200 rounded">
+                ⚠️ هناك مشكلة في الخادم، يرجى المحاولة لاحقًا أو التواصل مع الدعم الفني.
+            </td>
+          </tr>
+        `;
       }
     });
 }
 
-function addClient() {
-  // Add client logic here
-  fetch("https://sbaishop.com/api/client", {
+
+async function addClient() {
+  const clientData = {
+    name: document.getElementById("client-name").value,
+    tel: document.getElementById("client-phone").value,
+    city: document.getElementById("client-city").value,
+  };
+
+  fetch("http://e_sahara.test/api/client", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
     },
-    body: JSON.stringify({
-      name: document.getElementById("client-name").value,
-      tel: document.getElementById("client-phone").value,
-      city: document.getElementById("client-city").value,
-    }),
+    body: JSON.stringify(clientData),
   })
     .then((response) => {
       if (!response.ok) {
-        throw response; // Throw the response to handle errors
+        errorsHandler(response.status); // Pass only response.status
+        return Promise.reject(); // Prevent further execution
       }
       return response.json();
     })
-    .then((data) => {
-      // Log the response for debugging
-      document.getElementById("success-message").classList.remove("hidden");
-      // Handle success or error response
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "تم تسجيل العميل بنجاح",
+        text: "تم تسجيل معلومات العميل بنجاح",
+        showConfirmButton: false,
+        timer: 1200,
+      }).then(() => {
+        window.location.href = "clients.php"
+      });
     })
-    .catch((response) => {
-      if (response.status === 401) {
-        logout();
-      } else if (response.status === 422) {
-        const errors = response.json();
-        errors.then((error) => {
-          if (error.name) {
-            document
-              .getElementById("client-name-error")
-              .classList.remove("hidden");
-          }
-          if (error.tel) {
-            document
-              .getElementById("client-phone-error")
-              .classList.remove("hidden");
-          }
-          if (error.city) {
-            document
-              .getElementById("client-city-error")
-              .classList.remove("hidden");
-          }
-        });
-      } else {
-        // Handle other errors
-        document.getElementById("error-message").classList.remove("hidden");
-      }
+    .catch(() => {
+      // Do nothing since errorsHandler is already called in the .then block
     });
 }
 
-function deleteClient(clientId) {
+
+async function deleteClient(clientId) {
+  if (!confirm('هل أنت متأكد أنك تريد حذف هذا العميل؟')) return
   // Delete client logic here
-  fetch(`https://sbaishop.com/api/client/${clientId}`, {
+  fetch(`http://e_sahara.test/api/client/${clientId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -208,14 +137,21 @@ function deleteClient(clientId) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw response; // Throw the response to handle errors
+        errorsHandler(response.status); // Pass only response.status
+        return Promise.reject(); // Prevent further execution
       }
       return response.json();
     })
     .then((data) => {
-      // Log the response for debugging
-      document.getElementById("success-message").classList.remove("hidden");
-      // Handle success or error response
+      Swal.fire({
+        icon: 'success',
+        title: 'تم حذف العميل',
+        text: 'تم حذف معلومات العميل بنجاح',
+        showConfirmButton: false,
+        timer: 2000  // Closes after 2 seconds
+      }).then(() => {
+        fetchClients()
+      });
     })
     .catch((response) => {
       if (response.status === 401) {
@@ -227,7 +163,7 @@ function deleteClient(clientId) {
     });
 }
 
-function updateClient() {
+async function updateClient() {
   const ClientName = document.getElementById("ClientName").value;
   const ClientPhone = document.getElementById("ClientPhone").value;
   const ClientCity = document.getElementById("ClientCity").value;
@@ -251,51 +187,32 @@ function updateClient() {
   formData.append("tel", ClientPhone);
   formData.append("city", ClientCity);
   // Update client logic here
-  fetch(`https://sbaishop.com/api/client/${clientID}/edit`, {
+  fetch(`http://e_sahara.test/api/client/${clientID}/edit`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      // "Content-Type": "application/json",
       Authorization: "Bearer " + token,
     },
     body: formData,
   })
     .then((response) => {
       if (!response.ok) {
-        throw response; // Throw the response to handle errors
+        errorsHandler(response.status); // Pass only response.status
+        return Promise.reject(); // Prevent further execution
       }
       return response.json();
     })
     .then((data) => {
       // Log the response for debugging
       closeUpdateModal();
-      document.getElementById("success-message").classList.remove("hidden");
-      // Handle success or error response
+      Swal.fire({
+        icon: 'success',
+        title: 'تم تحديث العميل بنجاح',
+        text: 'تم تحديث معلومات العميل بنجاح',
+        showConfirmButton: false,
+        timer: 2000  // Closes after 2 seconds
+      }).then(() => {
+        fetchClients()
+      });
     })
-    .catch((response) => {
-      if (response.status === 401) {
-        logout();
-      } else if (response.status === 422) {
-        const errors = response.json();
-        errors.then((error) => {
-          if (error.name) {
-            document
-              .getElementById("ClientNameError")
-              .classList.remove("hidden");
-          }
-          if (error.tel) {
-            document
-              .getElementById("ClientPhoneError")
-              .classList.remove("hidden");
-          }
-          if (error.city) {
-            document
-              .getElementById("ClientCityError")
-              .classList.remove("hidden");
-          }
-        });
-      } else {
-        // Handle other errors
-        document.getElementById("error-message1").classList.remove("hidden");
-      }
-    });
 }

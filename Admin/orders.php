@@ -36,7 +36,7 @@
                 <i class="fas fa-shopping-cart text-yellow-400"></i> الطلبات
             </h1>
             <!-- Add Order Button -->
-            <a href="NewOrder.html">
+            <a href="newOrder.php">
                 <button
                     class="w-full md:w-auto bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 whitespace-nowrap">
                     <i class="fas fa-plus"></i> إضافة طلب
@@ -102,9 +102,13 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            sidebarhandeler("gererOrders");
+            sidebarHandler("gererOrders");
         })
     </script>
+    <!-- data table -->
+    <script src="includes/jquery-3.7.0.js"></script>
+    <script src="includes/jquery.dataTables.min.js"></script>
+    <script src="includes/datatables.tailwind.js"></script>
     <script src="JS/orders.js"></script>
 </body>
 

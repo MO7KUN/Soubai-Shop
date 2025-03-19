@@ -22,7 +22,7 @@ async function fetchProducts() {
         );
 
         if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
+            throw response;
         }
 
         const products = await response.json();
@@ -34,8 +34,8 @@ async function fetchProducts() {
         console.log(products)
 
         tableBody.innerHTML = ""; // Clear existing content
-        if (products.data.length > 0) {
-            products.data.forEach(product => {
+        if (products.length > 0) {
+            products.forEach(product => {
                 const row = document.createElement("tr");
                 row.className = "hover:bg-gray-100 border-b";
 
@@ -48,7 +48,10 @@ async function fetchProducts() {
                 <td class="px-4 py-3 text-center whitespace-nowrap font-semibold" dir="ltr">${product.discount_price || product.selling_price} DH</td>
                 <td class="px-4 py-3 text-center whitespace-nowrap">${product.qte || ''}</td>
                 <td class="px-4 py-3 text-center">
-                    <select id="productVisibilitySelector" class="bg-gray-100 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300" onchange="changeProductVisibility(${product.id})" >
+                    <select id="productVisibilitySelector"
+                        class="bg-gray-100 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        onchange="changeProductVisibility(${product.id}, this)"
+                        data-previous-value="${product.is_visible}">
                         <option value="1" ${product.is_visible == 1 ? "selected" : ""}>مرئي</option>
                         <option value="0" ${product.is_visible == 0 ? "selected" : ""}>غير مرئي</option>
                     </select>
@@ -57,7 +60,7 @@ async function fetchProducts() {
                 <td class="px-4 py-3 text-center whitespace-nowrap">${product.category.label || "----"}</td>
                 <td class="px-4 py-3 text-center">
                     <div class="flex items-center justify-center gap-2">
-                        <a href="NewProduct.html?id=${product.id}&action=edit"
+                        <a href="NewProduct.php?id=${product.id}&action=edit"
                             class="bg-blue-500 text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -70,12 +73,13 @@ async function fetchProducts() {
 
                 tableBody.appendChild(row);
             });
+            $('#productsTable').DataTable().destroy();
             // Initialize DataTable FIRST
             const table = $('#productsTable').DataTable({
                 dom: 't', // إخفاء عناصر التحكم الافتراضية
                 paging: true,
                 searching: true,
-                info: true, // تفعيل معلومات العناصر
+                info: false, // تفعيل معلومات العناصر
                 lengthMenu: [10, 25, 50, 100], // خيارات عدد الصفوف
                 lengthChange: true, // تفعيل تغيير عدد الصفوف
                 pageLength: 10, // القيمة الافتراضية
@@ -145,69 +149,107 @@ async function fetchProducts() {
                 $('#pageInfo').text(`الصفحة ${info.page + 1} من ${info.pages}`);
             });
         } else {
-            tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-3">لايوجد أي منتج حاليا</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-orange-500 font-semibold bg-orange-50 border border-orange-200">لايوجد أي منتج حاليا</td></tr>`;
         }
 
-    } catch (error) {
-        console.error("Error fetching products:", error);
-        tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-red-500 py-3">فشل تحميل المنتجات.</td></tr>`;
+    } catch (response) {
+        errorsHandler(response.status)
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="100%" class="py-6 text-center text-red-500 font-semibold bg-red-50 border border-red-200 rounded">
+                ⚠️ هناك مشكلة في الخادم، يرجى المحاولة لاحقًا أو التواصل مع الدعم الفني.
+            </td>
+          </tr>
+        `;
     }
 }
 
-function deleteProduct(id) {
-    if (confirm("Voulez vous vraiment supprimé ce produit?")) {
-        fetch(`http://e_sahara.test/api/product/${id}`, {
+async function deleteProduct(id) {
+    const confirmDelete = await Swal.fire({
+        icon: "warning",
+        title: "تأكيد الحذف",
+        text: "هل أنت متأكد أنك تريد حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء!",
+        showCancelButton: true,
+        confirmButtonText: "نعم، احذف",
+        cancelButtonText: "إلغاء",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+    });
+
+    if (!confirmDelete.isConfirmed) return;
+
+    try {
+        const response = await fetch(`http://e_sahara.test/api/product/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token,
             },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    fetchProducts();
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                alert("An error occurred. Please try again later.");
-            });
+        });
+
+        if (!response.ok) {
+            throw response;
+        }
+
+        await Swal.fire({
+            icon: "success",
+            title: "تم حذف المنتج",
+            text: "تم حذف المنتج بنجاح",
+            showConfirmButton: false,
+            timer: 1200,
+        });
+
+        fetchProducts(); // Refresh product list after successful deletion
+
+    } catch (response) {
+        errorsHandler(response.status || 500);
     }
 }
 
-function changeProductVisibility(id) {
-    console.log(id);
-    if (confirm("الرؤية لهذا المنتج ستتغير، هل أنت متأكد؟")) {
-        fetch(`http://e_sahara.test/api/product/${id}/edit`, {
-            method: "POST",
+async function changeProductVisibility(id, selectElement) {
+    const previousValue = selectElement.dataset.previousValue || selectElement.value; // Store the initial value
+
+    const confirmChange = await Swal.fire({
+        icon: "warning",
+        title: "تأكيد التغيير",
+        text: "الرؤية لهذا المنتج ستتغير، هل أنت متأكد؟",
+        showCancelButton: true,
+        confirmButtonText: "نعم",
+        cancelButtonText: "إلغاء",
+    });
+
+    if (!confirmChange.isConfirmed) {
+        selectElement.value = previousValue; // Restore the previous value on cancel
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://e_sahara.test/api/product/${id}/edit`, {
+            method: "POST", // Use PUT for updates
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token,
             },
-            body: JSON.stringify({
-                is_visible: document.getElementById("productVisibilitySelector").value,
-            }),
-        })
-            .then((response) => response.status)
-        if (response.status == 200) {
-            fetchProducts();
-        } else {
-            alert("Un erreur c'est produit, veuiillez réessayer plus tard.");
+            body: JSON.stringify({ is_visible: selectElement.value }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw { status: response.status, message: errorData.message || "حدث خطأ" };
         }
 
-        // .then((data) => {
-        //     if (data.success) {
-        //         fetchProducts();
-        //     } else {
-        //         alert(data.message);
-        //     }
-        // })
-        // .catch((error) => {
-        //     console.error("Error:", error);
-        //     alert("An error occurred. Please try again later.");
-        // });
+        await Swal.fire({
+            icon: "success",
+            title: "تغيرت حالة المنتج",
+            text: "تم تغيير حالة المنتج بنجاح",
+            showConfirmButton: false,
+            timer: 1200,
+        });
+
+        selectElement.dataset.previousValue = selectElement.value; // Update previous value after success
+
+    } catch (error) {
+        errorsHandler(error.status || 500);
+        selectElement.value = previousValue; // Restore previous value on error
     }
 }

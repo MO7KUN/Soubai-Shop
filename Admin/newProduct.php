@@ -8,12 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    body {
-        font-family: 'Tajawal', sans-serif;
-        padding-top: 64px;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            padding-top: 64px;
+        }
 
-    /* Add padding for navbar */
+        /* Add padding for navbar */
     </style>
 </head>
 
@@ -138,58 +138,58 @@
                 </div>
 
                 <script>
-                const dropZone = document.getElementById("dropZone");
-                const fileInput = document.getElementById("image");
-                const previewContainer = document.getElementById("previewContainer");
-                const previewProductImage = document.getElementById("previewProductImage");
-                const removeImage = document.getElementById("removeImage");
+                    const dropZone = document.getElementById("dropZone");
+                    const fileInput = document.getElementById("image");
+                    const previewContainer = document.getElementById("previewContainer");
+                    const previewProductImage = document.getElementById("previewProductImage");
+                    const removeImage = document.getElementById("removeImage");
 
-                dropZone.addEventListener("click", () => fileInput.click());
+                    dropZone.addEventListener("click", () => fileInput.click());
 
-                fileInput.addEventListener("change", function() {
-                    if (this.files.length > 0) {
-                        previewFile(this.files[0]);
+                    fileInput.addEventListener("change", function() {
+                        if (this.files.length > 0) {
+                            previewFile(this.files[0]);
+                        }
+                    });
+
+                    dropZone.addEventListener("dragover", (event) => {
+                        event.preventDefault();
+                        dropZone.classList.add("border-yellow-400", "bg-yellow-100");
+                    });
+
+                    dropZone.addEventListener("dragleave", () => {
+                        dropZone.classList.remove("border-yellow-400", "bg-yellow-100");
+                    });
+
+                    dropZone.addEventListener("drop", (event) => {
+                        event.preventDefault();
+                        dropZone.classList.remove("border-yellow-400", "bg-yellow-100");
+
+                        if (event.dataTransfer.files.length > 0) {
+                            // Use DataTransfer to assign file properly
+                            const dt = new DataTransfer();
+                            dt.items.add(event.dataTransfer.files[0]);
+                            fileInput.files = dt.files;
+
+                            previewFile(event.dataTransfer.files[0]);
+                        }
+                    });
+
+                    function previewFile(file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewProductImage.src = e.target.result; // ✅ Fixed variable name
+                            previewContainer.classList.remove("hidden");
+                            dropZone.classList.add("hidden");
+                        };
+                        reader.readAsDataURL(file);
                     }
-                });
 
-                dropZone.addEventListener("dragover", (event) => {
-                    event.preventDefault();
-                    dropZone.classList.add("border-yellow-400", "bg-yellow-100");
-                });
-
-                dropZone.addEventListener("dragleave", () => {
-                    dropZone.classList.remove("border-yellow-400", "bg-yellow-100");
-                });
-
-                dropZone.addEventListener("drop", (event) => {
-                    event.preventDefault();
-                    dropZone.classList.remove("border-yellow-400", "bg-yellow-100");
-
-                    if (event.dataTransfer.files.length > 0) {
-                        // Use DataTransfer to assign file properly
-                        const dt = new DataTransfer();
-                        dt.items.add(event.dataTransfer.files[0]);
-                        fileInput.files = dt.files;
-
-                        previewFile(event.dataTransfer.files[0]);
-                    }
-                });
-
-                function previewFile(file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        previewProductImage.src = e.target.result; // ✅ Fixed variable name
-                        previewContainer.classList.remove("hidden");
-                        dropZone.classList.add("hidden");
-                    };
-                    reader.readAsDataURL(file);
-                }
-
-                removeImage.addEventListener("click", () => {
-                    fileInput.value = "";
-                    previewContainer.classList.add("hidden");
-                    dropZone.classList.remove("hidden");
-                });
+                    removeImage.addEventListener("click", () => {
+                        fileInput.value = "";
+                        previewContainer.classList.add("hidden");
+                        dropZone.classList.remove("hidden");
+                    });
                 </script>
 
 
@@ -493,9 +493,9 @@
 
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        sidebarhandeler("gererProducts");
-    })
+        document.addEventListener('DOMContentLoaded', function() {
+            sidebarHandler("gererProducts");
+        })
     </script>
     <script src="JS/newProduct.js"></script>
 </body>

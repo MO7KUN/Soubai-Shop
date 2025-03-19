@@ -1,36 +1,70 @@
-const userId =
-  localStorage.getItem("userId") || sessionStorage.getItem("userId");
-const permissions =
-  localStorage.getItem("permissions") || sessionStorage.getItem("permissions");
+const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
+const permissions = localStorage.getItem("permissions") || sessionStorage.getItem("permissions");
 const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
-const PermissionsArray = permissions.split("&");
+const permissionsArray = permissions ? permissions.split("&") : [];
 
-function sidebarhandeler(permission) {
-  if (!userId || !permissions || !token) {
+function sidebarHandler(permission) {
+  const isAuthenticated = userId && permissions && token;
+  if (!isAuthenticated) {
     window.location.href = "index.html";
-  } else {
-    if (PermissionsArray.includes(permission)) {
-      if (!PermissionsArray.includes("gererDashboard"))
-        document.getElementById("dashboard").remove();
-      if (!PermissionsArray.includes("gererCategorys"))
-        document.getElementById("categories").remove();
-      if (!PermissionsArray.includes("gererProducts"))
-        document.getElementById("products").remove();
-      if (!PermissionsArray.includes("gererClients"))
-        document.getElementById("clients").remove();
-      if (!PermissionsArray.includes("gererOrders"))
-        document.getElementById("orders").remove();
-      if (!PermissionsArray.includes("gererUsers"))
-        document.getElementById("users").remove();
-      if (!PermissionsArray.includes("gererSettings"))
-        document.getElementById("settings").remove();
-    } else {
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = "index.html";
-      }
+    return;
+  }
+
+  const elementsToRemove = {
+    gererDashboard: "dashboard",
+    gererCategorys: "categories",
+    gererProducts: "products",
+    gererClients: "clients",
+    gererOrders: "orders",
+    gererUsers: "users",
+    gererSettings: "settings"
+  };
+
+  Object.entries(elementsToRemove).forEach(([perm, elementId]) => {
+    if (!permissionsArray.includes(perm)) {
+      const element = document.getElementById(elementId);
+      if (element) element.remove();
     }
+  });
+
+  if (!permissionsArray.includes(permission)) {
+    window.history.length > 1 ? window.history.back() : window.location.href = "index.html";
+  }
+}
+
+function errorsHandler(responseStatus) {
+  const errorMessages = {
+    400: "طلب غير صالح، تحقق من البيانات المدخلة.",
+    401: "أنت غير مسجل الدخول.",
+    403: "ليس لديك الصلاحية للوصول إلى هذه الصفحة.",
+    404: "البيانات غير موجودة.",
+    408: "انتهت مهلة الطلب، حاول مرة أخرى.",
+    429: "تم إرسال عدد كبير من الطلبات، حاول لاحقًا.",
+    500: "حدث خطأ داخلي في الخادم.",
+    502: "الخادم غير متوفر حاليًا، حاول مرة أخرى لاحقًا.",
+    503: "الخدمة غير متاحة حاليًا، يرجى المحاولة لاحقًا.",
+    504: "انتهت مهلة الاتصال بالخادم، حاول مرة أخرى."
+  };
+
+  const message = errorMessages[responseStatus] || "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا.";
+
+  Swal.fire({
+    icon: 'error',
+    title: 'حدث خطأ!',
+    text: message,
+  });
+
+  // If 403, go back if possible, otherwise go to index.html
+  if (responseStatus === 403) {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = 'index.html';
+    }
+  }
+
+  if (responseStatus === 401) {
+    // window.location.href = 'index.html';
   }
 }

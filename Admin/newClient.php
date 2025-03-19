@@ -74,9 +74,9 @@
 
                 <!-- Actions -->
                 <div class="flex justify-end gap-4">
-                    <button onclick="window.location.href = 'Clients.html'" type="button"
+                    <button onclick="window.location.href = 'clients.php'" type="button"
                         class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
-                        <i class="fas fa-times"></i> إلغاء
+                        <i class="fas fa-times"></i> العودة
                     </button>
                     <button onclick="addClient()" type="submit"
                         class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
@@ -88,7 +88,7 @@
     </div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        sidebarhandeler("gererClients");
+        sidebarHandler("gererClients");
     })
     </script>
     <script src="JS/ClientsManagement.js"></script>
