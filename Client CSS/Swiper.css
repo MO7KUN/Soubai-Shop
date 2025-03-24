@@ -1,0 +1,29 @@
+.swiper-container {
+    height: auto; /* Adjusted to auto for better responsiveness */
+    padding: 20px 0; /* Added padding for better spacing */
+    overflow: hidden; /* Hide overflowing slides */
+}
+.swiper-button-next, .swiper-button-prev {
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000; /* Ensure buttons are visible */
+    background-color: rgba(255, 255, 255, 0.8); /* Add background for better visibility */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* Ensure buttons are above slides */
+}
+.swiper-button-next::after, .swiper-button-prev::after {
+    font-size: 20px; /* Adjust arrow size */
+}
+.swiper-slide {
+    width: 200px; /* Fixed width for each slide */
+    opacity: 0.5; /* Partially hide non-active slides */
+    transition: opacity 0.3s ease; /* Smooth transition */
+}
+.swiper-slide-active {
+    opacity: 1; /* Fully visible active slide */
+}
