@@ -232,10 +232,6 @@
 
                 <!-- Add Pagination -->
                 <div class="swiper-pagination"></div>
-
-                <!-- Add Navigation Buttons -->
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
             </div>
         </div>
     </section>
@@ -701,23 +697,50 @@
 
 
         function fetchCategories() {
-            fetch('includes/fetchCategories.php', {
+            fetch('https://sbaishop.com/api/categorys', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                })
+                }})
                 .then(response => response.json())
                 .then(data => {
                     const categoriesContainer = document.getElementById('categories');
                     categoriesContainer.innerHTML = '';
 
-                    data.forEach(category => {
-                        const categoryElement = document.createElement('a');
-                        categoryElement.href = `category.html?id=${category.id}`;
-                        categoryElement.className = 'text-gray-600 hover:text-primary transition-colors';
-                        categoryElement.textContent = category.name;
+                    // <div class="swiper-slide">
+                    //     <div class="category-item text-center">
+                    //         <div class="bg-white rounded-lg shadow-md p-6 mb-4 overflow-hidden">
+                    //             <img src="Images/hair-cream.jpg" alt="الزيوت الطبيعية"
+                    //                 class="w-full h-24 object-cover mx-auto transition-transform duration-300">
+                    //         </div>
+                    //         <h3 class="font-medium">الزيوت الطبيعية</h3>
+                    //     </div>
+                    // </div>
 
-                        categoriesContainer.appendChild(categoryElement);
+                    data.forEach(category => {
+                        const swiperslide = document.createElement('div');
+                        swiperslide.classList.add('swiper-slide');
+
+                        const categoryItem = document.createElement('div');
+                        categoryItem.classList.add('category-item', 'text-center');
+
+                        const bgwhite = document.createElement('div');
+                        bgwhite.classList.add('bg-white', 'rounded-lg', 'shadow-md', 'p-6', 'mb-4', 'overflow-hidden');
+
+                        const img = document.createElement('img');
+                        img.src = category.image_url;
+                        img.alt = category.name;
+                        img.classList.add('w-full', 'h-24', 'object-cover', 'mx-auto', 'transition-transform', 'duration-300');
+
+                        const h3 = document.createElement('h3');
+                        h3.textContent = category.name;
+                        h3.classList.add('font-medium');
+
+                        bgwhite.appendChild(img);
+                        categoryItem.appendChild(bgwhite);
+                        categoryItem.appendChild(h3);
+                        swiperslide.appendChild(categoryItem);
+                        categoriesContainer.appendChild(swiperslide);
                     });
                 })
                 .catch(error => {
@@ -726,12 +749,16 @@
                         errormessage.textContent = 'فشل في تحميل الفئات';
                         errormessage.classList.remove('hidden');
                     } else if (error.status === 500) {
-                        errormessage.textContent = 'حدث خطأ ما، يرجى المحاولة مرة أخرى';
+                        errormessage.textContent = 'حدث خطأ في الخادم، يرجى المحاولة مرة أخرى';
+                        errormessage.classList.remove('hidden');
+                    } else {
+                        errormessage.textContent = 'حدث خطاء، يرجى المحاولة مرة اخرى';
                         errormessage.classList.remove('hidden');
                     }
                 })
         }
         document.addEventListener('DOMContentLoaded', function () {
+            fetchCategories();
             const swiper = new Swiper('.swiper-container', {
                 loop: true,
                 pagination: {
