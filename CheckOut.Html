@@ -178,15 +178,15 @@
                         <div class="space-y-4 mb-6">
                             <div class="flex justify-between">
                                 <span class="text-gray-600">المجموع الفرعي</span>
-                                <span class="font-medium" id="subtotal">0.00 دولار</span>
+                                <span class="font-medium" id="subtotal">0.00 درهم</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600">الشحن</span>
-                                <span class="font-medium" id="shipping">5.00 دولار</span>
+                                <span class="font-medium" id="shipping">5.00 درهم</span>
                             </div>
                             <div class="flex justify-between border-t border-gray-200 pt-4">
                                 <span class="text-lg font-bold">المجموع</span>
-                                <span class="text-lg font-bold text-primary" id="total">5.00 دولار</span>
+                                <span class="text-lg font-bold text-primary" id="total">5.00 درهم</span>
                             </div>
                         </div>
 
@@ -330,8 +330,8 @@
             }
 
             // Update order summary
-            document.getElementById('subtotal').textContent = checkoutData.subtotal.toFixed(2) + ' دولار';
-            document.getElementById('total').textContent = checkoutData.total.toFixed(2) + ' دولار';
+            document.getElementById('subtotal').textContent = checkoutData.subtotal.toFixed(2) + ' درهم';
+            document.getElementById('total').textContent = checkoutData.total.toFixed(2) + ' درهم';
             
             // Render order items
             const orderItemsContainer = document.getElementById('orderItems');
@@ -345,10 +345,10 @@
                         <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-md">
                         <div class="mr-3">
                             <h4 class="font-medium">${item.name}</h4>
-                            <p class="text-sm text-gray-500">${item.quantity} × ${item.price.toFixed(2)} دولار</p>
+                            <p class="text-sm text-gray-500">${item.quantity} × ${item.price.toFixed(2)} درهم</p>
                         </div>
                     </div>
-                    <span class="font-medium">${(item.price * item.quantity).toFixed(2)} دولار</span>
+                    <span class="font-medium">${(item.price * item.quantity).toFixed(2)} درهم</span>
                 `;
                 orderItemsContainer.appendChild(itemElement);
             });

@@ -144,7 +144,7 @@
                             <input type="text" placeholder="ابحث عن منتجات..." 
                                 class="search-input focus:ring-2 focus:ring-primary focus:border-primary">
                             <button type="submit" class="search-icon text-gray-500 hover:text-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 w-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
                             </button>
@@ -232,15 +232,15 @@
                         <div class="space-y-4 mb-6">
                             <div class="flex justify-between">
                                 <span class="text-gray-600">المجموع الفرعي</span>
-                                <span class="font-medium" id="subtotal">0.00 دولار</span>
+                                <span class="font-medium" id="subtotal">0.00 درهم</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600">الشحن</span>
-                                <span class="font-medium" id="shipping">5.00 دولار</span>
+                                <span class="font-medium" id="shipping">5.00 درهم</span>
                             </div>
                             <div class="flex justify-between border-t border-gray-200 pt-4">
                                 <span class="text-lg font-bold">المجموع</span>
-                                <span class="text-lg font-bold text-primary" id="total">5.00 دولار</span>
+                                <span class="text-lg font-bold text-primary" id="total">5.00 درهم</span>
                             </div>
                         </div>
 
@@ -363,40 +363,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
-        // Cart data structure
-        let cart = [
-            {
-                id: 1,
-                name: "شاي أخضر بالنعناع المغربي",
-                description: "وزن: 250 جرام",
-                image: "images/tea1.jpg",
-                price: 9.99,
-                quantity: 2,
-                originalPrice: 9.99
-            },
-            {
-                id: 2,
-                name: "مزيج بهارات رأس الحانوت",
-                description: "وزن: 100 جرام",
-                image: "images/product2.jpg",
-                price: 12.75,
-                quantity: 1,
-                originalPrice: 14.99
-            },
-            {
-                id: 3,
-                name: "صابون بلدي مغربي بالأركان",
-                description: "عدد: 2",
-                image: "images/product4.jpg",
-                price: 7.50,
-                quantity: 2,
-                originalPrice: 7.50
-            }
-        ];
-
-        // Shipping cost
-        const shippingCost = 5.00;
-
         // Mobile Menu Toggle
         document.getElementById('mobileMenuBtn').addEventListener('click', function() {
             document.getElementById('mobileMenu').classList.toggle('hidden');
@@ -404,15 +370,33 @@
 
         // Initialize cart
         function initializeCart() {
-            renderCartItems();
-            updateCartTotals();
-            updateCartCount();
+            // Get cart from localStorage or initialize empty array
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            renderCartItems(cart);
+            updateCartTotals(cart);
+            updateCartCount(cart);
         }
 
         // Render cart items
-        function renderCartItems() {
+        function renderCartItems(cart) {
             const cartItemsContainer = document.getElementById('cartItems');
             cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="bg-white p-8 rounded-lg shadow-sm text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <h3 class="text-lg font-medium text-gray-700 mb-2">سلة التسوق فارغة</h3>
+                        <p class="text-gray-500 mb-4">لم تقم بإضافة أي منتجات إلى سلة التسوق بعد</p>
+                        <a href="products.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-secondary transition-colors">
+                            تصفح المنتجات
+                        </a>
+                    </div>
+                `;
+                return;
+            }
 
             cart.forEach(item => {
                 const itemElement = document.createElement('div');
@@ -430,17 +414,17 @@
                                 <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-md">
                                 <div class="mr-4">
                                     <h3 class="font-medium">${item.name}</h3>
-                                    <p class="text-sm text-gray-500">${item.description}</p>
+                                    <p class="text-sm text-gray-500">${item.description || 'وزن: 250 جرام'}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="md:w-1/6 mb-4 md:mb-0 text-center">
-                            ${item.price < item.originalPrice ? 
+                            ${item.price < (item.originalPrice || item.price) ? 
                                 `<div>
-                                    <span class="font-medium text-primary item-price" data-price="${item.price}">${item.price.toFixed(2)} دولار</span>
-                                    <span class="text-gray-500 text-sm line-through block">${item.originalPrice.toFixed(2)} دولار</span>
+                                    <span class="font-medium text-primary item-price" data-price="${item.price}">${item.price.toFixed(2)} درهم</span>
+                                    <span class="text-gray-500 text-sm line-through block">${(item.originalPrice || item.price).toFixed(2)} درهم</span>
                                 </div>` :
-                                `<span class="font-medium text-primary item-price" data-price="${item.price}">${item.price.toFixed(2)} دولار</span>`
+                                `<span class="font-medium text-primary item-price" data-price="${item.price}">${item.price.toFixed(2)} درهم</span>`
                             }
                         </div>
                         <div class="md:w-1/6 mb-4 md:mb-0 flex justify-center">
@@ -451,7 +435,7 @@
                             </div>
                         </div>
                         <div class="md:w-1/6 text-center">
-                            <span class="font-medium text-primary item-total">${(item.price * item.quantity).toFixed(2)} دولار</span>
+                            <span class="font-medium text-primary item-total">${(item.price * item.quantity).toFixed(2)} درهم</span>
                         </div>
                     </div>
                 `;
@@ -459,25 +443,27 @@
             });
 
             // Add event listeners to new elements
-            addCartItemEventListeners();
+            addCartItemEventListeners(cart);
         }
 
         // Add event listeners to cart items
-        function addCartItemEventListeners() {
+        function addCartItemEventListeners(cart) {
             // Quantity buttons
             document.querySelectorAll('.quantity-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const input = this.parentNode.querySelector('input');
                     const itemId = this.closest('.cart-item').dataset.id;
-                    const item = cart.find(i => i.id == itemId);
+                    const itemIndex = cart.findIndex(i => i.id == itemId);
                     
-                    if (this.classList.contains('plus') && item.quantity < 99) {
-                        input.value = ++item.quantity;
-                    } else if (this.classList.contains('minus') && item.quantity > 1) {
-                        input.value = --item.quantity;
+                    if (itemIndex !== -1) {
+                        if (this.classList.contains('plus') && cart[itemIndex].quantity < 99) {
+                            input.value = ++cart[itemIndex].quantity;
+                        } else if (this.classList.contains('minus') && cart[itemIndex].quantity > 1) {
+                            input.value = --cart[itemIndex].quantity;
+                        }
+                        
+                        updateCartItem(cart, itemId, cart[itemIndex].quantity);
                     }
-                    
-                    updateCartItem(itemId, item.quantity);
                 });
             });
 
@@ -485,13 +471,17 @@
             document.querySelectorAll('.quantity-input').forEach(input => {
                 input.addEventListener('change', function() {
                     const itemId = this.closest('.cart-item').dataset.id;
+                    const itemIndex = cart.findIndex(i => i.id == itemId);
                     let quantity = parseInt(this.value);
                     
-                    if (isNaN(quantity) || quantity < 1) quantity = 1;
-                    if (quantity > 99) quantity = 99;
-                    
-                    this.value = quantity;
-                    updateCartItem(itemId, quantity);
+                    if (itemIndex !== -1) {
+                        if (isNaN(quantity)) quantity = 1;
+                        if (quantity < 1) quantity = 1;
+                        if (quantity > 99) quantity = 99;
+                        
+                        this.value = quantity;
+                        updateCartItem(cart, itemId, quantity);
+                    }
                 });
             });
 
@@ -499,23 +489,24 @@
             document.querySelectorAll('.remove-item').forEach(button => {
                 button.addEventListener('click', function() {
                     const itemId = this.closest('.cart-item').dataset.id;
-                    removeCartItem(itemId);
+                    removeCartItem(cart, itemId);
                 });
             });
         }
 
         // Update cart item quantity
-        function updateCartItem(itemId, quantity) {
-            const item = cart.find(i => i.id == itemId);
-            if (item) {
-                item.quantity = quantity;
-                updateCartTotals();
-                updateCartCount();
+        function updateCartItem(cart, itemId, quantity) {
+            const itemIndex = cart.findIndex(i => i.id == itemId);
+            if (itemIndex !== -1) {
+                cart[itemIndex].quantity = quantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartTotals(cart);
+                updateCartCount(cart);
             }
         }
 
         // Remove cart item
-        function removeCartItem(itemId) {
+        function removeCartItem(cart, itemId) {
             Swal.fire({
                 title: 'هل أنت متأكد؟',
                 text: 'هل تريد حقاً إزالة هذا المنتج من سلة التسوق؟',
@@ -527,10 +518,12 @@
                 cancelButtonText: 'إلغاء'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    cart = cart.filter(item => item.id != itemId);
-                    renderCartItems();
-                    updateCartTotals();
-                    updateCartCount();
+                    const updatedCart = cart.filter(item => item.id != itemId);
+                    localStorage.setItem('cart', JSON.stringify(updatedCart));
+                    
+                    renderCartItems(updatedCart);
+                    updateCartTotals(updatedCart);
+                    updateCartCount(updatedCart);
                     
                     Swal.fire(
                         'تم الإزالة!',
@@ -542,8 +535,9 @@
         }
 
         // Update cart totals
-        function updateCartTotals() {
+        function updateCartTotals(cart) {
             let subtotal = 0;
+            const shippingCost = 5.00;
             
             cart.forEach(item => {
                 subtotal += item.price * item.quantity;
@@ -552,7 +546,7 @@
                 const itemElement = document.querySelector(`.cart-item[data-id="${item.id}"]`);
                 if (itemElement) {
                     itemElement.querySelector('.item-total').textContent = 
-                        `${(item.price * item.quantity).toFixed(2)} دولار`;
+                        `${(item.price * item.quantity).toFixed(2)} درهم`;
                 }
             });
             
@@ -560,12 +554,13 @@
             const total = subtotal + shippingCost;
             
             // Update summary
-            document.getElementById('subtotal').textContent = subtotal.toFixed(2) + ' دولار';
-            document.getElementById('total').textContent = total.toFixed(2) + ' دولار';
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2) + ' درهم';
+            document.getElementById('shipping').textContent = shippingCost.toFixed(2) + ' درهم';
+            document.getElementById('total').textContent = total.toFixed(2) + ' درهم';
         }
 
         // Update cart count in header
-        function updateCartCount() {
+        function updateCartCount(cart) {
             const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
             document.getElementById('cartCount').textContent = cartCount;
         }
@@ -583,6 +578,8 @@
 
         // Checkout button
         document.getElementById('checkoutBtn').addEventListener('click', function() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
             if (cart.length === 0) {
                 Swal.fire({
                     title: 'سلة فارغة!',
@@ -595,11 +592,15 @@
             }
 
             // Prepare data for checkout
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shippingCost = 5.00;
+            const total = subtotal + shippingCost;
+            
             const checkoutData = {
                 items: cart,
-                subtotal: parseFloat(document.getElementById('subtotal').textContent),
+                subtotal: subtotal,
                 shipping: shippingCost,
-                total: parseFloat(document.getElementById('total').textContent)
+                total: total
             };
 
             // Save to localStorage

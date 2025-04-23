@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -52,6 +54,32 @@
             background-size: cover;
             background-position: center;
         }
+
+        /* Quantity selector styles */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid #C8A574;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            padding: 0.25rem 0.5rem;
+            color: #C8A574;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-display {
+            min-width: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+        }
     </style>
 </head>
 
@@ -85,7 +113,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                         </svg>
-                        <span class="absolute -top-2 -right-2 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
                     </a>
                 </div>
             </div>
@@ -132,159 +160,8 @@
             </div>
 
             <!-- Products Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Product 1 -->
-                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative">
-                        <img src="images/tea1.jpg" alt="شاي أخضر بالنعناع المغربي" class="w-full h-64 object-cover">
-                        <div class="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded">الأكثر مبيعاً</div>
-                        <button class="absolute top-2 right-2 bg-white p-2 rounded-full text-gray-700 hover:text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-1">شاي أخضر بالنعناع المغربي</h3>
-                        <p class="text-sm text-gray-500 mb-2">وزن: 250 جرام</p>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="font-medium text-primary">9.99 دولار</span>
-                                <span class="text-gray-500 text-sm line-through mr-2">12.99 دولار</span>
-                            </div>
-                            <button class="bg-primary text-white p-2 rounded-full hover:bg-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 2 -->
-                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative">
-                        <img src="images/tea2.jpg" alt="شاي الزعتر البري" class="w-full h-64 object-cover">
-                        <button class="absolute top-2 right-2 bg-white p-2 rounded-full text-gray-700 hover:text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-1">شاي الزعتر البري</h3>
-                        <p class="text-sm text-gray-500 mb-2">وزن: 100 جرام</p>
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium text-primary">7.50 دولار</span>
-                            <button class="bg-primary text-white p-2 rounded-full hover:bg-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative">
-                        <img src="images/tea3.jpg" alt="شاي الزنجبيل بالليمون" class="w-full h-64 object-cover">
-                        <div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">خصم 20%</div>
-                        <button class="absolute top-2 right-2 bg-white p-2 rounded-full text-gray-700 hover:text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-1">شاي الزنجبيل بالليمون</h3>
-                        <p class="text-sm text-gray-500 mb-2">وزن: 150 جرام</p>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="font-medium text-primary">8.99 دولار</span>
-                                <span class="text-gray-500 text-sm line-through mr-2">11.25 دولار</span>
-                            </div>
-                            <button class="bg-primary text-white p-2 rounded-full hover:bg-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 4 -->
-                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative">
-                        <img src="images/tea4.jpg" alt="شاي الكركم الذهبي" class="w-full h-64 object-cover">
-                        <button class="absolute top-2 right-2 bg-white p-2 rounded-full text-gray-700 hover:text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-1">شاي الكركم الذهبي</h3>
-                        <p class="text-sm text-gray-500 mb-2">وزن: 120 جرام</p>
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium text-primary">10.50 دولار</span>
-                            <button class="bg-primary text-white p-2 rounded-full hover:bg-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 5 -->
-                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative">
-                        <img src="images/tea5.jpg" alt="شاي المريمية" class="w-full h-64 object-cover">
-                        <button class="absolute top-2 right-2 bg-white p-2 rounded-full text-gray-700 hover:text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-1">شاي المريمية</h3>
-                        <p class="text-sm text-gray-500 mb-2">وزن: 80 جرام</p>
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium text-primary">6.75 دولار</span>
-                            <button class="bg-primary text-white p-2 rounded-full hover:bg-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 6 -->
-                <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative">
-                        <img src="images/tea6.jpg" alt="شاي اللويزة" class="w-full h-64 object-cover">
-                        <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">جديد</div>
-                        <button class="absolute top-2 right-2 bg-white p-2 rounded-full text-gray-700 hover:text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-1">شاي اللويزة</h3>
-                        <p class="text-sm text-gray-500 mb-2">وزن: 100 جرام</p>
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium text-primary">8.25 دولار</span>
-                            <button class="bg-primary text-white p-2 rounded-full hover:bg-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="productsGrid">
+                <!-- Products will be loaded dynamically -->
             </div>
 
             <!-- Pagination -->
@@ -401,28 +278,266 @@
         </div>
     </footer>
 
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
+        // Sample products data
+        const products = [
+            {
+                id: 1,
+                name: "شاي أخضر بالنعناع المغربي",
+                description: "وزن: 250 جرام",
+                image: "images/tea1.jpg",
+                price: 9.99,
+                originalPrice: 12.99,
+                category: "الشاي والأعشاب",
+                tags: ["الأكثر مبيعاً"],
+                dateAdded: "2023-05-15"
+            },
+            {
+                id: 2,
+                name: "شاي الزعتر البري",
+                description: "وزن: 100 جرام",
+                image: "images/tea2.jpg",
+                price: 7.50,
+                originalPrice: 7.50,
+                category: "الشاي والأعشاب",
+                tags: [],
+                dateAdded: "2023-03-10"
+            },
+            {
+                id: 3,
+                name: "شاي الزنجبيل بالليمون",
+                description: "وزن: 150 جرام",
+                image: "images/tea3.jpg",
+                price: 8.99,
+                originalPrice: 11.25,
+                category: "الشاي والأعشاب",
+                tags: ["خصم"],
+                dateAdded: "2023-06-22"
+            },
+            {
+                id: 4,
+                name: "شاي الكركم الذهبي",
+                description: "وزن: 120 جرام",
+                image: "images/tea4.jpg",
+                price: 10.50,
+                originalPrice: 10.50,
+                category: "الشاي والأعشاب",
+                tags: [],
+                dateAdded: "2023-04-05"
+            },
+            {
+                id: 5,
+                name: "شاي المريمية",
+                description: "وزن: 80 جرام",
+                image: "images/tea5.jpg",
+                price: 6.75,
+                originalPrice: 6.75,
+                category: "الشاي والأعشاب",
+                tags: [],
+                dateAdded: "2023-02-18"
+            },
+            {
+                id: 6,
+                name: "شاي اللويزة",
+                description: "وزن: 100 جرام",
+                image: "images/tea6.jpg",
+                price: 8.25,
+                originalPrice: 8.25,
+                category: "الشاي والأعشاب",
+                tags: ["جديد"],
+                dateAdded: "2023-07-30"
+            }
+        ];
+
+        // Cart data
+        let cart = [];
+
         // Mobile Menu Toggle
         document.getElementById('mobileMenuBtn').addEventListener('click', function() {
             document.getElementById('mobileMenu').classList.toggle('hidden');
         });
 
-        // Add to cart functionality
-        document.querySelectorAll('[class*="bg-primary text-white p-2 rounded-full"]').forEach(button => {
-            button.addEventListener('click', function() {
-                const productCard = this.closest('.product-card');
-                const productName = productCard.querySelector('h3').textContent;
+        // Initialize products
+        function initializeProducts() {
+            renderProducts(products);
+        }
+
+        // Render products
+        function renderProducts(productsToRender) {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = '';
+
+            productsToRender.forEach(product => {
+                const cartItem = cart.find(item => item.id === product.id);
+                const quantity = cartItem ? cartItem.quantity : 0;
                 
-                // In a real implementation, you would add the product to the cart
-                // For now, we'll just show a success message
+                const productElement = document.createElement('div');
+                productElement.className = 'product-card bg-white rounded-lg shadow-sm overflow-hidden';
+                productElement.innerHTML = `
+                    <div class="relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover">
+                        ${product.tags.includes('الأكثر مبيعاً') ? 
+                            '<div class="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded">الأكثر مبيعاً</div>' : ''}
+                        ${product.tags.includes('خصم') ? 
+                            '<div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">خصم</div>' : ''}
+                        ${product.tags.includes('جديد') ? 
+                            '<div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">جديد</div>' : ''}
+                        <button class="absolute top-2 right-2 bg-white p-2 rounded-full text-gray-700 hover:text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">${product.name}</h3>
+                        <p class="text-sm text-gray-500 mb-2">${product.description}</p>
+                        <div class="flex items-center justify-between">
+                            ${product.price < product.originalPrice ? 
+                                `<div>
+                                    <span class="font-medium text-primary">${product.price.toFixed(2)} درهم</span>
+                                    <span class="text-gray-500 text-sm line-through mr-2">${product.originalPrice.toFixed(2)} درهم</span>
+                                </div>` :
+                                `<span class="font-medium text-primary">${product.price.toFixed(2)} درهم</span>`
+                            }
+                            ${quantity > 0 ? 
+                                `<div class="quantity-selector">
+                                    <button class="quantity-btn decrease-quantity" data-id="${product.id}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                        </svg>
+                                    </button>
+                                    <span class="quantity-display">${quantity}</span>
+                                    <button class="quantity-btn increase-quantity" data-id="${product.id}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                    </button>
+                                </div>` :
+                                `<button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary" data-id="${product.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                </button>`
+                            }
+                        </div>
+                    </div>
+                `;
+                productsGrid.appendChild(productElement);
+            });
+            
+            // Add event listeners to cart buttons
+            addCartEventListeners();
+        }
+
+        // Add event listeners for all cart interactions
+        function addCartEventListeners() {
+            // Add to cart buttons
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.id);
+                    addToCart(productId, 1);
+                });
+            });
+            
+            // Increase quantity buttons
+            document.querySelectorAll('.increase-quantity').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.id);
+                    addToCart(productId, 1);
+                });
+            });
+            
+            // Decrease quantity buttons
+            document.querySelectorAll('.decrease-quantity').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.dataset.id);
+                    decreaseQuantity(productId);
+                });
+            });
+        }
+
+        // Add product to cart with specific quantity
+        function addToCart(productId, quantity) {
+            const product = products.find(p => p.id === productId);
+            
+            // Check if product already in cart
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    description: product.description,
+                    image: product.image,
+                    price: product.price,
+                    quantity: quantity,
+                    originalPrice: product.originalPrice
+                });
+            }
+            
+            updateCart();
+            
+            // Show success message only when adding from the "+" button
+            if (quantity === 1) {
                 Swal.fire({
-                    title: 'تمت الإضافة!',
-                    text: `تمت إضافة ${productName} إلى سلة التسوق`,
+                    title: 'تمت الإضافة إلى السلة!',
+                    text: `${product.name} تمت إضافته إلى سلة التسوق`,
                     icon: 'success',
                     confirmButtonText: 'حسناً',
                     confirmButtonColor: '#C8A574'
                 });
-            });
+            }
+        }
+
+        // Decrease product quantity in cart
+        function decreaseQuantity(productId) {
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity -= 1;
+                
+                // Remove item if quantity reaches 0
+                if (existingItem.quantity <= 0) {
+                    cart = cart.filter(item => item.id !== productId);
+                }
+            }
+            
+            updateCart();
+        }
+
+        // Update cart and UI
+        function updateCart() {
+            updateCartCount();
+            renderProducts(products); // Re-render the products with updated quantities
+            
+            // Save cart to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Update cart count in header
+        function updateCartCount() {
+            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = cartCount;
+        }
+
+        // Load cart from localStorage on page load
+        function loadCart() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartCount();
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCart();
+            initializeProducts();
         });
     </script>
 </body>
