@@ -4,7 +4,7 @@ async function getOrders() {
     try {
 
 
-        const response = await fetch('http://e_sahara.test/api/orders');
+        const response = await fetch(apiUrl + '/orders');
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
             throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
@@ -164,7 +164,7 @@ async function changeOrderStatus(orderId, selectElement) {
     }
 
     try {
-        const response = await fetch(`http://e_sahara.test/api/order/${orderId}/edit`, {
+        const response = await fetch(apiUrl + `/order/${orderId}/edit`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

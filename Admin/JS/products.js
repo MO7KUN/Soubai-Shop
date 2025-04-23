@@ -11,7 +11,7 @@ async function fetchProducts() {
     }
 
     try {
-        const response = await fetch("http://e_sahara.test/api/products",
+        const response = await fetch(apiUrl + "/products",
             {
                 method: "GET",
                 headers: {
@@ -179,7 +179,7 @@ async function deleteProduct(id) {
     if (!confirmDelete.isConfirmed) return;
 
     try {
-        const response = await fetch(`http://e_sahara.test/api/product/${id}`, {
+        const response = await fetch(apiUrl + `/product/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -224,7 +224,7 @@ async function changeProductVisibility(id, selectElement) {
     }
 
     try {
-        const response = await fetch(`http://e_sahara.test/api/product/${id}/edit`, {
+        const response = await fetch(apiUrl + `/product/${id}/edit`, {
             method: "POST", // Use PUT for updates
             headers: {
                 "Content-Type": "application/json",

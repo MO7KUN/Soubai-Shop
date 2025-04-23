@@ -1,3 +1,5 @@
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
@@ -13,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function showProductInfos(productId) {
     try {
-        const response = await fetch(`http://e_sahara.test/api/product/${productId}`);
+        const response = await fetch(apiUrl + `/product/${productId}`);
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
             throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
@@ -174,8 +176,8 @@ async function showProductInfos(productId) {
 
 //     try {
 //         const url = isEditMode
-//             ? `http://e_sahara.test/api/product/${productId}/edit`
-//             : 'http://e_sahara.test/api/product';
+//             ? apiUrl+`/product/${productId}/edit`
+//             : apiUrl+'/product';
 //         const response = await fetch(url, {
 //             method: 'POST',
 //             body: formData,
@@ -299,8 +301,8 @@ async function saveProduct() {
 
     try {
         const url = isEditMode
-            ? `http://e_sahara.test/api/product/${productId}/edit`
-            : 'http://e_sahara.test/api/product';
+            ? apiUrl + `/product/${productId}/edit`
+            : apiUrl + '/product';
 
         const response = await fetch(url, {
             method: 'POST',
@@ -335,7 +337,7 @@ async function saveProduct() {
 
 async function fetchCategorys() {
 
-    fetch('http://e_sahara.test/api/categorys', {
+    fetch(apiUrl + '/categorys', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -419,7 +421,7 @@ async function addCategory() {
             formData.append("image", categoryImageFile, categoryName + ".jpg");
         }
 
-        const response = await fetch("http://e_sahara.test/api/category", {
+        const response = await fetch(apiUrl + "/category", {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
             body: formData,

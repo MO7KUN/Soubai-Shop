@@ -1,7 +1,9 @@
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener('DOMContentLoaded', fetchOrdersStats())
 async function fetchOrdersStats() {
     try {
-        const response = await fetch('http://e_sahara.test/api/dashboard/ordersStats');
+        const response = await fetch(apiUrl + '/api/dashboard/ordersStats');
 
         // Handle different response statuses
         if (!response.ok) {
@@ -31,7 +33,7 @@ async function fetchOrdersStats() {
 document.addEventListener('DOMContentLoaded', fetchRecentOrders())
 async function fetchRecentOrders() {
     try {
-        const response = await fetch('http://e_sahara.test/api/dashboard/recentOrders');
+        const response = await fetch(apiUrl + '/dashboard/recentOrders');
 
         // Handle different response statuses
         if (!response.ok) {
@@ -114,7 +116,7 @@ function getOrderStatusBadge(status) {
 document.addEventListener('DOMContentLoaded', fetchBestSellingProducts())
 async function fetchBestSellingProducts() {
     try {
-        const response = await fetch('http://e_sahara.test/api/dashboard/bestSellingProducts');
+        const response = await fetch(apiUrl + '/api/dashboard/bestSellingProducts');
 
         // Handle different response statuses
         if (!response.ok) {
@@ -158,7 +160,7 @@ async function fetchBestSellingProducts() {
 document.addEventListener("DOMContentLoaded", fetchLowStockProducts())
 async function fetchLowStockProducts() {
     try {
-        const response = await fetch("http://e_sahara.test/api/dashboard/lowStockProducts");
+        const response = await fetch(apiUrl + "/dashboard/lowStockProducts");
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object

@@ -1,6 +1,8 @@
+let apiUrl = "https://sbaishop.com/api"
+
 async function fetchCategorys() {
     try {
-        const response = await fetch('http://e_sahara.test/api/categorys', {
+        const response = await fetch(apiUrl + '/categorys', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -92,7 +94,7 @@ async function addCategory() {
             formData.append("image", categoryImageFile, categoryName + ".jpg");
         }
 
-        const response = await fetch("http://e_sahara.test/api/category", {
+        const response = await fetch(apiUrl + "/category", {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
             body: formData,
@@ -199,7 +201,7 @@ function updateCategory() {
         formData.append("image", categoryImage);
     }
     formData.append("label", categoryName);
-    fetch(`http://e_sahara.test/api/category/${categoryID}/edit`, {
+    fetch(apiUrl + `/category/${categoryID}/edit`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`,
