@@ -1,10 +1,18 @@
+let apiUrl = "https://sbaishop.com/api"
+
 async function getOrders() {
     let allOrders = [];
     const tbody = document.getElementById('ordersTableBody');
     try {
 
 
-        const response = await fetch(apiUrl + '/orders');
+        const response = await fetch(apiUrl + '/orders', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            }
+        });
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
             throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };

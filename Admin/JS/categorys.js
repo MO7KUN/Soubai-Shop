@@ -32,10 +32,16 @@ async function fetchCategorys() {
             card.classList.add('bg-white', 'rounded-lg', 'shadow-lg', 'overflow-hidden', 'cursor-pointer');
             card.addEventListener('click', () => openUpdateModal(category));
 
-            const cardImage = document.createElement('img');
-            cardImage.src = category.image_url;
-            cardImage.alt = category.label;
-            cardImage.classList.add('w-full', 'h-48', 'object-cover');
+            let cardImage;
+            if (category.image_url !== null) {
+                cardImage = document.createElement('img');
+                cardImage.src = category.image_url;
+                cardImage.alt = category.label;
+                cardImage.classList.add('w-full', 'h-48', 'object-cover');
+            } else {
+                cardImage = document.createElement('div');
+                cardImage.classList.add('w-full', 'h-48', 'bg-gray-200');
+            }
 
             const cardTitlePlace = document.createElement('div');
             cardTitlePlace.classList.add('card-title-place', 'text-center', 'p-4');
@@ -52,12 +58,7 @@ async function fetchCategorys() {
 
     } catch (error) {
         console.error('❌ Error fetching categories:', error);
-
-        if (error.status === 401 || error.status === 403) {
-            window.location.href = "index.html"; // Redirect if unauthorized
-        } else {
-            document.getElementById('error-message').classList.remove('hidden'); // Show error message
-        }
+        errorsHandler(error.status)
     }
 }
 
@@ -228,15 +229,63 @@ function updateCategory() {
         });
 }
 
-//TODO add the delete catgeory function
+async function deleteCategory(id) {
+    const confirmation = await Swal.fire({
+        title: "هل أنت متأكد؟",
+        text: "لن تتمكن من التراجع عن هذا الإجراء!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "نعم، احذفها",
+        cancelButtonText: "إلغاء",
+    });
 
+    if (confirmation.isConfirmed) {
+        try {
+            const response = await fetch(apiUrl + `/category/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to delete category");
+            }
+
+            fetchCategorys(); // Refresh the categories list
+            Swal.fire({
+                icon: "success",
+                title: "تم الحذف",
+                text: "تم حذف الفئة بنجاح",
+                showConfirmButton: false,
+                timer: 1000,
+            });
+            closeUpdateModal()
+
+        } catch (error) {
+            console.error("❌ Error deleting category:", error);
+            Swal.fire({
+                icon: "error",
+                title: "خطأ",
+                text: "تعذر حذف الفئة، يرجى المحاولة لاحقًا",
+            });
+        }
+    }
+}
 
 // Function to open the update modal
 function openUpdateModal(category) {
     categoryID = category.id;
     document.getElementById("categoryName").value = category.label;
-    document.getElementById("preview_img2").src = category.image_url; // Clear file input
+    if (category.image_url) {
+        document.getElementById("preview_img2").src = category.image_url;
+    } else {
+        document.getElementById("preview_img2").src = null
+    }
     document.getElementById("updateModal").classList.remove("hidden");
+    document.getElementById("deleteCategoryBtn").addEventListener("click", () => deleteCategory(category.id));
 }
 
 // Function to close the update modal

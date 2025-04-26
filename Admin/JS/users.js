@@ -1,3 +1,5 @@
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener("DOMContentLoaded", function () {
     fetchUsers();
 })

@@ -27,7 +27,7 @@
             <h1 class="text-center text-2xl font-bold text-black md:text-800 mb-4">
                 <i class="fas fa-list text-yellow-400"></i> الفئات
             </h1>
-            <a href="NewCategory.php"
+            <a href="newCategory.php"
                 class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                 <i class="fas fa-plus"></i> إضافة فئة
             </a>
@@ -100,7 +100,7 @@
                         تتخطى 2 ميغابايت </p>
                 </div>
                 <div class="flex justify-end gap-4">
-                    <button type="button" onclick="deleteCategory()"
+                    <button type="button" id="deleteCategoryBtn"
                         class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-300"><i
                             class="fas fa-trash"></i></button>
                     <button type="submit" onclick="updateCategory()"

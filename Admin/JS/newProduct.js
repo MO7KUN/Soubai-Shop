@@ -15,7 +15,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function showProductInfos(productId) {
     try {
-        const response = await fetch(apiUrl + `/product/${productId}`);
+        const response = await fetch(apiUrl + `/product/${productId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+        });
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
             throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
@@ -25,7 +31,9 @@ async function showProductInfos(productId) {
         // Fill main product fields
         document.getElementById('ref').value = product.ref || null;
         document.getElementById('label').value = product.label;
-        document.getElementById('category_id').value = product.category.id;
+        if (product.category) {
+            document.getElementById('category_id').value = product.category.id;
+        }
         document.getElementById('buying_price').value = product.buying_price || null;
         document.getElementById('selling_price').value = product.selling_price;
         document.getElementById('discount_price').value = product.discount_price || null;
@@ -308,7 +316,8 @@ async function saveProduct() {
             method: 'POST',
             body: formData,
             headers: {
-                'Accept': 'application/json',
+                // "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
             },
         });
 
