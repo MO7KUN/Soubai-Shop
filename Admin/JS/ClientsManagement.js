@@ -1,5 +1,7 @@
+let apiUrl = "https://sbaishop.com/api"
+
 function fetchClients(retryCount = 0) {
-  fetch("http://e_sahara.test/api/clients", {
+  fetch(apiUrl + "/clients", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -26,9 +28,10 @@ function fetchClients(retryCount = 0) {
             <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.name}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.tel}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.city}</td>
+            <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${client.balance}</td>
             <td class="px-4 py-3 text-center">
                 <div class="flex items-center justify-center gap-2">
-                    <button onclick="openUpdateModal(${client.id},'${client.name}','${client.tel}','${client.city}')" class="bg-blue-500 text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition">
+                    <button onclick="openUpdateModal(${client.id},'${client.name}','${client.tel}','${client.city}',${client.balance})" class="bg-blue-500 text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button onclick="deleteClient(${client.id})" class="bg-red-500 text-white px-3 py-1.5 rounded-full hover:bg-red-600 transition">
@@ -91,9 +94,19 @@ async function addClient() {
     name: document.getElementById("client-name").value,
     tel: document.getElementById("client-phone").value,
     city: document.getElementById("client-city").value,
+    balance: document.getElementById("client-balance").value,
   };
 
-  fetch("http://e_sahara.test/api/client", {
+  if (clientData.name == "") {
+    Swal.fire({
+      icon: "warning",
+      title: "تنبيه",
+      text: "الرجاء إدخال اسم العميل",
+    });
+    return;
+  }
+
+  fetch(apiUrl + "/client", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -128,7 +141,7 @@ async function addClient() {
 async function deleteClient(clientId) {
   if (!confirm('هل أنت متأكد أنك تريد حذف هذا العميل؟')) return
   // Delete client logic here
-  fetch(`http://e_sahara.test/api/client/${clientId}`, {
+  fetch(apiUrl + `/client/${clientId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -167,6 +180,7 @@ async function updateClient() {
   const ClientName = document.getElementById("ClientName").value;
   const ClientPhone = document.getElementById("ClientPhone").value;
   const ClientCity = document.getElementById("ClientCity").value;
+  const clientBalance = document.getElementById("ClientBalance").value;
 
   if (!ClientName) {
     document.getElementById("ClientNameError").classList.remove("hidden");
@@ -186,8 +200,9 @@ async function updateClient() {
   formData.append("name", ClientName);
   formData.append("tel", ClientPhone);
   formData.append("city", ClientCity);
+  formData.append("balance", clientBalance);
   // Update client logic here
-  fetch(`http://e_sahara.test/api/client/${clientID}/edit`, {
+  fetch(apiUrl + `/client/${clientID}/edit`, {
     method: "POST",
     headers: {
       // "Content-Type": "application/json",

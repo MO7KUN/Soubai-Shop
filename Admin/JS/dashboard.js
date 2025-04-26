@@ -1,7 +1,18 @@
+// let apiUrl = "http://e_sahara.test/api"
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener('DOMContentLoaded', fetchOrdersStats())
 async function fetchOrdersStats() {
     try {
-        const response = await fetch('http://e_sahara.test/api/dashboard/ordersStats');
+        const response = await fetch(apiUrl + '/dashboard/ordersStats',
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            }
+        );
 
         // Handle different response statuses
         if (!response.ok) {
@@ -31,7 +42,15 @@ async function fetchOrdersStats() {
 document.addEventListener('DOMContentLoaded', fetchRecentOrders())
 async function fetchRecentOrders() {
     try {
-        const response = await fetch('http://e_sahara.test/api/dashboard/recentOrders');
+        const response = await fetch(apiUrl + '/dashboard/recentOrders',
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            }
+        );
 
         // Handle different response statuses
         if (!response.ok) {
@@ -45,9 +64,11 @@ async function fetchRecentOrders() {
         tableBody.innerHTML = ''; // Clear previous data
 
         // Loop through the orders and create table rows
-        data.forEach(order => {
-            const statusBadge = getOrderStatusBadge(order.status);
-            const row = `
+        if (data.length > 0) {
+
+            data.forEach(order => {
+                const statusBadge = getOrderStatusBadge(order.status);
+                const row = `
                 <tr class="hover:bg-gray-50">
                     <td class="p-3 border-b text-center whitespace-nowrap">${order.client_name || 'غير معروف'}</td>
                     <td class="p-3 border-b text-center whitespace-nowrap">${order.client_tel || 'غير متوفر'}</td>
@@ -60,13 +81,22 @@ async function fetchRecentOrders() {
                             <i class="fas fa-eye"></i>
                         </a>
                         <a href="tel:${order.client_tel}" class="bg-green-500 text-white px-2 py-1 rounded-lg">
-                            <i class="fas fa-phone"></i>
+                        <i class="fas fa-phone"></i>
                         </a>
+                        </td>
+                        </tr>
+                        `;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="100%" class="py-6 text-center text-gray-500 font-semibold bg-gray-50 border border-gray-200 rounded">
+                        ⚠️ لا توجد طلبات حديثة لعرضها.
                     </td>
                 </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
+            `
+        }
     } catch (error) {
         console.error("❌ Error fetching recent orders:", error); // Log the full error for debugging
         errorsHandler(error.status || 500);
@@ -114,7 +144,15 @@ function getOrderStatusBadge(status) {
 document.addEventListener('DOMContentLoaded', fetchBestSellingProducts())
 async function fetchBestSellingProducts() {
     try {
-        const response = await fetch('http://e_sahara.test/api/dashboard/bestSellingProducts');
+        const response = await fetch(apiUrl + '/dashboard/bestSellingProducts',
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            }
+        );
 
         // Handle different response statuses
         if (!response.ok) {
@@ -127,9 +165,11 @@ async function fetchBestSellingProducts() {
         const tableBody = document.getElementById('bestSoldProducts');
         tableBody.innerHTML = ''; // Clear previous data
 
-        // Loop through products and create table rows
-        data.forEach(product => {
-            const row = `
+        if (data.length > 0) {
+
+            // Loop through products and create table rows
+            data.forEach(product => {
+                const row = `
                 <tr class="border-b">
                     <td class="p-3 text-center">
                         <img src="${product.image_url}" alt="product image" class="w-16 h-16 rounded-lg object-cover shadow">
@@ -137,10 +177,18 @@ async function fetchBestSellingProducts() {
                     <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${product.product_name || 'غير معروف'}</td>
                     <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${product.qty_sold || 0}</td>
                     <td class="px-4 py-3 text-center whitespace-nowrap font-semibold" dir="ltr">${product.total_revenue || '0 DH'}</td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
+                    </tr>
+                    `;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="100%" class="py-6 text-center text-gray-500 font-semibold bg-gray-50 border border-gray-200 rounded">
+                    ⚠️ لا توجد منتجات لعرضها.
+                </td>
+            </tr>`
+        }
     } catch (error) {
         console.error("❌ Error fetching best selling products:", error); // Log the full error for debugging
         errorsHandler(error.status || 500);
@@ -158,7 +206,15 @@ async function fetchBestSellingProducts() {
 document.addEventListener("DOMContentLoaded", fetchLowStockProducts())
 async function fetchLowStockProducts() {
     try {
-        const response = await fetch("http://e_sahara.test/api/dashboard/lowStockProducts");
+        const response = await fetch(apiUrl + "/dashboard/lowStockProducts",
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            }
+        );
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
@@ -170,22 +226,33 @@ async function fetchLowStockProducts() {
         const tableBody = document.getElementById('lowStockProducts');
         tableBody.innerHTML = ''; // Clear existing rows
 
-        data.forEach(product => {
-            const row = `
+        if (data.length > 0) {
+
+            data.forEach(product => {
+                const row = `
                 <tr>
                     <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${product.product_name}</td>
                     <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${product.barcode || '---'}</td>
                     <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${product.remaining_qty}</td>
                     <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${product.status}</td>
                     <td class="px-4 py-3 text-center whitespace-nowrap">
-                        <a href="newProduct.php?action=edit&id=${product.id}" class="bg-blue-500 text-white px-2 py-1 rounded-full">
-                            <i class="fas fa-pen"></i>
+                    <a href="newProduct.php?action=edit&id=${product.id}" class="bg-blue-500 text-white px-2 py-1 rounded-full">
+                    <i class="fas fa-pen"></i>
                         </a>
                     </td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
-        });
+                    </tr>
+                    `;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="100%" class="py-6 text-center text-gray-500 font-semibold bg-gray-50 border border-gray-200 rounded">
+                    ⚠️ لا توجد منتجات منخفضة المخزون لعرضها.
+                </td>
+            </tr>
+        `
+        }
     } catch (error) {
         console.error("❌ Error fetching low stock products:", error); // Log the full error for debugging
         errorsHandler(error.status || 500);

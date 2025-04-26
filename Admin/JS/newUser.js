@@ -1,3 +1,5 @@
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener("DOMContentLoaded", function () {
     sidebarHandler("gererUsers");
     loadPriviliges();
@@ -132,7 +134,7 @@ async function submitForm() {
             priviliges: permissions.join('&'),
         };
 
-        let url = action == 'edit' ? `http://e_sahara.test/api/user/${userId}/edit` : 'http://e_sahara.test/api/user';
+        let url = action == 'edit' ? apiUrl + `/user/${userId}/edit` : apiUrl + '/user';
         // return;
         const response = await fetch(url, {
             method: 'POST',
@@ -164,7 +166,7 @@ async function submitForm() {
 
 async function showUserInfos(userId) {
     try {
-        const response = await fetch(`http://e_sahara.test/api/user/${userId}`);
+        const response = await fetch(apiUrl + `/user/${userId}`);
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
             throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
