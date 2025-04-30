@@ -1,11 +1,12 @@
 function fetchCategories() {
+  console.log("Fetching categories..."); // Log for debugging
   // Show loading state
   document.getElementById("Categories-loading").style.display = "block";
   document.querySelector(".swiper-container").style.display = "none";
   document.getElementById("Categories-error-message").classList.add("hidden");
 
   try {
-    fetch("https://sbaishop.com/api/categorys", {
+    fetch("https://sbaishop.com/api/website/categories", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +51,6 @@ function fetchCategories() {
         // Check if data exists and has the expected structure
         if (data && data.categories) {
           data.categories.forEach((category) => {
-            console.log(category);
             const slide = document.createElement("div");
             slide.className = "swiper-slide";
 
@@ -68,6 +68,9 @@ function fetchCategories() {
           });
           document.getElementById("Categories-loading").style.display = "none";
           document.querySelector(".swiper-container").style.display = "block";
+
+          // Initialize Swiper after adding slides
+          initCategoriesSwiper();
         } else {
           const errormessage = document.getElementById(
             "Categories-error-message"
