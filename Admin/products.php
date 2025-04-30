@@ -8,12 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body {
-            font-family: 'Tajawal', sans-serif;
-            padding-top: 64px;
-        }
+    body {
+        font-family: 'Tajawal', sans-serif;
+        padding-top: 64px;
+    }
 
-        /* Add padding for navbar */
+    /* Add padding for navbar */
     </style>
 </head>
 
@@ -42,7 +42,7 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <!-- Controls -->
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
-                    <input type="text" id="productsTable-search" placeholder="ابحث عن طلب..."
+                    <input type="text" id="productsTable-search" placeholder="ابحث عن منتج..."
                         class="w-full p-2 border rounded-lg">
                 </div>
                 <!-- Table -->
@@ -99,9 +99,9 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            sidebarHandler("gererProducts");
-        })
+    document.addEventListener("DOMContentLoaded", function() {
+        sidebarHandler("gererProducts");
+    })
     </script>
     <!-- data table -->
     <script src="includes/jquery-3.7.0.js"></script>
