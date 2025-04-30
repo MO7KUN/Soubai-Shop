@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Soubai Shop - متجر التجميل</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet"
+            href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+        <!-- Swiper CSS -->
+        <link rel="stylesheet" href="Client CSS/Swiper.css">
+        <!-- Scroller CSS -->
+        <link rel="stylesheet" href="Client CSS/Scroller.css">
+        <style>
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out;
+        }
+        .sale-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .recommended-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: black;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .sales-section {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .recommended-section {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .section-heading {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section-heading i {
+            margin-left: 10px;
+        }
+    </style>
+    </head>
+    <body class="bg-gray-100 text-black">
+        <!-- Navbar -->
+        <nav class="bg-gray-800 text-white p-4 fixed top-0 left-0 right-0 z-50">
+            <div class="container mx-auto flex justify-between items-center">
+                <!-- Shop Name -->
+                <div class="text-xl font-bold">
+                    <i class="fas fa-store"></i> Soubai Shop
+                </div>
+
+                <!-- Right Side: Search and Cart -->
+                <div class="flex items-center gap-6">
+                    <!-- Search Bar -->
+                    <div class="relative">
+                        <input
+                            type="text"
+                            placeholder="ابحث عن منتج..."
+                            class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                        <button class="absolute left-2 top-2 text-gray-400">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    <!-- Cart Icon -->
+                    <a href="Cart.html" class="relative">
+                        <i class="fas fa-shopping-cart text-2xl"></i>
+                        <span
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <div
+            class="relative h-[500px] flex items-center justify-center text-center text-white overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0">
+                <img
+                    src="https://images.unsplash.com/photo-1601598851547-4302969d0614?q=80&w=1664&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Hero Background"
+                    class="w-full h-full object-cover">
+                <!-- Overlay -->
+                <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="relative z-10 max-w-4xl px-4">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
+                    مرحبًا بكم في Soubai Shop
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 animate-fade-in-up">
+                    اكتشفت افضل المنتجات بجودة عالية و بأثمنة مناسبة!
+                </p>
+                <div
+                    class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up">
+                    <a
+                        href="#products"
+                        class="bg-yellow-400 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition duration-300">
+                        تصفح المنتجات
+                    </a>
+                    <a
+                        href="#sales"
+                        class="bg-white text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+                        العروض الخاصة
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="container mx-auto p-6 mt-16">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">الفئات</h2>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <!-- Skincare Category -->
+                        <div class="swiper-slide">
+                            <div
+                                class="card bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 hover:shadow-xl transition-shadow">
+                                <a href="Skincare.html">
+                                    <img src="Images/hair-cream.jpg"
+                                        alt="Skincare"
+                                        class="w-full h-32 object-cover rounded-lg mb-2">
+                                    <h3
+                                        class="text-lg font-bold text-gray-800">العناية
+                                        بالبشرة</h3>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Makeup Category -->
+                        <div class="swiper-slide">
+                            <div
+                                class="card bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 hover:shadow-xl transition-shadow">
+                                <a href="Makeup.html">
+                                    <img src="Images/makeup-brush.jpg"
+                                        alt="Makeup"
+                                        class="w-full h-32 object-cover rounded-lg mb-2">
+                                    <h3
+                                        class="text-lg font-bold text-gray-800">مستحضرات
+                                        التجميل</h3>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Fragrances Category -->
+                        <div class="swiper-slide">
+                            <div
+                                class="card bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 hover:shadow-xl transition-shadow">
+                                <a href="Fragrances.html">
+                                    <img src="Images/perfume.jpg"
+                                        alt="Fragrances"
+                                        class="w-full h-32 object-cover rounded-lg mb-2">
+                                    <h3
+                                        class="text-lg font-bold text-gray-800">العطور</h3>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Haircare Category -->
+                        <div class="swiper-slide">
+                            <div
+                                class="card bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 hover:shadow-xl transition-shadow">
+                                <a href="Haircare.html">
+                                    <img src="Images/product1.jpg"
+                                        alt="Haircare"
+                                        class="w-full h-32 object-cover rounded-lg mb-2">
+                                    <h3
+                                        class="text-lg font-bold text-gray-800">العناية
+                                        بالشعر</h3>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Bodycare Category -->
+                        <div class="swiper-slide">
+                            <div
+                                class="card bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 hover:shadow-xl transition-shadow">
+                                <a href="Bodycare.html">
+                                    <img src="Images/NAAYLA TEA.jpg"
+                                        alt="Bodycare"
+                                        class="w-full h-32 object-cover rounded-lg mb-2">
+                                    <h3
+                                        class="text-lg font-bold text-gray-800">الشاي الصحراوي</h3>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Skincare Category -->
+                        <div class="swiper-slide">
+                            <div
+                                class="card bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 hover:shadow-xl transition-shadow">
+                                <a href="quick.html">
+                                    <img src="Images/product2.jpg"
+                                        alt="Skincare"
+                                        class="w-full h-32 object-cover rounded-lg mb-2">
+                                    <h3
+                                        class="text-lg font-bold text-gray-800">العناية
+                                        بالبشرة</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Section -->
+            <div id="sales" class="sales-section">
+                <h2 class="section-heading">
+                    <i class="fas fa-fire"></i> العروض الخاصة
+                </h2>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <!-- Sale Product 1 -->
+                        <div class="swiper-slide">
+                            <div
+                                class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                                <div class="sale-badge">خصم 20%</div>
+                                <img src="Images/hair-cream.jpg"
+                                    alt="Sale Product 1"
+                                    class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3
+                                        class="text-xl font-bold text-gray-800">كريم
+                                        الشعر</h3>
+                                    <p class="text-gray-600 mt-2">كريم لترطيب
+                                        الشعر وتغذيته.</p>
+                                    <div
+                                        class="flex justify-between items-center mt-4">
+                                        <span
+                                            class="text-lg font-bold text-yellow-400"><del>60.00
+                                                درهم</del> 48.00 درهم</span>
+                                        <button
+                                            class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                            <i class="fas fa-cart-plus"></i>
+                                            
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sale Product 2 -->
+                        <div class="swiper-slide">
+                            <div
+                                class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                                <div class="sale-badge">خصم 15%</div>
+                                <img src="Images/makeup-brush.jpg"
+                                    alt="Sale Product 2"
+                                    class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3
+                                        class="text-xl font-bold text-gray-800">فرشاة
+                                        المكياج</h3>
+                                    <p class="text-gray-600 mt-2">فرشاة عالية
+                                        الجودة لتطبيق المكياج.</p>
+                                    <div
+                                        class="flex justify-between items-center mt-4">
+                                        <span
+                                            class="text-lg font-bold text-yellow-400"><del>35.00
+                                                درهم</del> 29.75 درهم</span>
+                                        <button
+                                            class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                            <i class="fas fa-cart-plus"></i>
+                                            
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sale Product 3 -->
+                        <div class="swiper-slide">
+                            <div
+                                class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                                <div class="sale-badge">خصم 25%</div>
+                                <img src="Images/Tassaout tea.jpg"
+                                    alt="Sale Product 3"
+                                    class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3
+                                        class="text-xl font-bold text-gray-800">شاي التساوت</h3>
+                                    <p class="text-gray-600 mt-2">عطر برائحة
+                                        مميزة يدوم طويلاً.</p>
+                                    <div
+                                        class="flex justify-between items-center mt-4">
+                                        <span
+                                            class="text-lg font-bold text-yellow-400"><del>150.00
+                                                درهم</del> 112.50 درهم</span>
+                                        <button
+                                            class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                            <i class="fas fa-cart-plus"></i>
+                                            
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sale Product 4 -->
+                        <div class="swiper-slide">
+                            <div
+                                class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                                <div class="sale-badge">خصم 30%</div>
+                                <img src="Images/product1.jpg"
+                                    alt="Sale Product 4"
+                                    class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3
+                                        class="text-xl font-bold text-gray-800">مصل
+                                        الشعر</h3>
+                                    <p class="text-gray-600 mt-2">مصل لتقوية
+                                        الشعر ومنع التساقط.</p>
+                                    <div
+                                        class="flex justify-between items-center mt-4">
+                                        <span
+                                            class="text-lg font-bold text-yellow-400"><del>100.00
+                                                درهم</del> 70.00 درهم</span>
+                                        <button
+                                            class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                            <i class="fas fa-cart-plus"></i>
+                                            
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sale Product 5 -->
+                        <div class="swiper-slide">
+                            <div
+                                class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                                <div class="sale-badge">خصم 30%</div>
+                                <img src="Images/Alma9ssod Tea.jpg"
+                                    alt="Sale Product 4"
+                                    class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3
+                                        class="text-xl font-bold text-gray-800">شاي المقصود</h3>
+                                    <p class="text-gray-600 mt-2">واقي للحماية من اشعة الشمس.</p>
+                                    <div
+                                        class="flex justify-between items-center mt-4">
+                                        <span
+                                            class="text-lg font-bold text-yellow-400"><del>100.00
+                                                درهم</del> 70.00 درهم</span>
+                                        <button
+                                            class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                            <i class="fas fa-cart-plus"></i>
+                                            
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended Section -->
+            <div id="recommended" class="recommended-section">
+                <h2 class="section-heading">
+                    <i class="fas fa-star"></i> منتجات موصى بها
+                </h2>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Recommended Product 1 -->
+                    <div
+                        class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                        <div class="recommended-badge">موصى به</div>
+                        <img src="Images/AlHawz tea.jpg"
+                            alt="Recommended Product 1"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-800">شاي الحوز</h3>
+                            <p class="text-gray-600 mt-2">شاي الحوز من اجود انواع الشاي</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span
+                                    class="text-lg font-bold text-yellow-400">40.00
+                                    درهم</span>
+                                <button
+                                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                    <i class="fas fa-cart-plus"></i> إضافة إلى
+                                    السلة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Product 2 -->
+                    <div
+                        class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                        <div class="recommended-badge">موصى به</div>
+                        <img src="Images/product3.jpg"
+                            alt="Recommended Product 2"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-800">بلسم
+                                الشعر</h3>
+                            <p class="text-gray-600 mt-2">بلسم لتغذية الشعر.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span
+                                    class="text-lg font-bold text-yellow-400">25.00
+                                    درهم</span>
+                                <button
+                                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                    <i class="fas fa-cart-plus"></i> إضافة إلى
+                                    السلة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Product 3 -->
+                    <div
+                        class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                        <div class="recommended-badge">موصى به</div>
+                        <img src="Images/product4.jpg"
+                            alt="Recommended Product 3"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-800">مكياج
+                                عيون</h3>
+                            <p class="text-gray-600 mt-2">ألوان مكياج عيون
+                                مميزة.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span
+                                    class="text-lg font-bold text-yellow-400">55.00
+                                    درهم</span>
+                                <button
+                                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                    <i class="fas fa-cart-plus"></i> إضافة إلى
+                                    السلة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Product 4 -->
+                    <div
+                        class="bg-white rounded-lg shadow-lg overflow-hidden hover-scale relative">
+                        <div class="recommended-badge">موصى به</div>
+                        <img src="Images/NAAYLA TEA.jpg"
+                            alt="Recommended Product 4"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-800">شاي النعيلة</h3>
+                            <p class="text-gray-600 mt-2">غسول لترطيب الجسم.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span
+                                    class="text-lg font-bold text-yellow-400">35.00
+                                    درهم</span>
+                                <button
+                                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                    <i class="fas fa-cart-plus"></i> إضافة إلى
+                                    السلة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div id="products" class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">المنتجات
+                    المميزة</h2>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Product 1 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <img src="Images/product1.jpg" alt="Product 1"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-800">كريم
+                                الشعر</h3>
+                            <p class="text-gray-600 mt-2">كريم لترطيب الشعر
+                                وتغذيته.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span
+                                    class="text-lg font-bold text-yellow-400">50.00
+                                    درهم</span>
+                                <button
+                                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                    <i class="fas fa-cart-plus"></i> إضافة إلى
+                                    السلة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <img src="Images/Tassaout tea.jpg" alt="Product 2"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-800">شاي التساوت</h3>
+                            <p class="text-gray-600 mt-2">فرشاة عالية الجودة
+                                لتطبيق المكياج.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span
+                                    class="text-lg font-bold text-yellow-400">30.00
+                                    درهم</span>
+                                <button
+                                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                    <i class="fas fa-cart-plus"></i> إضافة إلى
+                                    السلة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <img src="Images/product3.jpg" alt="Product 3"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-800">عطر
+                                فاخر</h3>
+                            <p class="text-gray-600 mt-2">عطر برائحة مميزة يدوم
+                                طويلاً.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span
+                                    class="text-lg font-bold text-yellow-400">120.00
+                                    درهم</span>
+                                <button
+                                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                    <i class="fas fa-cart-plus"></i> إضافة إلى
+                                    السلة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <img src="Images/hair-cream.jpg" alt="Product 4"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-gray-800">مصل
+                                الشعر</h3>
+                            <p class="text-gray-600 mt-2">مصل لتقوية الشعر ومنع
+                                التساقط.</p>
+                            <div class="flex justify-between items-center mt-4">
+                                <span
+                                    class="text-lg font-bold text-yellow-400">80.00
+                                    درهم</span>
+                                <button
+                                    class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                                    <i class="fas fa-cart-plus"></i> إضافة إلى
+                                    السلة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white p-6">
+            <div class="container mx-auto text-center">
+                <p>&copy; 2023 Soubai Shop. جميع الحقوق محفوظة.</p>
+            </div>
+        </footer>
+        <!-- Swiper JS -->
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="Client JS/Swiper.js"></script>
+    </body>
+</html>
