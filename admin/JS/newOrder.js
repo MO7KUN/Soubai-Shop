@@ -1,3 +1,5 @@
+let apiUrl = "https://sbaishop.com/api"
+
 // Check URL parameters on page load for edit mode
 document.addEventListener("DOMContentLoaded", function () {
     sidebarHandler("gererOrders");
@@ -91,7 +93,7 @@ function selectClient(client) {
 async function getClients() {
     try {
 
-        const response = await fetch('http://e_sahara.test/api/clients', {
+        const response = await fetch(apiUrl + '/clients', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -148,7 +150,7 @@ async function editClientInfos() {
     if (!selectedClientId) return;
     try {
 
-        const response = await fetch(`http://e_sahara.test/api/client/${selectedClientId}/edit`, {
+        const response = await fetch(apiUrl + `/${selectedClientId}/edit`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -255,7 +257,7 @@ function updateProductList(filteredProducts) {
 async function getProducts() {
     try {
 
-        const response = await fetch('http://e_sahara.test/api/products', {
+        const response = await fetch(apiUrl + '/products', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -396,10 +398,10 @@ async function saveOrder() {
 
     // Determine whether we're editing an existing order or creating a new one
     const params = new URLSearchParams(window.location.search);
-    let url = 'http://e_sahara.test/api/order';
+    let url = apiUrl + '/order';
     if (params.get("action") === "edit" && params.get("order")) {
         const orderId = params.get("order");
-        url = `http://e_sahara.test/api/order/${orderId}/edit`;
+        url = apiUrl + `/order/${orderId}/edit`;
     }
 
     try {
@@ -475,7 +477,7 @@ function addProductToTableForEdit(product, qty) {
 async function fetchOrder(orderId) {
     try {
 
-        const response = await fetch(`http://e_sahara.test/api/order/${orderId}`, {
+        const response = await fetch(apiUrl + `/order/${orderId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

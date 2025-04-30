@@ -31,6 +31,16 @@ function sidebarHandler(permission) {
   if (!permissionsArray.includes(permission)) {
     window.history.length > 1 ? window.history.back() : window.location.href = "index.html";
   }
+
+  if (permissionsArray.includes("receiveNotifications")) {
+    //add the path to the file responsilbe for handling notifications
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = 'JS/notificationHandler.js';
+
+    // Append the script element to the document's body
+    document.body.appendChild(script);
+  }
 }
 
 function errorsHandler(responseStatus) {

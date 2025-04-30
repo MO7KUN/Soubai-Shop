@@ -1,3 +1,5 @@
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener("DOMContentLoaded", function () {
     fetchUsers();
 })
@@ -5,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Fetch users from the API
 async function fetchUsers() {
     try {
-        const response = await fetch('http://e_sahara.test/api/users', {
+        const response = await fetch(apiUrl + '/users', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -130,7 +132,7 @@ function displayUsers(users) {
 
 async function deleteUser(userId) {
     try {
-        const response = await fetch(`http://e_sahara.test/api/user/${userId}`, {
+        const response = await fetch(apiUrl + `/user/${userId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

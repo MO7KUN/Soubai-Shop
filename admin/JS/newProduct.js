@@ -1,3 +1,5 @@
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
@@ -13,7 +15,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function showProductInfos(productId) {
     try {
-        const response = await fetch(`http://e_sahara.test/api/product/${productId}`);
+        const response = await fetch(apiUrl + `/product/${productId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+        });
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
             throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
@@ -23,7 +31,9 @@ async function showProductInfos(productId) {
         // Fill main product fields
         document.getElementById('ref').value = product.ref || null;
         document.getElementById('label').value = product.label;
-        document.getElementById('category_id').value = product.category.id;
+        if (product.category) {
+            document.getElementById('category_id').value = product.category.id;
+        }
         document.getElementById('buying_price').value = product.buying_price || null;
         document.getElementById('selling_price').value = product.selling_price;
         document.getElementById('discount_price').value = product.discount_price || null;
@@ -174,8 +184,8 @@ async function showProductInfos(productId) {
 
 //     try {
 //         const url = isEditMode
-//             ? `http://e_sahara.test/api/product/${productId}/edit`
-//             : 'http://e_sahara.test/api/product';
+//             ? apiUrl+`/product/${productId}/edit`
+//             : apiUrl+'/product';
 //         const response = await fetch(url, {
 //             method: 'POST',
 //             body: formData,
@@ -299,14 +309,15 @@ async function saveProduct() {
 
     try {
         const url = isEditMode
-            ? `http://e_sahara.test/api/product/${productId}/edit`
-            : 'http://e_sahara.test/api/product';
+            ? apiUrl + `/product/${productId}/edit`
+            : apiUrl + '/product';
 
         const response = await fetch(url, {
             method: 'POST',
             body: formData,
             headers: {
-                'Accept': 'application/json',
+                // "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
             },
         });
 
@@ -335,7 +346,7 @@ async function saveProduct() {
 
 async function fetchCategorys() {
 
-    fetch('http://e_sahara.test/api/categorys', {
+    fetch(apiUrl + '/categorys', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -419,7 +430,7 @@ async function addCategory() {
             formData.append("image", categoryImageFile, categoryName + ".jpg");
         }
 
-        const response = await fetch("http://e_sahara.test/api/category", {
+        const response = await fetch(apiUrl + "/category", {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
             body: formData,
