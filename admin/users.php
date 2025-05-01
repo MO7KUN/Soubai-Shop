@@ -8,12 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    body {
-        font-family: 'Tajawal', sans-serif;
-        padding-top: 64px;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            padding-top: 64px;
+        }
 
-    /* Add padding for navbar */
+        /* Add padding for navbar */
     </style>
 </head>
 
@@ -27,7 +27,7 @@
             <h1 class="text-center text-2xl font-bold text-black md:text-800 mb-4">
                 <i class="fas fa-user-cog text-yellow-400"></i> المستخدمين
             </h1>
-            <a href="NewUser.html"
+            <a href="newUser.php"
                 class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                 <i class="fas fa-plus"></i> إضافة مستخدم
             </a>
@@ -112,9 +112,9 @@
     </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        sidebarhandeler("gererProducts");
-    });
+        document.addEventListener("DOMContentLoaded", function() {
+            sidebarHandler("gererProducts");
+        });
     </script>
     <!-- data table -->
     <script src="includes/jquery-3.7.0.js"></script>
@@ -123,23 +123,23 @@
     <script src="JS/users.js"></script>
 
     <script>
-    function openPopUp(popupId, userId) {
-        const popUp = document.getElementById(popupId);
-        if (popUp) {
-            popUp.style.display = 'block';
+        function openPopUp(popupId, userId) {
+            const popUp = document.getElementById(popupId);
+            if (popUp) {
+                popUp.style.display = 'block';
+            }
+            document.getElementById('deleteContratButton').addEventListener('click', function() {
+                deleteUser(userId);
+            });
         }
-        document.getElementById('deleteContratButton').addEventListener('click', function() {
-            deleteUser(userId);
-        });
-    }
 
-    // Function to close a specific pop-up
-    function closePopUp(popupId) {
-        const popUp = document.getElementById(popupId);
-        if (popUp) {
-            popUp.style.display = 'none';
+        // Function to close a specific pop-up
+        function closePopUp(popupId) {
+            const popUp = document.getElementById(popupId);
+            if (popUp) {
+                popUp.style.display = 'none';
+            }
         }
-    }
     </script>
 </body>
 

@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body {
+    body {
             font-family: 'Tajawal', sans-serif;
             padding-top: 64px;
         }
@@ -27,21 +27,21 @@
             <h1 class="text-center text-2xl font-bold text-black md:text-800 mb-4">
                 <i class="fas fa-list text-yellow-400"></i> الفئات
             </h1>
-            <a href="NewCategory.html"
+            <a href="newCategory.php"
                 class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                 <i class="fas fa-plus"></i> إضافة فئة
             </a>
         </div>
 
         <!-- Error Message -->
-        <div id="error-message" class="hidden border border-red-500 rounded-lg p-4 mb-4">
+        <!-- <div id="error-message" class="hidden border border-red-500 rounded-lg p-4 mb-4">
             <p class="text-red-500">حدث خطأ ما. يرجى المحاولة مرة أخرى</p>
-        </div>
+        </div> -->
 
         <!-- success Message -->
-        <div id="success-message" class="hidden border border-green-500 rounded-lg p-4 mb-4">
+        <!-- <div id="success-message" class="hidden border border-green-500 rounded-lg p-4 mb-4">
             <p class="text-green-500">تمت العملية بنجاح</p>
-        </div>
+        </div> -->
 
         <!-- Categories Grid -->
         <div id="categories-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -100,7 +100,7 @@
                         تتخطى 2 ميغابايت </p>
                 </div>
                 <div class="flex justify-end gap-4">
-                    <button type="button" onclick="deleteCategory()"
+                    <button type="button" id="deleteCategoryBtn"
                         class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-300"><i
                             class="fas fa-trash"></i></button>
                     <button type="submit" onclick="updateCategory()"
@@ -113,93 +113,10 @@
     <script src="JS/categorys.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            sidebarhandeler("gererCategorys");
+            sidebarHandler("gererCategorys");
             // Fetch categories from the API
             fetchCategorys();
         })
-        async function fetchCategorys() {
-
-            fetch('https://sbaishop.com/api/categorys', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw response; // Throw the response to handle errors
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('API response:', data); // Log the response for debugging
-
-                    // Check if the data structure is valid
-                    if (data && Array.isArray(data.categories)) {
-                        const categories = data.categories;
-                        const categorySelect = document.getElementById('categories-grid');
-
-                        // Clear existing content (if any)
-                        categorySelect.innerHTML = '';
-
-                        // Create and append category cards
-                        categories.forEach(category => {
-                            const card = document.createElement('div');
-                            const cardImage = document.createElement('img');
-                            const cardTitlePlace = document.createElement('div');
-                            const cardTitle = document.createElement('h3');
-
-                            // Add classes and content
-                            cardTitlePlace.classList.add('card-title-place');
-                            cardTitlePlace.classList.add('text-center');
-                            cardTitlePlace.classList.add('p-4');
-                            cardTitle.classList.add('text-lg', 'font-semibold', 'mb-2');
-                            cardTitle.textContent = category.label;
-                            cardImage.src = category.image_url;
-                            cardImage.alt = category.label;
-                            cardImage.classList.add('w-full', 'h-48', 'object-cover');
-                            card.classList.add('bg-white', 'rounded-lg', 'shadow-lg', 'overflow-hidden',
-                                'cursor-pointer');
-
-                            // Add click event to open update modal
-                            card.addEventListener('click', () => {
-                                openUpdateModal(category);
-                            });
-
-                            // Append elements to the card
-                            card.appendChild(cardImage);
-                            cardTitlePlace.appendChild(cardTitle);
-                            card.appendChild(cardTitlePlace);
-
-                            // Append the card to the grid
-                            categorySelect.appendChild(card);
-                        });
-                    } else {
-                        console.error('Invalid data structure:', data);
-                        document.getElementById('error-message').classList.remove('hidden'); // Show error message
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    if (error.json) {
-                        // Handle API errors (e.g., 401, 403, 500)
-                        error.json().then(err => {
-                            console.error('API error:', err);
-                            if (error.status === 401 || error.status === 403) {
-                                window.location.href = "index.html"; // Redirect if unauthorized
-                            } else {
-                                document.getElementById('error-message').classList.remove(
-                                    'hidden'); // Show error message
-                            }
-                        });
-                    } else {
-                        // Handle network errors (e.g., no internet connection)
-                        console.error('Network error:', error);
-                        document.getElementById('error-message').classList.remove('hidden'); // Show error message
-                    }
-                });
-        }
     </script>
 </body>
 

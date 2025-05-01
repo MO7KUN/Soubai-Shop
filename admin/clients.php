@@ -8,12 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    body {
-        font-family: 'Tajawal', sans-serif;
-        padding-top: 64px;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            padding-top: 64px;
+        }
 
-    /* Add padding for navbar */
+        /* Add padding for navbar */
     </style>
 </head>
 
@@ -29,7 +29,7 @@
                 <i class="fas fa-users text-yellow-400"></i> العملاء
             </h1>
             <!-- Add Client Button -->
-            <a href="NewClient.html">
+            <a href="NewClient.php">
                 <button
                     class="w-full md:w-auto bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 whitespace-nowrap">
                     <i class="fas fa-plus"></i> إضافة عميل
@@ -79,12 +79,13 @@
                                 <th class="px-4 py-2 whitespace-nowrap">رقم
                                     الهاتف</th>
                                 <th class="px-4 py-2 whitespace-nowrap">المدينة</th>
+                                <th class="px-4 py-2 whitespace-nowrap">رصيد العميل</th>
                                 <th class="px-4 py-2 whitespace-nowrap">الإجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="clients-table">
                             <tr>
-                                <td colspan="4" class="text-center">
+                                <td colspan="100%" class="text-center">
                                     <div id="loadingAnimation" class="text-blue-500 mt-8 mb-6 items-center" dir="rtl">
                                         <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
                                         <span class="ml-2">تحميل...</span>
@@ -151,6 +152,13 @@
                             required>
                         <p id="ClientCityError" class="text-red-500 mt-1"> </p>
                     </div>
+                    <div class="mb-4">
+                        <label for="ClientBalance" class="block text-gray-700 mb-2">رصيد العميل</label>
+                        <input type="text" id="ClientBalance"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            required>
+                        <p id="ClientBalanceError" class="text-red-500 mt-1"> </p>
+                    </div>
                     <div class="flex justify-end gap-4">
                         <button type="submit" onclick="updateClient()"
                             class="bg-green-400 text-black px-4 py-2 rounded-lg hover:bg-green-500 transition duration-300"><i
@@ -182,35 +190,37 @@
         </div>
 
         <script>
-        clientID = null;
-        document.addEventListener('DOMContentLoaded', function() {
-            sidebarhandeler("gererClients");
-            fetchClients();
-        })
-
-        function openUpdateModal(client) {
-            clientID = client.id;
-            document.getElementById('ClientName').value = client.name;
-            document.getElementById('ClientPhone').value = client.tel;
-            document.getElementById('ClientCity').value = client.city;
-            document.getElementById('updateModal').classList.remove('hidden');
-
-        }
-
-        function openDeleteModal(client) {
-            clientID = client.id;
-            document.getElementById('deleteModal').classList.remove('hidden');
-        }
-
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.add('hidden');
             clientID = null;
-        }
+            document.addEventListener('DOMContentLoaded', function() {
+                sidebarHandler("gererClients");
+                fetchClients();
+            })
 
-        function closeUpdateModal() {
-            document.getElementById('updateModal').classList.add('hidden');
-            categoryID = null;
-        }
+            function openUpdateModal(clientId, name, tel, city, balance) {
+                // console.log(client)
+                clientID = clientId;
+                document.getElementById('ClientName').value = name;
+                document.getElementById('ClientPhone').value = tel;
+                document.getElementById('ClientCity').value = city;
+                document.getElementById('ClientBalance').value = balance;
+                document.getElementById('updateModal').classList.remove('hidden');
+
+            }
+
+            function openDeleteModal(client) {
+                clientID = client.id;
+                document.getElementById('deleteModal').classList.remove('hidden');
+            }
+
+            function closeDeleteModal() {
+                document.getElementById('deleteModal').classList.add('hidden');
+                clientID = null;
+            }
+
+            function closeUpdateModal() {
+                document.getElementById('updateModal').classList.add('hidden');
+                categoryID = null;
+            }
         </script>
         <!-- data table -->
         <script src="includes/jquery-3.7.0.js"></script>

@@ -1,3 +1,5 @@
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener("DOMContentLoaded", function () {
     fetchUsers();
 })
@@ -5,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Fetch users from the API
 async function fetchUsers() {
     try {
-        const response = await fetch('http://e_sahara.test/api/users', {
+        const response = await fetch(apiUrl + '/users', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +42,7 @@ function displayUsers(users) {
         <td class="px-4 py-3 text-center whitespace-nowrap font-medium">${user.email}</td>
         <td class="px-4 py-3 text-center">
             <div class="flex items-center justify-center gap-2">
-                <a href="NewUser.html?action=edit&id=${user.id}" class="bg-yellow-400 text-black px-3 py-1.5 rounded-full hover:bg-yellow-500 transition">
+                <a href="newUser.php?action=edit&id=${user.id}" class="bg-yellow-400 text-black px-3 py-1.5 rounded-full hover:bg-yellow-500 transition">
                     <i class="fas fa-edit"></i>
                 </a>
                 <button onclick="openPopUp('pop-up-1',${user.id})" class="bg-red-500 text-white px-3 py-1.5 rounded-full hover:bg-red-600 transition">
@@ -130,7 +132,7 @@ function displayUsers(users) {
 
 async function deleteUser(userId) {
     try {
-        const response = await fetch(`http://e_sahara.test/api/user/${userId}`, {
+        const response = await fetch(apiUrl + `/user/${userId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

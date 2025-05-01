@@ -1,5 +1,7 @@
+let apiUrl = "https://sbaishop.com/api"
+
 document.addEventListener("DOMContentLoaded", function () {
-    sidebarhandeler("gererUsers");
+    sidebarHandler("gererUsers");
     loadPriviliges();
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('id');
@@ -36,7 +38,7 @@ const priviliges = [
         forDB: "gererUsers"
     },
     {
-        forUser: "الاطلاع على الإحصائيات",
+        forUser: "الاطلاع على لوحة التحكم",
         forDB: "vueDashboard"
     },
     {
@@ -44,7 +46,6 @@ const priviliges = [
         forDB: "receiveNotifications"
     },
 ];
-
 
 // document.addEventListener("DOMContentLoaded", loadPriviliges());
 function loadPriviliges() {
@@ -99,7 +100,11 @@ async function submitForm() {
     if (action !== "edit") {
         if (password.value == "" || password.value.length < 8) {
             password.classList.add('border-red-500');
-            alert('الرجاء إدخال كلمة مرور صالحة (8 أحرف على الأقل)');
+            Swal.fire({
+                icon: "warning",
+                title: "تنبيه",
+                text: "الرجاء إدخال كلمة مرور صالحة (8 أحرف على الأقل)"
+            });
             password.focus();
             inputsValid = false;
         } else {
@@ -109,13 +114,16 @@ async function submitForm() {
     }
 
     if (permissions.length === 0) {
-        alert('الرجاء تحديد صلاحيات المستخدم');
+        Swal.fire({
+            icon: "warning",
+            title: "تنبيه",
+            text: "الرجاء تحديد صلاحيات المستخدم"
+        });
         inputsValid = false;
     }
     if (!inputsValid) {
         return;
     }
-
 
     try {
         // Create the user
@@ -126,7 +134,7 @@ async function submitForm() {
             priviliges: permissions.join('&'),
         };
 
-        let url = action == 'edit' ? `http://e_sahara.test/api/user/${userId}/edit` : 'http://e_sahara.test/api/user';
+        let url = action == 'edit' ? apiUrl + `/user/${userId}/edit` : apiUrl + '/user';
         // return;
         const response = await fetch(url, {
             method: 'POST',
@@ -138,23 +146,31 @@ async function submitForm() {
         });
 
         if (!response.ok) {
-            throw new Error('فشل إضافة المستخدم');
+            throw response
         }
 
-        const data = await response.json();
-        console.log('تمت إضافة المستخدم بنجاح:', data);
-
-        // Redirect to the users page
-        window.location.href = 'Users.html';
-    } catch (error) {
-        console.error('حدث خطأ:', error);
-        alert('حدث خطأ أثناء إضافة المستخدم. الرجاء المحاولة مرة أخرى.');
+        Swal.fire({
+            icon: "success",
+            title: "تم تسجيل المستخدم بنجاح",
+            text: "تم تسجيل معلومات المستخدم بنجاح",
+            showConfirmButton: false,
+            timer: 1200, // The timer is 1200 ms (1.2 seconds)
+        }).then(() => {
+            // Redirect to the users page only after the Swal closes
+            window.location.href = 'users.php';
+        });
+    } catch (response) {
+        errorsHandler(response.status); // Pass only response.status
     }
 };
 
 async function showUserInfos(userId) {
     try {
-        const response = await fetch(`http://e_sahara.test/api/user/${userId}`);
+        const response = await fetch(apiUrl + `/user/${userId}`);
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
+            throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };
+        }
         const user = await response.json();
 
         // Fill main product fields
@@ -164,8 +180,9 @@ async function showUserInfos(userId) {
         selectFromArray(user.priviliges.split('&'));
 
     } catch (error) {
-        alert('Failed to load product data: ' + error.message);
-        console.error('Error loading product:', error);
+        console.error("❌ Error fetching user infos:", error); // Log the full error for debugging
+        errorsHandler(error.status || 500);
+        throw new Error(`Error occurred while fetching user infos: ${error.message}`);
     }
 }
 

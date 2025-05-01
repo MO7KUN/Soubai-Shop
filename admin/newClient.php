@@ -8,12 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    body {
-        font-family: 'Tajawal', sans-serif;
-        padding-top: 64px;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            padding-top: 64px;
+        }
 
-    /* Add padding for navbar */
+        /* Add padding for navbar */
     </style>
 </head>
 
@@ -69,14 +69,20 @@
                                 المدينة مطلوبة
                             </p>
                         </div>
+                        <div>
+                            <label for="client-balance" class="block text-gray-700 mb-2">الرصيد</label>
+                            <input id="client-balance" type="text"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                placeholder="أدخل الرصيد" required>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Actions -->
                 <div class="flex justify-end gap-4">
-                    <button onclick="window.location.href = 'Clients.html'" type="button"
+                    <button onclick="window.location.href = 'clients.php'" type="button"
                         class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
-                        <i class="fas fa-times"></i> إلغاء
+                        <i class="fas fa-times"></i> العودة
                     </button>
                     <button onclick="addClient()" type="submit"
                         class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
@@ -87,9 +93,9 @@
         </div>
     </div>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        sidebarhandeler("gererClients");
-    })
+        document.addEventListener('DOMContentLoaded', function() {
+            sidebarHandler("gererClients");
+        })
     </script>
     <script src="JS/ClientsManagement.js"></script>
 </body>

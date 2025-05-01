@@ -1,7 +1,9 @@
-var swiper = new Swiper('.swiper-container', {
-    slidesPerView: 'auto', // Automatically adjust slides per view
-    centeredSlides: true, // Center the active slide
-    spaceBetween: 20, // Space between slides
+const swiper = new Swiper('.swiper-container', {
+    loop: true,
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+    },
     navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',

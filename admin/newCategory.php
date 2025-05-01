@@ -39,7 +39,7 @@
 
         <!-- New Category Form -->
         <div class="bg-white rounded-lg shadow p-6">
-            <form id="new-category-form">
+            <div id="new-category-form">
                 <!-- Category Name -->
                 <div class="mb-6">
                     <label for="category-name" class="block text-gray-700 mb-2">اسم الفئة</label>
@@ -80,16 +80,16 @@
                         class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300">
                         <i class="fas fa-times"></i> إلغاء
                     </button>
-                    <button type="submit"
+                    <button type="button" onclick="addCategory()"
                         class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
                         <i class="fas fa-save"></i> حفظ الفئة
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
-    <script src="JS/CategoriesManagement.js"></script>
+    <script src="JS/categorys.js"></script>
 </body>
 
 </html>

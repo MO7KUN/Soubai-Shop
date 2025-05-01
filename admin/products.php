@@ -29,7 +29,7 @@
                 <i class="fas fa-box text-yellow-400"></i> المنتجات
             </h1>
             <!-- Add Product Button -->
-            <a href="NewProduct.html">
+            <a href="newProduct.php">
                 <button
                     class="w-full md:w-auto bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 whitespace-nowrap">
                     <i class="fas fa-plus"></i> إضافة منتج
@@ -42,7 +42,7 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <!-- Controls -->
                 <div class="flex flex-col sm:flex-row gap-4 mb-4">
-                    <input type="text" id="productsTable-search" placeholder="ابحث عن طلب..."
+                    <input type="text" id="productsTable-search" placeholder="ابحث عن منتج..."
                         class="w-full p-2 border rounded-lg">
                 </div>
                 <!-- Table -->
@@ -97,80 +97,10 @@
         </div>
     </div>
 
-    <!-- Update Modal -->
-    <div id="update-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-96">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">تحديث
-                المنتج</h2>
-            <form id="update-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Name -->
-                <div class="col-span-1 md:col-span-2">
-                    <label for="update-product-name" class="block text-gray-700 mb-2">اسم المنتج</label>
-                    <input id="update-product-name" type="text"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        readonly>
-                </div>
-                <!-- Price -->
-                <div>
-                    <label for="update-product-price" class="block text-gray-700 mb-2">السعر</label>
-                    <input id="update-product-price" type="text"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        required>
-                </div>
-                <!-- Quantity -->
-                <div>
-                    <label for="update-product-quantity" class="block text-gray-700 mb-2">الكمية</label>
-                    <input id="update-product-quantity" type="number"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        required>
-                </div>
-                <!-- Status -->
-                <div>
-                    <label for="update-product-status" class="block text-gray-700 mb-2">الحالة</label>
-                    <select id="update-product-status"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                        <option value="active">نشط</option>
-                        <option value="inactive">غير نشط</option>
-                        <option value="out_of_stock">غير متوفر</option>
-                    </select>
-                </div>
-                <!-- Date -->
-                <div>
-                    <label for="update-product-date" class="block text-gray-700 mb-2">تاريخ
-                        الإضافة</label>
-                    <input id="update-product-date" type="date"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        required>
-                </div>
-                <!-- Category -->
-                <div>
-                    <label for="update-product-category" class="block text-gray-700 mb-2">الفئة</label>
-                    <input id="update-product-category" type="text"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        required>
-                </div>
-                <!-- Image -->
-                <div class="col-span-1 md:col-span-2">
-                    <label for="update-product-image" class="block text-gray-700 mb-2">صورة المنتج</label>
-                    <input id="update-product-image" type="file"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                </div>
-                <!-- Buttons -->
-                <div class="col-span-1 md:col-span-2 flex justify-end gap-4">
-                    <button type="button" onclick="closeUpdateModal()"
-                        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
-                        إلغاء
-                    </button>
-                    <button type="submit" class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500">
-                        حفظ
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-        sidebarhandeler("gererProducts");
+        sidebarHandler("gererProducts");
     })
     </script>
     <!-- data table -->
