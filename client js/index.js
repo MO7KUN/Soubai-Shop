@@ -6,7 +6,7 @@ let cart = [];
 document.addEventListener('DOMContentLoaded', function() {
     loadCart();
     fetchCategories();
-    fetchDiscountedProducts();
+    //fetchDiscountedProducts();
     fetchprod().then(() => {
         setupCartButtons();
     }).catch(error => {
