@@ -230,6 +230,7 @@
                     مختارة بعناية من أفضل المزارعين
                     والحرفيين المغاربة، مضمونة الجودة وبأسعار منافسة</p>
 
+<<<<<<< Updated upstream
                 <div
                     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     <!-- Product 1 -->
@@ -257,6 +258,37 @@
                                     للسلة</button>
                             </div>
                         </div>
+=======
+                <div id="Products-error-message"
+                    class="hidden bg-red-100 text-red-700 px-4 py-2 rounded-md mb-4 text-center"></div>
+
+                <div id="Products-grid"
+                    class="w-full flex flex-row overflow-x-auto
+                     gap-3 lg:grid lg:grid-cols-4 lg:gap-6 ">
+                    <!-- Loading State -->
+                </div>
+                <div class="text-center mt-12">
+                    <a href="products.html"
+                        class="inline-block border-2 border-primary text-primary px-8 py-3 rounded-md font-medium hover:bg-primary hover:text-white transition-colors">عرض
+                        جميع المنتجات</a>
+                </div>
+            </section>
+
+            <!-- Promotions Section -->
+            <section class="py-16 bg-accent">
+                <div class="container mx-auto px-4">
+                    <h2
+                        class="text-3xl font-display font-bold text-center mb-12">العروض
+                        الخاصة</h2>
+
+                    <!-- error message -->
+                    <div id="promotions-error-message"
+                        class="hidden bg-red-100 text-red-700 px-4 py-2 rounded-md mb-4 text-center"></div>
+
+                    <div id="promotions-grid"
+                        class=" grid md:grid-cols-2 sm:grid-cols-1 sm:gap-4 lg:grid-cols-3 gap-8">
+                        <!-- Loading State -->
+>>>>>>> Stashed changes
                     </div>
 
                     <!-- Product 2 -->
@@ -345,6 +377,7 @@
                     </div>
                 </div>
 
+<<<<<<< Updated upstream
                 <div class="text-center mt-12">
                     <a href="#"
                         class="inline-block border-2 border-primary text-primary px-8 py-3 rounded-md font-medium hover:bg-primary hover:text-white transition-colors">عرض
@@ -926,3 +959,118 @@ function fetchCategories() {
     </body>
 
 </html>
+=======
+            <!-- SweetAlert JS -->
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script
+                src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+            <script src="client js/fetchCategories.js"></script>
+            <script src="client js/fetchFeatured.js"></script>
+            <script src="client js/index.js"></script>
+
+            <script>
+                function fetchDiscountedProducts() {
+  console.log("Fetching discounted products..."); // Log for debugging
+  return fetch("https://sbaishop.com/api/website/discounted-products?limit=3", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("✅ API response:", data); // Log for debugging
+
+      // Check if the response is valid
+      if (!data || !Array.isArray(data)) {
+        console.error("❌ Invalid data structure:", data);
+        document.getElementById("promotions-error-message").textContent =
+          "حدث خطأ داخلي في الخادم";
+        document
+          .getElementById("promotions-error-message")
+          .classList.remove("hidden");
+        return Promise.reject("Invalid data structure");
+      }
+
+      // Check if the response is empty
+      if (data.length === 0) {
+        const errormessage = document.getElementById("promotions-error-message");
+        errormessage.textContent = "لا توجد فئات متاحة حالياً";
+        errormessage.classList.remove("hidden");
+        return Promise.reject("No promotions available");
+      }
+
+      // Update products array (merge instead of replace)
+      const discountedProducts = data.map((product) => ({
+        id: product.id,
+        label: product.label,
+        image: product.image_url,
+        price: product.discount_price,
+        originalPrice: product.selling_price,
+      }));
+
+      const PromotionsGrid = document.getElementById("promotions-grid");
+      PromotionsGrid.innerHTML = ""; // Clear existing content
+
+      data.forEach((product) => {
+        // Check if product is valid
+        if (product.is_visible) {
+          console.log("Product:", product);
+          const promotioncard = document.createElement("div");
+          promotioncard.className =
+            "product-card bg-white rounded-lg w-full shadow-md";
+          promotioncard.addEventListener("click", function () {
+            window.location.href = `product.html?id=${product.id}`;
+          });
+          
+          promotioncard.innerHTML = `
+            <div class="relative">
+                <img src="${product.image_url}"
+                    alt="${product.label}"
+                    class="w-full h-64 object-cover">
+                <div
+                    class="absolute top-3 right-3 bg-red text-white text-sm font-medium px-2 py-1 rounded">خصم</div>
+            </div>
+            <div class="p-4">
+                <h3 class="font-medium text-lg mb-2">${product.label}</h3>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span
+                            class="font-bold text-primary text-lg">${product.discount_price}
+                            درهم</span>
+                        <span
+                            class="text-gray-500 text-sm line-through mr-2">${product.selling_price}
+                            درهم</span>
+                    </div>
+                    <div class="add-to-cart-container"
+                        data-id="${product.id}">
+                        <button
+                            class="add-to-cart bg-primary text-white px-3 py-1 rounded-md hover:bg-secondary transition-colors">
+                            +
+                        </button>
+                    </div>
+                </div>
+            </div>
+          `;
+          
+          PromotionsGrid.appendChild(promotioncard);
+        }
+      });
+
+      return data; // Return the data for chaining
+    })
+    .catch((error) => {
+      console.error("❌ Error fetching discounted products:", error);
+      document.getElementById("promotions-error-message").textContent =
+        "حدث خطأ داخلي في الخادم";
+      document
+        .getElementById("promotions-error-message")
+        .classList.remove("hidden");
+      return Promise.reject(error);
+    });
+}
+
+            </script>
+        </body>
+    </html>
+>>>>>>> Stashed changes
