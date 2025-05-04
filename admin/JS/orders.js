@@ -10,7 +10,7 @@ async function getOrders() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
+                "Authorization": "Bearer " + token,
             }
         });
         if (!response.ok) {
@@ -176,7 +176,7 @@ async function changeOrderStatus(orderId, selectElement) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify({ status: selectElement.value }),
         });

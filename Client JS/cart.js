@@ -50,7 +50,7 @@ async function initializeCart() {
     }
 }
 
-function renderCartItems(mergedCart) {
+async function renderCartItems(mergedCart) {
     const cartItemsContainer = document.getElementById('cartItems');
     cartItemsContainer.innerHTML = '';
 
@@ -74,6 +74,7 @@ function renderCartItems(mergedCart) {
                             </div>
                         </div>
                     </div>
+                    
                     <div class="md:w-1/6 mb-2 md:mb-0 text-center">
                         ${item.discount_price ?
                 `<div>
@@ -93,6 +94,7 @@ function renderCartItems(mergedCart) {
                     <div class="md:w-1/6 text-center">
                         <span class="font-medium text-primary item-total">${(item.price * item.quantity).toFixed(2)} درهم</span>
                     </div>
+                    
                 </div>
             `;
         cartItemsContainer.appendChild(itemElement);
@@ -101,7 +103,7 @@ function renderCartItems(mergedCart) {
     addCartEventListeners();
 }
 
-function addCartEventListeners() {
+async function addCartEventListeners() {
     // Quantity controls
     document.querySelectorAll('.quantity-btn').forEach(button => {
         button.addEventListener('click', function () {
@@ -141,7 +143,7 @@ function addCartEventListeners() {
     });
 }
 
-function updateCartItem(itemId, newQuantity) {
+async function updateCartItem(itemId, newQuantity) {
     const itemIndex = cart.findIndex(item => item.id == itemId);
 
     if (itemIndex === -1) return;
@@ -187,7 +189,7 @@ function removeCartItem(itemId) {
     });
 }
 
-function updateCartTotals(cartData) {
+async function updateCartTotals(cartData) {
     let subtotal = 0;
     const shipping = 5.00;
 
@@ -203,12 +205,12 @@ function updateCartTotals(cartData) {
     document.getElementById('total').textContent = `${(subtotal + shipping).toFixed(2)} درهم`;
 }
 
-function updateCartCount(cartData) {
+async function updateCartCount(cartData) {
     const count = cartData.reduce((sum, item) => sum + item.quantity, 0);
     document.getElementById('cartCount').textContent = count;
 }
 
-function renderEmptyCart() {
+async function renderEmptyCart() {
     const cartItemsContainer = document.getElementById('cartItems');
     cartItemsContainer.innerHTML = `
             <div class="bg-white p-8 rounded-lg shadow-sm text-center">
@@ -249,4 +251,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+    //clear the search input initially
+    document.querySelector('.search-input').value = ""
+    //add an event listener on search-input
+    document.querySelector('.search-input').addEventListener('input', (event) => {
+        const value = event.target.value;
+        window.location.href = "products.html?q=" + encodeURIComponent(value);
+    })
 });

@@ -44,7 +44,7 @@ async function initializeProductPage() {
     // }
 }
 
-function populateProductData() {
+async function populateProductData() {
     const { label, image_url, selling_price, discount_price, description, category } = currentProduct;
 
     // Basic info
@@ -79,13 +79,13 @@ function populateProductData() {
     }
 }
 
-function initializeQuantity() {
+async function initializeQuantity() {
     const existingItem = cart.find(item => item.id === currentProduct.id);
     domElements.quantityInput.value = existingItem ? existingItem.quantity : 0;
     updateButtonStates();
 }
 
-function setupCartHandlers() {
+async function setupCartHandlers() {
     // Plus button handler
     domElements.plusButton.addEventListener('click', () => {
         const newValue = parseInt(domElements.quantityInput.value) + 1;
@@ -107,7 +107,7 @@ function setupCartHandlers() {
     });
 }
 
-function updateQuantity(newValue) {
+async function updateQuantity(newValue) {
     newValue = Math.min(99, Math.max(0, newValue));
     domElements.quantityInput.value = newValue;
 
@@ -136,18 +136,18 @@ function updateQuantity(newValue) {
     updateButtonStates();
 }
 
-function updateButtonStates() {
+async function updateButtonStates() {
     const currentValue = parseInt(domElements.quantityInput.value);
     domElements.minusButton.disabled = currentValue === 0;
     domElements.plusButton.disabled = currentValue === 99;
 }
 
-function updateCart() {
+async function updateCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartDisplay();
 }
 
-function updateCartDisplay() {
+async function updateCartDisplay() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     domElements.cartCount.textContent = totalItems;
 }

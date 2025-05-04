@@ -19,7 +19,7 @@ async function showProductInfos(productId) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
+                'Authorization': "Bearer " + token,
             },
         });
         if (!response.ok) {
@@ -317,7 +317,7 @@ async function saveProduct() {
             body: formData,
             headers: {
                 // "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
+                'Authorization': "Bearer " + token,
             },
         });
 
@@ -432,7 +432,7 @@ async function addCategory() {
 
         const response = await fetch(apiUrl + "/category", {
             method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${token}` },
             body: formData,
         });
 
