@@ -64,6 +64,12 @@ async function fetchProducts() {
     initializeProducts();
     initializeCategories();
     updatePagination();
+
+    // After products are loaded, check if we need to filter immediately
+    const searchTerm = localStorage.getItem('searchTerm');
+    if (searchTerm) {
+      filterProducts();
+    }
   } catch (error) {
     console.error("❌ Error fetching products:", error);
     handleFetchError(error);
@@ -600,6 +606,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   loadCart();
+
+  // Check for search term in localStorage
+  const searchTerm = localStorage.getItem('searchTerm');
+  if (searchTerm) {
+    // Set the search input value
+    const searchInput = document.getElementById("searchFilter");
+    if (searchInput) {
+      searchInput.value = searchTerm;
+      // Focus on the search input
+      searchInput.focus();
+      // Clear the stored search term
+      localStorage.removeItem('searchTerm');
+    }
+  }
 
   if (!navigator.onLine) {
     Swal.fire({
