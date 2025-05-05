@@ -15,6 +15,16 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error initializing products:", error);
       handleFetchError(error);
     });
+
+  //clear the search input initially
+  //add an event listener on search-input
+  document.querySelectorAll('.search-input').forEach((input) => {
+    input.value = ""
+    input.addEventListener('input', (event) => {
+      const value = event.target.value;
+      window.location.href = "products.html?q=" + encodeURIComponent(value);
+    });
+  });
 });
 
 // Enhanced fetch function with retry logic
@@ -76,7 +86,7 @@ function handleFetchError(error) {
 }
 
 // Fetch featured products (renamed from fetchprod)
-function fetchFeaturedProducts() {
+async function fetchFeaturedProducts() {
   console.log("Fetching featured products...");
   showLoadingIndicator();
 
@@ -150,17 +160,14 @@ function fetchFeaturedProducts() {
                   <h3 class="font-medium text-lg mb-2">${product.label}</h3>
                   <div class="flex justify-between items-center">
                     <div>
-                      <span class="font-bold text-primary text-lg">${
-                        product.discount_price
-                      } درهم</span>
-                      <span class="font-light text-dark text-md line-through block">${
-                        product.selling_price
-                      } درهم</span>
+                      <span class="font-bold text-primary text-lg">${product.discount_price
+                } درهم</span>
+                      <span class="font-light text-dark text-md line-through block">${product.selling_price
+                } درهم</span>
                     </div>
                     <div class="add-to-cart-container" data-id="${product.id}">
-                      ${
-                        quantity > 0
-                          ? `
+                      ${quantity > 0
+                  ? `
                         <div class="quantity-selector flex items-center">
                           <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -175,14 +182,14 @@ function fetchFeaturedProducts() {
                           </button>
                         </div>
                       `
-                          : `
+                  : `
                         <button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                           </svg>
                         </button>
                       `
-                      }
+                }
                     </div>
                   </div>
                 </div>
@@ -197,13 +204,11 @@ function fetchFeaturedProducts() {
                 <div class="p-4">
                   <h3 class="font-medium text-lg mb-2">${product.label}</h3>
                   <div class="flex justify-between items-center">
-                    <span class="font-bold text-primary text-lg">${
-                      product.selling_price
-                    } درهم</span>
+                    <span class="font-bold text-primary text-lg">${product.selling_price
+                } درهم</span>
                     <div class="add-to-cart-container" data-id="${product.id}">
-                      ${
-                        quantity > 0
-                          ? `
+                      ${quantity > 0
+                  ? `
                         <div class="quantity-selector flex items-center">
                           <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -218,14 +223,14 @@ function fetchFeaturedProducts() {
                           </button>
                         </div>
                       `
-                          : `
+                  : `
                         <button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                           </svg>
                         </button>
                       `
-                      }
+                }
                     </div>
                   </div>
                 </div>
@@ -254,7 +259,7 @@ document
   });
 
 // Add to cart functionality
-function setupCartButtons() {
+async function setupCartButtons() {
   if (!products || !Array.isArray(products)) {
     console.error("Products not loaded yet");
     return;
@@ -325,7 +330,7 @@ function setupCartButtons() {
 }
 
 // Add product to cart with specific quantity
-function addToCart(productId, quantity) {
+async function addToCart(productId, quantity) {
   const product = products.find((p) => p.id == productId);
 
   if (!product) {
@@ -349,7 +354,7 @@ function addToCart(productId, quantity) {
 }
 
 // Decrease product quantity in cart
-function decreaseQuantity(productId) {
+async function decreaseQuantity(productId) {
   const existingItem = cart.find((item) => item.id == productId);
 
   if (existingItem) {
@@ -383,7 +388,7 @@ function updateCartCount() {
 }
 
 // Load cart from localStorage on page load
-function loadCart() {
+async function loadCart() {
   const savedCart = localStorage.getItem("cart");
   if (savedCart) {
     try {
@@ -397,7 +402,7 @@ function loadCart() {
 }
 
 // Initialize categories swiper
-function initCategoriesSwiper() {
+async function initCategoriesSwiper() {
   const swiperEl = document.querySelector(".swiper-container");
   if (!swiperEl) return;
 
@@ -428,7 +433,7 @@ function initCategoriesSwiper() {
     },
   });
 }
-function fetchDiscountedProducts() {
+async function fetchDiscountedProducts() {
   console.log("Fetching discounted products...");
   showLoadingIndicator("promotions-grid");
 
@@ -508,19 +513,15 @@ function fetchDiscountedProducts() {
                     <h3 class="font-medium text-lg mb-2">${product.label}</h3>
                     <div class="flex justify-between items-center">
                       <div>
-                        <span class="font-bold text-primary text-lg">${
-                          product.discount_price
-                        } درهم</span>
-                        <span class="font-light text-dark text-md line-through block">${
-                          product.selling_price
-                        } درهم</span>
+                        <span class="font-bold text-primary text-lg">${product.discount_price
+              } درهم</span>
+                        <span class="font-light text-dark text-md line-through block">${product.selling_price
+              } درهم</span>
                       </div>
-                      <div class="add-to-cart-container" data-id="${
-                        product.id
-                      }">
-                        ${
-                          quantity > 0
-                            ? `
+                      <div class="add-to-cart-container" data-id="${product.id
+              }">
+                        ${quantity > 0
+                ? `
                           <div class="quantity-selector flex items-center">
                             <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
                               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -535,14 +536,14 @@ function fetchDiscountedProducts() {
                             </button>
                           </div>
                         `
-                            : `
+                : `
                           <button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                           </button>
                         `
-                        }
+              }
                       </div>
                     </div>
                   </div>
@@ -557,15 +558,12 @@ function fetchDiscountedProducts() {
                   <div class="p-4">
                     <h3 class="font-medium text-lg mb-2">${product.label}</h3>
                     <div class="flex justify-between items-center">
-                      <span class="font-bold text-primary text-lg">${
-                        product.selling_price
-                      } درهم</span>
-                      <div class="add-to-cart-container" data-id="${
-                        product.id
-                      }">
-                        ${
-                          quantity > 0
-                            ? `
+                      <span class="font-bold text-primary text-lg">${product.selling_price
+              } درهم</span>
+                      <div class="add-to-cart-container" data-id="${product.id
+              }">
+                        ${quantity > 0
+                ? `
                           <div class="quantity-selector flex items-center">
                             <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
                               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -580,14 +578,14 @@ function fetchDiscountedProducts() {
                             </button>
                           </div>
                         `
-                            : `
+                : `
                           <button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                           </button>
                         `
-                        }
+              }
                       </div>
                     </div>
                   </div>
@@ -606,7 +604,7 @@ function fetchDiscountedProducts() {
       throw error;
     });
 }
-function fetchCategories() {
+async function fetchCategories() {
   console.log("Fetching categories...");
   // Show loading state
   document.getElementById("Categories-loading").style.display = "block";
