@@ -157,12 +157,12 @@ async function fetchFeaturedProducts() {
                   <span class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">خصم</span>
                 </div>
                 <div class="p-4">
-                  <h3 class="font-medium text-lg mb-2">${product.label}</h3>
+                  <h3 class="font-medium text-md md:text-lg mb-2">${product.label}</h3>
                   <div class="flex justify-between items-center">
                     <div>
-                      <span class="font-bold text-primary text-lg">${product.discount_price
+                      <span class="font-bold text-primary text-md md:text-lg">${product.discount_price
                 } درهم</span>
-                      <span class="font-light text-dark text-md line-through block">${product.selling_price
+                      <span class="font-light text-dark text-sm md:text-md line-through block">${product.selling_price
                 } درهم</span>
                     </div>
                     <div class="add-to-cart-container" data-id="${product.id}">
