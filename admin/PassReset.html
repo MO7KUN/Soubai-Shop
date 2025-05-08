@@ -1,82 +1,74 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>إدخال الرمز - Soubai Shop</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <style>
-        body { font-family: 'Tajawal', sans-serif; }
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>إدخال الرمز - Soubai Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- SweetAlert Library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
     </style>
-    </head>
-    <body
-        class="bg-gray-100 text-black flex items-center justify-center min-h-screen p-4">
-        <!-- Token Verification Form -->
-        <div
-            class="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm sm:max-w-md md:max-w-lg text-center">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4">
-                <i class="fas fa-shield-alt text-yellow-400"></i> تغيير كلمة
-                المرور
-            </h2>
-            <p class="text-gray-600 mb-6">
-                أدخل كلمة المرور الجديدة.
-            </p>
-            <p class="text-red-600 mb-6 hidden text-md" id="error-message"></p>
-            <div>
-                <!-- Token Input -->
-                <div class="mb-4">
-                    <div class="relative mb-4">
-                        <label for="token"
-                            class="block text-right text-gray-700 mb-2">
-                            كلمة المرور الجديدة
-                        </label>
-                        <input
-                            id="Pass1"
-                            type="password"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                            placeholder="ادخل كلمة المرور الجديدة"
-                            required>
-                        <button
-                            type="button"
-                            class="absolute left-3 top-10 text-gray-500 hover:text-gray-700 focus:outline-none"
-                            onclick="togglePasswordVisibility()">
-                            <i id="show-password-icon" class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="relative mb-4">
-                        <label for="token"
-                            class="block text-right text-gray-700 mb-2">
-                            تاكيد كلمة المرور
-                        </label>
-                        <input
-                            id="Pass2"
-                            type="password"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                            placeholder="أكد كلمة المرور الجديدة"
-                            required>
-                    </div>
+</head>
+
+<body class="bg-gray-100 text-black flex items-center justify-center min-h-screen p-4">
+    <!-- Token Verification Form -->
+    <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm sm:max-w-md md:max-w-lg text-center">
+        <h2 class="text-xl sm:text-2xl font-bold mb-4">
+            <i class="fas fa-shield-alt text-yellow-400"></i> تغيير كلمة
+            المرور
+        </h2>
+        <p class="text-gray-600 mb-6">
+            أدخل كلمة المرور الجديدة.
+        </p>
+        <p class="text-red-600 mb-6 hidden text-md" id="error-message"></p>
+        <div>
+            <!-- Token Input -->
+            <div class="mb-4">
+                <div class="relative mb-4">
+                    <label for="token" class="block text-right text-gray-700 mb-2">
+                        كلمة المرور الجديدة
+                    </label>
+                    <input id="Pass1" type="password"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        placeholder="ادخل كلمة المرور الجديدة" required>
+                    <button type="button"
+                        class="absolute left-3 top-10 text-gray-500 hover:text-gray-700 focus:outline-none"
+                        onclick="togglePasswordVisibility()">
+                        <i id="show-password-icon" class="fas fa-eye"></i>
+                    </button>
                 </div>
-
-                <!-- Submit Button -->
-                <button
-                    onclick="ResetPassword()"
-                    type="submit"
-                    class="w-full bg-yellow-400 text-black py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
-                    <i class="fas fa-check"></i> تأكيد
-                </button>
-
-                <!-- Back to Login Link -->
-                <p class="mt-4 text-gray-600">
-                    <a href="index.html"
-                        class="text-yellow-500 hover:underline">
-                        <i class="fas fa-arrow-left"></i> العودة لتسجيل الدخول
-                    </a>
-                </p>
+                <div class="relative mb-4">
+                    <label for="token" class="block text-right text-gray-700 mb-2">
+                        تاكيد كلمة المرور
+                    </label>
+                    <input id="Pass2" type="password"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        placeholder="أكد كلمة المرور الجديدة" required>
+                </div>
             </div>
+
+            <!-- Submit Button -->
+            <button onclick="ResetPassword()" type="submit"
+                class="w-full bg-yellow-400 text-black py-2 rounded-lg hover:bg-yellow-500 transition duration-300">
+                <i class="fas fa-check"></i> تأكيد
+            </button>
+
+            <!-- Back to Login Link -->
+            <p class="mt-4 text-gray-600">
+                <a href="index.html" class="text-yellow-500 hover:underline">
+                    <i class="fas fa-arrow-left"></i> العودة لتسجيل الدخول
+                </a>
+            </p>
         </div>
-        <script>
+    </div>
+    <script>
         function togglePasswordVisibility() {
             const passwordInput1 = document.getElementById('Pass1');
             const passwordInput2 = document.getElementById('Pass2');
@@ -94,27 +86,75 @@
                 showPasswordIcon.classList.add('fa-eye');
             }
         }
-        function ResetPassword() {
-            var Pass1 = document.getElementById("Pass1");
-            var Pass2 = document.getElementById("Pass2");
-            
-            if(Pass1.value.length < 8){
-                    Pass1.classList.add("border-red-500");
-                    Pass2.classList.add("border-red-500");
-                    document.getElementById("error-message").classList.remove("hidden");
-                    document.getElementById("error-message").innerHTML = "كلمة المرور يجب ان تكون على الاقل 8 حروف";
-            } else {
-                    if (Pass1.value == Pass2.value) {
-                        window.location.href = "Login.html";   
-                    } else {
-                        Pass1.classList.add("border-red-500");
-                        Pass2.classList.add("border-red-500");
-                        document.getElementById("error-message").classList.remove("hidden");
-                        document.getElementById("error-message").innerHTML = "كلمة المرور غير متطابقة";
-                    }
+
+        let userMail = null
+        let resetToken = null
+
+        async function ResetPassword() {
+            const Pass1 = document.getElementById("Pass1").value;
+            const Pass2 = document.getElementById("Pass2").value;
+
+            if (Pass1.length < 8) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'كلمة المرور يجب ان تكون على الاقل 8 حروف',
+                });
+                return;
             }
-            
+
+            if (Pass1 !== Pass2) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'كلمة المرور غير متطابقة',
+                });
+                return;
+            }
+
+            try {
+                const response = await fetch('https://sbaishop.com/api/reset-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 'email': userMail, 'token': resetToken, password: Pass1 }),
+                });
+
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم بنجاح',
+                        text: 'تم تغيير كلمة المرور بنجاح',
+                    }).then(() => {
+                        window.location.href = "index.html";
+                    });
+                } else {
+                    const errorData = await response.json();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطأ',
+                        text: errorData.message || 'حدث خطأ أثناء تغيير كلمة المرور',
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'تعذر الاتصال بالخادم. حاول مرة أخرى لاحقًا.',
+                });
+            }
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            userMail = sessionStorage.getItem('userMail')
+            resetToken = sessionStorage.getItem('resetToken')
+            // if (!userMail || !resetToken) {
+            //     window.location.href = 'index.html';
+            //     return
+            // }
+        })
     </script>
-    </body>
+</body>
+
 </html>

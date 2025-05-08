@@ -83,6 +83,32 @@
     <!-- JavaScript for Show Password -->
     <script>
 
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem('token') ?? sessionStorage.getItem('token');
+            const userId = localStorage.getItem('userId') ?? sessionStorage.getItem('userId');
+            const permissions = localStorage.getItem('permissions') ?? sessionStorage.getItem('permissions');
+
+            if (token && userId && permissions) {
+                switch (permissions[0]) {
+                    case 'vueDashboard':
+                        window.location.href = "dashboard.php";
+                        break;
+                    case 'gererProducts':
+                        window.location.href = "products.php";
+                        break;
+                    case 'gererOrders':
+                        window.location.href = "orders.php";
+                        break;
+                    case 'gererUsers':
+                        window.location.href = "clients.php";
+                        break;
+                    default:
+                        window.location.href = "index.php";
+                        break;
+                }
+            }
+        })
+
         function Login() {
             const email = document.getElementById('email');
             const password = document.getElementById('password');
@@ -147,7 +173,7 @@
                     const permissions = data.permissions.split('&');
 
                     switch (permissions[0]) {
-                        case 'gererDashboard':
+                        case 'vueDashboard':
                             window.location.href = "dashboard.php";
                             break;
                         case 'gererProducts':
