@@ -36,7 +36,7 @@ async function getOrders() {
                             <td class="px-6 py-4 text-center" dir="ltr">${order.total_price} DH</td>
                             <td class="px-6 py-4 text-center">${new Date(order.created_at).toLocaleDateString()}</td>
                             <td class="p-3 border-b text-center whitespace-nowrap">
-                                <button onclick="window.open('NewOrder.php?action=edit&order=${order.id}','_self')"
+                                <button onclick="window.open('newOrder.php?action=edit&order=${order.id}','_self')"
                                     class="bg-blue-500 text-white text-center px-2 py-1 rounded-full hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
                                 </button>

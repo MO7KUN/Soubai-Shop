@@ -12,7 +12,7 @@ function sidebarHandler(permission) {
   }
 
   const elementsToRemove = {
-    gererDashboard: "dashboard",
+    vueDashboard: "dashboard",
     gererCategorys: "categories",
     gererProducts: "products",
     gererClients: "clients",
