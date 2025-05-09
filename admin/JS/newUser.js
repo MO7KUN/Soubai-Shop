@@ -38,6 +38,10 @@ const priviliges = [
         forDB: "gererUsers"
     },
     {
+        forUser: "تغيير الاعدادات",
+        forDB: "gererSettings"
+    },
+    {
         forUser: "الاطلاع على لوحة التحكم",
         forDB: "vueDashboard"
     },

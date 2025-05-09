@@ -1,13 +1,12 @@
-
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let productsData = [];
+let shippingData = {};
 
 async function initializeCart() {
     try {
-        // Get product IDs from cart
         const productIds = cart.map(item => item.id);
-        console.log(productIds)
 
+        // Clear cart immediately if empty
         if (productIds.length === 0) {
             renderEmptyCart();
             return;
@@ -16,9 +15,7 @@ async function initializeCart() {
         // Fetch product details
         const response = await fetch('https://sbaishop.com/api/website/getCartProdcuts', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ product_ids: productIds })
         });
 
@@ -26,15 +23,37 @@ async function initializeCart() {
 
         productsData = await response.json();
 
-        // Merge product data with cart quantities
+        // Validate and clean up cart items
+        const validCartItems = cart.filter(cartItem =>
+            productsData.products.some(p => p.id === cartItem.id)
+        );
+
+        // Update cart if some items were removed
+        if (validCartItems.length !== cart.length) {
+            const removedCount = cart.length - validCartItems.length;
+            cart = validCartItems;
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Swal.fire({
+            //     title: 'تم تحديث السلة',
+            //     text: `تم إزالة ${removedCount} منتجات لم تعد متوفرة`,
+            //     icon: 'info',
+            //     confirmButtonText: 'حسناً'
+            // });
+        }
+
+        // Merge with product data
         const mergedCart = cart.map(cartItem => {
-            const product = productsData.find(p => p.id === cartItem.id);
+            const product = productsData.products.find(p => p.id === cartItem.id) || {};
             return {
                 ...cartItem,
                 ...product,
-                price: product.discount_price || product.selling_price
+                price: product.discount_price || product.selling_price || 0
             };
         });
+
+        shippingData.free_shipping_threshold = parseFloat(productsData.free_shipping_threshold) || 0;
+        shippingData.shipping_price = parseFloat(productsData.shipping_price) || 0;
 
         renderCartItems(mergedCart);
         updateCartTotals(mergedCart);
@@ -49,6 +68,67 @@ async function initializeCart() {
         });
     }
 }
+
+async function updateCartItem(itemId, newQuantity) {
+    let itemIndex = cart.findIndex(item => item.id == itemId);
+    const product = productsData.products.find(p => p.id == itemId);
+
+    // Remove item if product not found
+    if (!product) {
+        cart = cart.filter(item => item.id !== itemId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        initializeCart(); // Refresh cart
+        return;
+    }
+
+    // Handle quantity updates
+    if (itemIndex === -1 && newQuantity > 0) {
+        cart.push({ id: itemId, quantity: newQuantity });
+        itemIndex = cart.length - 1;
+    } else if (itemIndex !== -1) {
+        cart[itemIndex].quantity = newQuantity;
+    }
+
+    // Never remove items completely - keep with 0 quantity
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Update UI
+    const itemElement = document.querySelector(`.cart-item[data-id="${itemId}"]`);
+    if (itemElement) {
+        const price = product.discount_price || product.selling_price;
+        const totalElement = itemElement.querySelector('.item-total');
+        if (totalElement) {
+            totalElement.textContent = `${(price * newQuantity).toFixed(2)} درهم`;
+        }
+    } else if (newQuantity > 0) {
+        initializeCart(); // Re-render if item was previously removed
+    }
+
+    updateCartTotals(cart);
+    updateCartCount(cart);
+}
+
+// Modified removeCartItem to preserve 0 quantity items
+function removeCartItem(itemId) {
+    Swal.fire({
+        title: 'هل أنت متأكد؟',
+        text: 'هل تريد حقاً إزالة هذا المنتج من سلة التسوق؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#C8A574',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'نعم، إزالة',
+        cancelButtonText: 'إلغاء'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            cart = cart.filter(item => item.id != itemId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            initializeCart(); // Refresh cart view
+        }
+    });
+}
+
+// Rest of the functions remain the same with improved error handling
 
 async function renderCartItems(mergedCart) {
     const cartItemsContainer = document.getElementById('cartItems');
@@ -143,66 +223,120 @@ async function addCartEventListeners() {
     });
 }
 
-async function updateCartItem(itemId, newQuantity) {
-    const itemIndex = cart.findIndex(item => item.id == itemId);
+// Update in updateCartItem function
+// async function updateCartItem(itemId, newQuantity) {
+//     const itemIndex = cart.findIndex(item => item.id == itemId);
 
-    if (itemIndex === -1) return;
+//     if (itemIndex === -1) return;
 
-    if (newQuantity === 0) {
-        cart.splice(itemIndex, 1);
-    } else {
-        cart[itemIndex].quantity = newQuantity;
-    }
+//     // Get the product price from productsData
+//     const product = productsData.products.find(p => p.id == itemId);
+//     if (!product) return;
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartTotals(cart);
-    updateCartCount(cart);
-}
+//     if (newQuantity === 0) {
+//         cart.splice(itemIndex, 1);
+//     } else {
+//         cart[itemIndex].quantity = newQuantity;
+//     }
 
-function removeCartItem(itemId) {
-    Swal.fire({
-        title: 'هل أنت متأكد؟',
-        text: 'هل تريد حقاً إزالة هذا المنتج من سلة التسوق؟',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#C8A574',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'نعم، إزالة',
-        cancelButtonText: 'إلغاء'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Remove from cart array
-            cart = cart.filter(item => item.id != itemId);
-            localStorage.setItem('cart', JSON.stringify(cart));
+//     localStorage.setItem('cart', JSON.stringify(cart));
 
-            // Remove from DOM
-            const itemElement = document.querySelector(`.cart-item[data-id="${itemId}"]`);
-            if (itemElement) itemElement.remove();
+//     // Update specific item's total in DOM
+//     const itemElement = document.querySelector(`.cart-item[data-id="${itemId}"]`);
+//     if (itemElement) {
+//         const price = product.discount_price || product.selling_price;
+//         const totalElement = itemElement.querySelector('.item-total');
+//         if (totalElement) {
+//             totalElement.textContent = `${(price * newQuantity).toFixed(2)} درهم`;
+//         }
+//     }
 
-            // Update totals and count
-            updateCartTotals(cart);
-            updateCartCount(cart);
+//     updateCartTotals(cart);
+//     updateCartCount(cart);
+// }
 
-            // Show empty state if needed
-            if (cart.length === 0) renderEmptyCart();
-        }
-    });
-}
+// function removeCartItem(itemId) {
+//     Swal.fire({
+//         title: 'هل أنت متأكد؟',
+//         text: 'هل تريد حقاً إزالة هذا المنتج من سلة التسوق؟',
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonColor: '#C8A574',
+//         cancelButtonColor: '#d33',
+//         confirmButtonText: 'نعم، إزالة',
+//         cancelButtonText: 'إلغاء'
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             // Remove from cart array
+//             cart = cart.filter(item => item.id != itemId);
+//             localStorage.setItem('cart', JSON.stringify(cart));
+
+//             // Remove from DOM
+//             const itemElement = document.querySelector(`.cart-item[data-id="${itemId}"]`);
+//             if (itemElement) itemElement.remove();
+
+//             // Update totals and count
+//             updateCartTotals(cart);
+//             updateCartCount(cart);
+
+//             // Show empty state if needed
+//             if (cart.length === 0) renderEmptyCart();
+//         }
+//     });
+// }
 
 async function updateCartTotals(cartData) {
     let subtotal = 0;
-    const shipping = 5.00;
 
     cartData.forEach(item => {
-        const product = productsData.find(p => p.id === item.id);
+        const product = productsData.products.find(p => p.id === item.id);
         if (product) {
             subtotal += (product.discount_price || product.selling_price) * item.quantity;
         }
     });
+    const remainingAmountForFreeShipping = Math.max(0, shippingData['free_shipping_threshold'] - subtotal);
+    const shippingPrice = remainingAmountForFreeShipping === 0 ? 0 : shippingData['shipping_price'];
 
-    document.getElementById('subtotal').textContent = `${subtotal.toFixed(2)} درهم`;
-    document.getElementById('shipping').textContent = `${shipping.toFixed(2)} درهم`;
-    document.getElementById('total').textContent = `${(subtotal + shipping).toFixed(2)} درهم`;
+    const shippingElement = document.getElementById('shipping');
+    const totalElement = document.getElementById('total');
+    const remainingAmountElement = document.getElementById('remainingAmount');
+    const freeShippingMessageElement = document.getElementById('freeShippingMessage');
+    const subtotalElement = document.getElementById('subtotal');
+
+    // Update subtotal
+    if (subtotalElement) {
+        subtotalElement.textContent = `${subtotal.toFixed(2)} درهم`;
+    }
+
+    // Update shipping cost
+    if (shippingElement) {
+        shippingElement.textContent = `${shippingPrice} درهم`;
+    }
+
+    // Update total cost
+    if (totalElement) {
+        totalElement.textContent = `${(Number(subtotal) + Number(shippingPrice)).toFixed(2)} درهم`;
+    }
+
+    // Update remaining amount for free shipping
+    if (remainingAmountElement) {
+        remainingAmountElement.textContent = `${remainingAmountForFreeShipping.toFixed(2)} درهم`;
+    }
+
+    // Show or hide free shipping message
+    if (remainingAmountForFreeShipping === 0) {
+        if (freeShippingMessageElement) {
+            freeShippingMessageElement.textContent = 'تهانينا! لقد حصلت على شحن مجاني.';
+            freeShippingMessageElement.classList.add('text-green-500');
+            freeShippingMessageElement.classList.remove('text-gray-500');
+        }
+    } else {
+        if (freeShippingMessageElement) {
+            freeShippingMessageElement.textContent = `أضف منتجات بقيمة ${remainingAmountForFreeShipping.toFixed(2)} درهم للحصول على شحن مجاني.`;
+            freeShippingMessageElement.classList.add('text-gray-500');
+            freeShippingMessageElement.classList.remove('text-green-500');
+        }
+    }
 }
 
 async function updateCartCount(cartData) {
