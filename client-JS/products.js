@@ -271,8 +271,7 @@ function renderProducts(productsToRender) {
               </div>`
         : `<span class="text-primary font-semibold md:font-bold text-md md:text-lg">${product.selling_price} درهم</span>`
       }
-          ${quantity > 0
-        ? `<div class="quantity-selector flex items-center">
+            <div class="quantity-selector flex items-center ${quantity > 0 ? '' : 'hidden'}">
                 <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded-r-[9999px]" data-id="${product.id}">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -284,44 +283,45 @@ function renderProducts(productsToRender) {
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </button>
-            </div>`
-        : `<button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
+            </div>
+            <button class="add-to-cart ${quantity > 0 ? 'hidden' : ''} bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
-              </button>`
-      }
+            </button>
         </div>
       </div>
     `;
     productsGrid.appendChild(productElement);
   });
+}
 
-  addCartEventListeners();
+function updateProductUI(productId) {
+  const productElement = document.querySelector(`[data-id="${productId}"]`)?.closest('.product-card');
+  if (!productElement) return;
+
+  const cartItem = cart.find(item => item.id === productId);
+  const quantity = cartItem?.quantity || 0;
+
+  productElement.querySelector('.quantity-display').textContent = quantity;
+  productElement.querySelector('.quantity-selector').classList.toggle('hidden', quantity === 0);
+  productElement.querySelector('.add-to-cart').classList.toggle('hidden', quantity > 0);
 }
 
 // Add cart event listeners
-async function addCartEventListeners() {
-  document.querySelectorAll(".add-to-cart").forEach((button) => {
-    button.addEventListener("click", function () {
-      const productId = parseInt(this.dataset.id);
-      addToCart(productId, 1);
-    });
-  });
+async function handleCartClicks(event) {
+  const target = event.target.closest('.add-to-cart, .increase-quantity, .decrease-quantity');
+  if (!target) return;
 
-  document.querySelectorAll(".increase-quantity").forEach((button) => {
-    button.addEventListener("click", function () {
-      const productId = parseInt(this.dataset.id);
-      addToCart(productId, 1);
-    });
-  });
+  // Prevent multiple handlers
+  event.stopImmediatePropagation();
 
-  document.querySelectorAll(".decrease-quantity").forEach((button) => {
-    button.addEventListener("click", function () {
-      const productId = parseInt(this.dataset.id);
-      decreaseQuantity(productId);
-    });
-  });
+  const productId = parseInt(target.dataset.id);
+  if (target.classList.contains('add-to-cart') || target.classList.contains('increase-quantity')) {
+    addToCart(productId, 1);
+  } else if (target.classList.contains('decrease-quantity')) {
+    decreaseQuantity(productId);
+  }
 }
 
 // Add to cart
@@ -342,6 +342,7 @@ async function addToCart(productId, quantity) {
   }
 
   updateCart();
+  updateProductUI(productId); // Add this
 }
 
 // Decrease quantity
@@ -356,14 +357,16 @@ async function decreaseQuantity(productId) {
   }
 
   updateCart();
+  updateProductUI(productId); // Add this
 }
 
 // Update cart
 async function updateCart() {
   updateCartCount();
-  filterProducts();
+  // filterProducts();
   localStorage.setItem("cart", JSON.stringify(cart));
 }
+
 
 // Update cart count
 async function updateCartCount() {
@@ -657,4 +660,6 @@ async function initApp() {
     // Filter products immediately
     filterProducts();
   }
+
+  document.getElementById('productsGrid').addEventListener('click', handleCartClicks);
 }

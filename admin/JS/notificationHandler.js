@@ -39,14 +39,14 @@ navigator.serviceWorker.register("JS/sw.js").then(registration => {
 });
 
 // Save device token to the server
-function saveDeviceToken(token) {
+function saveDeviceToken(notificationToken) {
     fetch('https://sbaishop.com/api/notification/token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ userToken: token })
+        body: JSON.stringify({ userToken: notificationToken })
     })
         .then(response => response.json())
         .then(data => {

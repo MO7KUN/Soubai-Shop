@@ -67,6 +67,7 @@ async function getOrders() {
                 lengthChange: true, // تفعيل تغيير عدد الصفوف
                 pageLength: 10, // القيمة الافتراضية
                 pagingType: 'full_numbers',
+                order: [],
                 language: {
                     "paginate": {
                         "previous": "السابق",

@@ -38,4 +38,5 @@ Thumbs.db
 *.bak
 *.swp
 *.tmp
-sbaishop-template.html
+/sbaishop-template.html
+/client-JS/products copy.js

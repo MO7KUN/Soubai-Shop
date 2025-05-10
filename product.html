@@ -100,6 +100,23 @@
         .tab-button.active:after {
             width: 100%;
         }
+
+        .quantity-selector {
+            display: none;
+            /* Hidden by default */
+        }
+
+        .add-to-cart {
+            display: block;
+            /* Visible by default */
+        }
+
+        /* For quantity selector layout */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
     </style>
 </head>
 
@@ -134,7 +151,7 @@
 
                 <!-- Cart Icon -->
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <a href="Cart.html" class="text-green-500 transition-colors relative">
+                    <a href="cart.html" class="text-green-500 transition-colors relative">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -201,6 +201,11 @@ async function deleteProduct(id) {
             timer: 1200,
         });
 
+        // Destroy the DataTable instance before fetching products
+        const dataTableInstance = $('#productsTable').DataTable();
+        if (dataTableInstance) {
+            dataTableInstance.destroy();
+        }
         fetchProducts(); // Refresh product list after successful deletion
 
     } catch (response) {
