@@ -207,7 +207,7 @@ let products = [];
 const productSearchInput = document.getElementById("productSearchInput");
 const productList = document.getElementById("productList");
 const productsTableBody = document.querySelector("table tbody");
-const orderTotalElement = document.querySelector(".mt-6.flex h2[dir='ltr']");
+const orderTotalElement = document.getElementById("order-subtotal");
 
 // Store selected products to prevent duplicates
 let selectedProducts = {};

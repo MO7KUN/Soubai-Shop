@@ -40,7 +40,7 @@ async function getOrders() {
                                     class="bg-blue-500 text-white text-center px-2 py-1 rounded-full hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button
+                                <button onclick="deleteOrder(${order.id})"
                                     class="bg-red-500 text-white text-center px-2 py-1 rounded-full hover:bg-red-600">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -212,6 +212,77 @@ async function changeOrderStatus(orderId, selectElement) {
 
     } catch (error) {
         console.error("❌ حدث خطأ:", error);
+        Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: error.message || "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا",
+        });
+    }
+}
+
+async function deleteOrder(id) {
+    // Show confirmation pop-up
+    const confirmDelete = await Swal.fire({
+        icon: "warning",
+        title: "تأكيد الحذف",
+        text: "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+        showCancelButton: true,
+        confirmButtonText: "نعم، احذف",
+        cancelButtonText: "إلغاء",
+    });
+
+    if (!confirmDelete.isConfirmed) {
+        return; // Exit if the user cancels
+    }
+
+    try {
+        // Show loading pop-up
+        Swal.fire({
+            title: "جاري الحذف...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        // Send delete request
+        const response = await fetch(apiUrl + `/order/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const data = await response.json().catch(() => ({})); // Handle potential invalid JSON response
+
+        if (response.ok) {
+            // Show success pop-up
+            Swal.fire({
+                icon: "success",
+                title: "تم الحذف",
+                text: data.message || "تم حذف الطلب بنجاح",
+                timer: 1500,
+                showConfirmButton: false,
+            });
+
+            // Optionally refresh the orders list or remove the deleted row
+            getOrders();
+        } else {
+            // Handle specific error cases
+            if (response.status === 404) {
+                return Swal.fire({ icon: "error", title: "خطأ", text: "الطلب غير موجود" });
+            }
+
+            if (response.status === 403) {
+                return Swal.fire({ icon: "error", title: "خطأ", text: "غير مصرح لك بتنفيذ هذا الإجراء" });
+            }
+
+            // Default error handling
+            throw new Error(data.message || "فشل في حذف الطلب");
+        }
+    } catch (error) {
+        console.error("❌ حدث خطأ أثناء الحذف:", error);
         Swal.fire({
             icon: "error",
             title: "خطأ",

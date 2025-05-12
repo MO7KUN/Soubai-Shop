@@ -62,8 +62,18 @@
                     <!-- sub totals -->
                     <div class="mt-6 flex justify-between items-center">
                         <h2 class="font-semibold text-lg">المجموع</h2>
-                        <h2 class="font-semibold text-lg" dir="ltr">0 DH</h2>
+                        <h2 class="font-semibold text-lg" id="order-subtotal" dir="ltr">0 DH</h2>
                     </div>
+                    <!-- shipping fee -->
+                    <!-- <div class="mt-2 flex justify-between items-center">
+                        <h2 class="font-semibold text-lg">تكلفة الشحن</h2>
+                        <h2 class="font-semibold text-lg" id="shipping-price" dir="ltr">0 DH</h2>
+                    </div> -->
+                    <!-- total -->
+                    <!-- <div class="mt-4 flex justify-between items-center border-t pt-2">
+                        <h2 class="font-bold text-xl">الإجمالي</h2>
+                        <h2 class="font-bold text-xl text-blue-500" id="order-total" dir="ltr">0 DH</h2>
+                    </div> -->
                 </div>
                 <!-- client list -->
                 <div class="order-1 md:order-2 rounded-md bg-white border border-gray-300 w-full md:w-2/5 p-2">
