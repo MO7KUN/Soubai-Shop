@@ -433,6 +433,7 @@ async function initCategoriesSwiper() {
     },
   });
 }
+
 async function fetchDiscountedProducts() {
   console.log("Fetching discounted products...");
   showLoadingIndicator("promotions-grid");
@@ -455,9 +456,7 @@ async function fetchDiscountedProducts() {
       }
 
       if (data.length === 0) {
-        const errormessage = document.getElementById(
-          "promotions-error-message"
-        );
+        const errormessage = document.getElementById("promotions-error-message");
         if (errormessage) {
           errormessage.textContent = "لا توجد عروض متاحة حالياً";
           errormessage.classList.remove("hidden");
@@ -465,6 +464,7 @@ async function fetchDiscountedProducts() {
         throw new Error("No promotions available");
       }
 
+      // Merge with existing products
       products = [
         ...products,
         ...data.map((product) => ({
@@ -481,19 +481,14 @@ async function fetchDiscountedProducts() {
         promotionsGrid.innerHTML = "";
 
         data.forEach((product) => {
-          console.log("Product:", product);
           const promotionscard = document.createElement("div");
           promotionscard.className =
             "product-card bg-white rounded-lg w-full shadow-md hover:shadow-lg transition-shadow cursor-pointer";
 
-          // Add click handler for product card (excluding buttons)
+          // Add click handler for product card
           promotionscard.addEventListener("click", function (e) {
             // Check if the click was on a button or its children
-            if (
-              !e.target.closest(
-                ".add-to-cart-container, .add-to-cart, .quantity-selector, .quantity-btn"
-              )
-            ) {
+            if (!e.target.closest(".add-to-cart-container, .add-to-cart, .quantity-selector, .quantity-btn")) {
               window.location.href = `product.html?id=${product.id}`;
             }
           });
@@ -501,98 +496,77 @@ async function fetchDiscountedProducts() {
           const cartItem = cart.find((item) => item.id == product.id);
           const quantity = cartItem ? cartItem.quantity : 0;
 
-          if (product.discount_price) {
-            promotionscard.innerHTML = `
-                  <div class="relative">
-                    <img src="${product.image_url}"
-                        alt="${product.label}"
-                        class="w-full h-64 object-cover" loading="lazy">
-                    <span class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">خصم</span>
-                  </div>
-                  <div class="p-4">
-                    <h3 class="font-medium text-lg mb-2">${product.label}</h3>
-                    <div class="flex justify-between items-center">
-                      <div>
-                        <span class="font-bold text-primary text-lg">${product.discount_price
-              } درهم</span>
-                        <span class="font-light text-dark text-md line-through block">${product.selling_price
-              } درهم</span>
-                      </div>
-                      <div class="add-to-cart-container" data-id="${product.id
-              }">
-                        ${quantity > 0
-                ? `
-                          <div class="quantity-selector flex items-center">
-                            <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                              </svg>
-                            </button>
-                            <span class="quantity-display mx-2">${quantity}</span>
-                            <button class="quantity-btn increase-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                              </svg>
-                            </button>
-                          </div>
-                        `
-                : `
-                          <button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                          </button>
-                        `
-              }
-                      </div>
-                    </div>
-                  </div>
-                `;
-          } else {
-            promotionscard.innerHTML = `
-                  <div class="relative">
-                    <img src="${product.image_url}"
-                        alt="${product.label}"
-                        class="w-full h-64 object-cover" loading="lazy">
-                  </div>
-                  <div class="p-4">
-                    <h3 class="font-medium text-lg mb-2">${product.label}</h3>
-                    <div class="flex justify-between items-center">
-                      <span class="font-bold text-primary text-lg">${product.selling_price
-              } درهم</span>
-                      <div class="add-to-cart-container" data-id="${product.id
-              }">
-                        ${quantity > 0
-                ? `
-                          <div class="quantity-selector flex items-center">
-                            <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                              </svg>
-                            </button>
-                            <span class="quantity-display mx-2">${quantity}</span>
-                            <button class="quantity-btn increase-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                              </svg>
-                            </button>
-                          </div>
-                        `
-                : `
-                          <button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                          </button>
-                        `
-              }
-                      </div>
-                    </div>
-                  </div>
-                `;
-          }
+          promotionscard.innerHTML = `
+            <div class="relative">
+              <img src="${product.image_url}"
+                  alt="${product.label}"
+                  class="w-full h-64 object-cover" loading="lazy">
+              ${product.discount_price ? 
+                `<span class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">خصم</span>` 
+                : ''}
+            </div>
+            <div class="p-4">
+              <h3 class="font-medium text-lg mb-2">${product.label}</h3>
+              <div class="flex justify-between items-center">
+                <div>
+                  ${product.discount_price ? 
+                    `<span class="font-bold text-primary text-lg">${product.discount_price} درهم</span>
+                     <span class="font-light text-dark text-md line-through block">${product.selling_price} درهم</span>`
+                    : `<span class="font-bold text-primary text-lg">${product.selling_price} درهم</span>`}
+                </div>
+                <div class="add-to-cart-container" data-id="${product.id}">
+                  ${quantity > 0
+                    ? `<div class="quantity-selector flex items-center">
+                        <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                          </svg>
+                        </button>
+                        <span class="quantity-display mx-2">${quantity}</span>
+                        <button class="quantity-btn increase-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                        </button>
+                      </div>`
+                    : `<button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                      </button>`}
+                </div>
+              </div>
+            </div>
+          `;
 
           promotionsGrid.appendChild(promotionscard);
+          
+          // Add event listeners immediately
+          const container = promotionscard.querySelector('.add-to-cart-container');
+          if (container) {
+            const addBtn = container.querySelector('.add-to-cart');
+            const increaseBtn = container.querySelector('.increase-quantity');
+            const decreaseBtn = container.querySelector('.decrease-quantity');
+            
+            if (addBtn) {
+              addBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addToCart(product.id, 1);
+              });
+            }
+            if (increaseBtn) {
+              increaseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addToCart(product.id, 1);
+              });
+            }
+            if (decreaseBtn) {
+              decreaseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                decreaseQuantity(product.id);
+              });
+            }
+          }
         });
       }
 
