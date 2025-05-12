@@ -387,12 +387,12 @@ async function initializeCategories() {
   // Clear existing categories (except "All")
   document
     .querySelectorAll(
-      '#categoriesFilter input[name="category"]:not([value="الكل"])'
+      'categories.htmlFilter input[name="category"]:not([value="الكل"])'
     )
     .forEach((checkbox) => checkbox.parentElement.remove());
 
   // Add "All" option
-  if (!document.querySelector('#categoriesFilter input[value="الكل"]')) {
+  if (!document.querySelector('categories.htmlFilter input[value="الكل"]')) {
     const allOption = document.createElement("div");
     allOption.className = "filter-option";
     allOption.innerHTML = `

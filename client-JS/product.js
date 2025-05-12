@@ -13,7 +13,7 @@ const domElements = {
     quantityInput: document.querySelector('.quantity-input'),
     minusButton: document.querySelector('.quantity-btn.minus'),
     plusButton: document.querySelector('.quantity-btn.plus'),
-    categoryLink: document.querySelector('a[href*="#Categories"]'),
+    categoryLink: document.querySelector('a[href*="categories.html"]'),
     cartCount: document.getElementById('cartCount')
 };
 
