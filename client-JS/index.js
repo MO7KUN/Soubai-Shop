@@ -433,6 +433,7 @@ async function initCategoriesSwiper() {
     },
   });
 }
+
 async function fetchDiscountedProducts() {
   console.log("Fetching discounted products...");
   showLoadingIndicator("promotions-grid");
@@ -577,6 +578,7 @@ async function fetchDiscountedProducts() {
       throw error;
     });
 }
+
 async function fetchCategories() {
   console.log("Fetching categories...");
   // Show loading state
