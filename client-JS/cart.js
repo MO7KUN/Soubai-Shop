@@ -308,19 +308,21 @@ async function updateCartTotals(cartData) {
         subtotalElement.textContent = `${subtotal.toFixed(2)} درهم`;
     }
 
+
     // Update shipping cost
-    if (shippingElement) {
-        shippingElement.textContent = `${shippingPrice} درهم`;
-    }
+    shippingElement.textContent = subtotal > 0 ? `${shippingPrice} درهم` : 'xx درهم';
 
     // Update total cost
     if (totalElement) {
-        totalElement.textContent = `${(Number(subtotal) + Number(shippingPrice)).toFixed(2)} درهم`;
+        totalElement.textContent = `${((subtotal) + (shippingPrice) || 0).toFixed(2)} درهم`;
     }
 
     // Update remaining amount for free shipping
-    if (remainingAmountElement) {
+    if (remainingAmountElement && subtotal > 0) {
         remainingAmountElement.textContent = `${remainingAmountForFreeShipping.toFixed(2)} درهم`;
+    } else {
+        remainingAmountElement.classList.add('hidden')
+        freeShippingMessageElement.classList.add('hidden');
     }
 
     // Show or hide free shipping message
