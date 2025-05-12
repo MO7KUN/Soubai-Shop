@@ -32,7 +32,7 @@ function sidebarHandler(permission) {
     window.history.length > 1 ? window.history.back() : window.location.href = "index.html";
   }
 
-  if (permissionsArray.includes("receiveNotifications")) {
+  if (permissionsArray.includes("receiveNotifications") && localStorage.getItem('tokenHasBeenRegistred') != "true") {
     //add the path to the file responsilbe for handling notifications
     const script = document.createElement('script');
     script.type = 'module';

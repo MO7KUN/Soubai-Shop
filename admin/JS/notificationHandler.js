@@ -28,7 +28,6 @@ navigator.serviceWorker.register("JS/sw.js").then(registration => {
         vapidKey: 'BCkb_xDqsSE1NIA5PKvzYzNVOpM3eWdo_A8NwctOt5Oh0mWpQoz0VB3adE4eQCkqrxZO_sHbFUxqCCsvYH08-Co'
     }).then((currentToken) => {
         if (currentToken) {
-            console.log("Token is: " + currentToken);
             saveDeviceToken(currentToken);
         } else {
             console.log('No registration token available.');
@@ -52,6 +51,7 @@ function saveDeviceToken(notificationToken) {
         .then(data => {
             if (data.status === 'success') {
                 console.log('User token saved successfully:', data.message);
+                localStorage.setItem('tokenHasBeenRegistred', true)
                 cleanupScripts();
             } else if (data.status === 'already_registered') {
                 console.log('User token is already registered:', data.message);

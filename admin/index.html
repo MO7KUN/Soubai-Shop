@@ -86,8 +86,8 @@
         document.addEventListener("DOMContentLoaded", () => {
             const token = localStorage.getItem('token') ?? sessionStorage.getItem('token');
             const userId = localStorage.getItem('userId') ?? sessionStorage.getItem('userId');
-            const permissions = localStorage.getItem('permissions') ?? sessionStorage.getItem('permissions');
-
+            const permissions = (localStorage.getItem('permissions') ?? sessionStorage.getItem('permissions') ?? '').split('&');
+            console.log(permissions)
             if (token && userId && permissions) {
                 switch (permissions[0]) {
                     case 'vueDashboard':

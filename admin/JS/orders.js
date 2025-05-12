@@ -3,6 +3,7 @@ let apiUrl = "https://sbaishop.com/api"
 async function getOrders() {
     let allOrders = [];
     const tbody = document.getElementById('ordersTableBody');
+    tbody.innerHTML = ''
     try {
 
 
@@ -57,6 +58,7 @@ async function getOrders() {
                     `;
             })
 
+            $('#ordersTable').DataTable().destroy();
             // Initialize DataTable FIRST
             const table = $('#ordersTable').DataTable({
                 dom: 't', // إخفاء عناصر التحكم الافتراضية
@@ -261,10 +263,13 @@ async function deleteOrder(id) {
             Swal.fire({
                 icon: "success",
                 title: "تم الحذف",
-                text: data.message || "تم حذف الطلب بنجاح",
+                text: "تم حذف الطلب بنجاح",
                 timer: 1500,
                 showConfirmButton: false,
             });
+
+            // Destroy the existing DataTable instance before refetching orders
+            $('#ordersTable').DataTable().destroy();
 
             // Optionally refresh the orders list or remove the deleted row
             getOrders();
