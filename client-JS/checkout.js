@@ -90,10 +90,10 @@ async function renderOrderSummary(checkoutData) {
                 <img src="${item.image_url}" alt="${item.label}" class="w-12 h-12 object-cover rounded-md">
                 <div class="mr-3">
                     <h4 class="font-medium">${item.label}</h4>
-                    <p class="text-sm text-gray-500">${item.quantity} × ${item.price.toFixed(2)} درهم</p>
+                    <p class="text-sm text-gray-500">${item.quantity} × ${(parseFloat(item.discount_price || item.selling_price)).toFixed(2)} درهم</p>
                 </div>
             </div>
-            <span class="font-medium">${(item.price * item.quantity).toFixed(2)} درهم</span>
+            <span class="font-medium">${((parseFloat(item.discount_price || item.selling_price)) * item.quantity).toFixed(2)} درهم</span>
         `;
         orderItemsContainer.appendChild(itemElement);
     });

@@ -138,6 +138,7 @@ async function renderCartItems(mergedCart) {
         const itemElement = document.createElement('div');
         itemElement.className = 'cart-item bg-white p-4 rounded-lg shadow-sm relative';
         itemElement.dataset.id = item.id;
+        console.log(item)
         itemElement.innerHTML = `
                 <button class="remove-item text-gray-400 hover:text-red-500 hover:bg-red-200 bg-transpraent rounded-full px-1.5 py-1 absolute top-2 left-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -158,10 +159,10 @@ async function renderCartItems(mergedCart) {
                     <div class="md:w-1/6 mb-2 md:mb-0 text-center">
                         ${item.discount_price ?
                 `<div>
-                                <span class="font-medium text-primary item-price" data-price="${item.price}">${item.price.toFixed(2)} درهم</span>
-                                <span class="text-gray-500 text-sm line-through block">${item.selling_price.toFixed(2)} درهم</span>
+                                <span class="font-medium text-primary item-price" data-price="${item.selling_price}">${item.selling_price} درهم</span>
+                                <span class="text-gray-500 text-sm line-through block">${item.discount_price} درهم</span>
                             </div>` :
-                `<span class="font-medium text-primary item-price" data-price="${item.price}">${item.price.toFixed(2)} درهم</span>`
+                `<span class="font-medium text-primary item-price" data-price="${item.selling_price}">${item.selling_price} درهم</span>`
             }
                     </div>
                     <div class="md:w-1/6 mb-2 md:mb-0 flex justify-center">
@@ -285,59 +286,127 @@ async function addCartEventListeners() {
 //     });
 // }
 
+// async function updateCartTotals(cartData) {
+//     let subtotal = 0;
+
+//     cartData.forEach(item => {
+//         const product = productsData.products.find(p => p.id === item.id);
+//         if (product) {
+//             subtotal += (product.discount_price || product.selling_price) * item.quantity;
+//         }
+//     });
+//     const remainingAmountForFreeShipping = Math.max(0, shippingData['free_shipping_threshold'] - subtotal);
+//     const shippingPrice = remainingAmountForFreeShipping === 0 ? 0 : shippingData['shipping_price'];
+
+//     const shippingElement = document.getElementById('shipping');
+//     const totalElement = document.getElementById('total');
+//     const remainingAmountElement = document.getElementById('remainingAmount');
+//     console.log(remainingAmountElement)
+//     const freeShippingMessageElement = document.getElementById('freeShippingMessage');
+//     const subtotalElement = document.getElementById('subtotal');
+
+//     // Update subtotal
+//     if (subtotalElement) {
+//         subtotalElement.textContent = `${subtotal.toFixed(2)} درهم`;
+//     }
+
+
+//     // Update shipping cost
+//     shippingElement.textContent = subtotal > 0 ? `${shippingPrice} درهم` : 'xx درهم';
+
+//     // Update total cost
+//     if (totalElement) {
+//         totalElement.textContent = `${((subtotal) + (shippingPrice) || 0).toFixed(2)} درهم`;
+//     }
+
+//     // Update remaining amount for free shipping
+//     if (remainingAmountElement && subtotal > 0) {
+//         remainingAmountElement.textContent = `${remainingAmountForFreeShipping.toFixed(2)} درهم`;
+//     } else {
+//         remainingAmountElement.classList.add('hidden')
+//         freeShippingMessageElement.classList.add('hidden');
+//     }
+
+//     // Show or hide free shipping message
+//     if (remainingAmountForFreeShipping === 0) {
+//         if (freeShippingMessageElement) {
+//             freeShippingMessageElement.textContent = 'تهانينا! لقد حصلت على شحن مجاني.';
+//             freeShippingMessageElement.classList.add('text-green-500');
+//             freeShippingMessageElement.classList.remove('text-gray-500');
+//         }
+//     } else {
+//         if (freeShippingMessageElement) {
+//             freeShippingMessageElement.textContent = `أضف منتجات بقيمة ${remainingAmountForFreeShipping.toFixed(2)} درهم للحصول على شحن مجاني.`;
+//             freeShippingMessageElement.classList.add('text-gray-500');
+//             freeShippingMessageElement.classList.remove('text-green-500');
+//         }
+//     }
+// }
+
 async function updateCartTotals(cartData) {
-    let subtotal = 0;
+    // Create a Map for faster product lookups
+    const productMap = new Map(productsData.products.map(p => [p.id, p]));
 
-    cartData.forEach(item => {
-        const product = productsData.products.find(p => p.id === item.id);
-        if (product) {
-            subtotal += (product.discount_price || product.selling_price) * item.quantity;
-        }
-    });
-    const remainingAmountForFreeShipping = Math.max(0, shippingData['free_shipping_threshold'] - subtotal);
-    const shippingPrice = remainingAmountForFreeShipping === 0 ? 0 : shippingData['shipping_price'];
+    // Calculate subtotal using reduce
+    const subtotal = cartData.reduce((acc, item) => {
+        const product = productMap.get(item.id);
+        return acc + ((product?.discount_price || product?.selling_price || 0) * item.quantity);
+    }, 0);
 
-    const shippingElement = document.getElementById('shipping');
-    const totalElement = document.getElementById('total');
-    const remainingAmountElement = document.getElementById('remainingAmount');
-    const freeShippingMessageElement = document.getElementById('freeShippingMessage');
-    const subtotalElement = document.getElementById('subtotal');
+    // Cache DOM elements
+    const elements = {
+        shipping: document.getElementById('shipping'),
+        total: document.getElementById('total'),
+        remainingAmount: document.getElementById('remainingAmount'),
+        freeShippingMessage: document.getElementById('freeShippingMessage'),
+        subtotal: document.getElementById('subtotal')
+    };
 
-    // Update subtotal
-    if (subtotalElement) {
-        subtotalElement.textContent = `${subtotal.toFixed(2)} درهم`;
+    // Format currency consistently
+    const formatCurrency = (amount) => Number(amount).toFixed(2) + ' درهم';
+
+    // Update subtotal if element exists
+    if (elements.subtotal) {
+        elements.subtotal.textContent = formatCurrency(subtotal);
     }
 
+    // Calculate shipping costs
+    const freeThreshold = shippingData?.free_shipping_threshold || Infinity;
+    const baseShipping = shippingData?.shipping_price || 0;
+    const remaining = Math.max(0, freeThreshold - subtotal);
+    const shippingCost = subtotal >= freeThreshold ? 0 : baseShipping;
 
-    // Update shipping cost
-    shippingElement.textContent = subtotal > 0 ? `${shippingPrice} درهم` : 'xx درهم';
-
-    // Update total cost
-    if (totalElement) {
-        totalElement.textContent = `${((subtotal) + (shippingPrice) || 0).toFixed(2)} درهم`;
+    // Update shipping display
+    if (elements.shipping) {
+        elements.shipping.textContent = subtotal > 0 ? formatCurrency(shippingCost) : 'xx درهم';
     }
 
-    // Update remaining amount for free shipping
-    if (remainingAmountElement && subtotal > 0) {
-        remainingAmountElement.textContent = `${remainingAmountForFreeShipping.toFixed(2)} درهم`;
-    } else {
-        remainingAmountElement.classList.add('hidden')
-        freeShippingMessageElement.classList.add('hidden');
+    // Update total display
+    if (elements.total) {
+        elements.total.textContent = formatCurrency(subtotal + shippingCost);
     }
 
-    // Show or hide free shipping message
-    if (remainingAmountForFreeShipping === 0) {
-        if (freeShippingMessageElement) {
-            freeShippingMessageElement.textContent = 'تهانينا! لقد حصلت على شحن مجاني.';
-            freeShippingMessageElement.classList.add('text-green-500');
-            freeShippingMessageElement.classList.remove('text-gray-500');
+    // Handle shipping messages
+    const hasFreeShipping = remaining === 0;
+    const shouldShowShippingInfo = subtotal > 0;
+
+    // Update remaining amount display
+    if (elements.remainingAmount) {
+        elements.remainingAmount.classList.toggle('hidden', !shouldShowShippingInfo);
+        if (shouldShowShippingInfo) {
+            elements.remainingAmount.textContent = formatCurrency(remaining);
         }
-    } else {
-        if (freeShippingMessageElement) {
-            freeShippingMessageElement.textContent = `أضف منتجات بقيمة ${remainingAmountForFreeShipping.toFixed(2)} درهم للحصول على شحن مجاني.`;
-            freeShippingMessageElement.classList.add('text-gray-500');
-            freeShippingMessageElement.classList.remove('text-green-500');
-        }
+    }
+
+    // Update free shipping message
+    if (elements.freeShippingMessage) {
+        elements.freeShippingMessage.classList.toggle('hidden', !shouldShowShippingInfo);
+        elements.freeShippingMessage.textContent = hasFreeShipping
+            ? 'تهانينا! لقد حصلت على شحن مجاني.'
+            : `أضف منتجات بقيمة ${formatCurrency(remaining)} للحصول على شحن مجاني.`;
+
+        elements.freeShippingMessage.classList.toggle('text-green-500', hasFreeShipping);
+        elements.freeShippingMessage.classList.toggle('text-gray-500', !hasFreeShipping);
     }
 }
 
