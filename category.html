@@ -109,7 +109,8 @@
                         </li>
                         <li><a href="products.html"
                                 class="font-medium hover:text-primary transition-colors">منتجاتنا</a></li>
-                        <li><a href="categories.html" class="font-medium text-primary transition-colors">فئات المنتجات</a>
+                        <li><a href="categories.html" class="font-medium text-primary transition-colors">فئات
+                                المنتجات</a>
                         </li>
                     </ul>
                 </nav>
@@ -450,13 +451,13 @@
                 <div class="p-4">
                     <h3 class="font-medium mb-1">${product.label}</h3>
                     <div class="flex items-center justify-between">
-                        ${product.discount_price && product.selling_price && product.discount_price < product.selling_price ?
+                        ${product.discount_price ?
                         `<div>
-                                <span class="font-medium text-primary">${product.discount_price.toFixed(2)} درهم</span>
-                                <span class="text-gray-500 text-sm line-through mr-2">${product.selling_price.toFixed(2)} درهم</span>
+                                <span class="font-medium text-primary">${parseFloat(product.discount_price).toFixed(2)} درهم</span>
+                                <span class="text-gray-500 text-sm line-through mr-2">${parseFloat(product.selling_price).toFixed(2)} درهم</span>
                             </div>` :
                         product.selling_price ?
-                            `<span class="font-medium text-primary">${product.selling_price.toFixed(2)} درهم</span>` :
+                            `<span class="font-medium text-primary">${parseFloat(product.selling_price).toFixed(2)} درهم</span>` :
                             ``
                     }
                         <div class="quantity-controls ${quantity > 0 ? '' : 'hidden'}">
