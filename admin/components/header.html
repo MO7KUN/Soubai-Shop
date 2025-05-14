@@ -1,5 +1,6 @@
 <!-- Navbar -->
 <nav class="bg-gray-800 text-white p-4 fixed top-0 left-0 right-0 z-[999]">
+<nav class="bg-gray-800 text-white p-4 fixed top-0 left-0 right-0 z-[999]">
     <div class="flex justify-between items-center">
         <!-- Burger Menu for Sidebar (Visible on small screens) -->
         <button id="menu-btn" class="md:hidden text-white">
@@ -7,6 +8,7 @@
         </button>
         <!-- Right Side: Shop Name -->
         <div class="text-xl font-bold">
+            <i class="fas fa-store"></i> Sbai Shop
             <i class="fas fa-store"></i> Sbai Shop
         </div>
         <!-- Left Side: Notifications and Profile Picture -->
@@ -32,6 +34,8 @@
                         الشخصي</button>
                     <button onclick="window.open('parametrs.php','_self')"
                         class="block px-4 w-full py-2 hover:bg-gray-100">الإعدادات</button>
+                    <button onclick="window.open('parametrs.php','_self')"
+                        class="block px-4 w-full py-2 hover:bg-gray-100">الإعدادات</button>
                     <button onclick="logout()" class="block w-full px-4 py-2 hover:bg-gray-100">تسجيل
                         الخروج</button>
                 </div>
@@ -42,6 +46,7 @@
 </nav>
 
 <!-- PLUS Dropdown menu -->
+<div class="z-[999] md:left-[4rem] hidden  absolute left-1 text-base list-none  divide-y  rounded-lg shadow bg-gray-700 divide-gray-600"
 <div class="z-[999] md:left-[4rem] hidden  absolute left-1 text-base list-none  divide-y  rounded-lg shadow bg-gray-700 divide-gray-600"
     id="plus-dropdown">
 
@@ -85,6 +90,7 @@
 <!-- Sidebar -->
 <div id="sidebar"
     class="fixed right-0 w-64 z-[999] h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
+    class="fixed right-0 w-64 z-[999] h-screen bg-gray-800 text-white p-5 transform translate-x-full md:translate-x-0 transition-transform duration-300">
     <h2 class="text-center text-xl font-bold mb-4">لوحة التحكم</h2>
     <nav class="space-y-2">
         <a href="dashboard.php" id="dashboard" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
@@ -105,6 +111,7 @@
         <a href="users.php" id="users" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
             <i class="fas fa-user-cog"></i> المستخدمين
         </a>
+        <a href="parametrs.php" id="settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
         <a href="parametrs.php" id="settings" class="block py-2 px-4 hover:bg-gray-700 rounded-lg">
             <i class="fas fa-cog"></i> إعدادات
         </a>
