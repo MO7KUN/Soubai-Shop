@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>شاي أخضر بالنعناع المغربي - متجر السباعي</title>
+    <meta name="description" content="شاي أخضر بالنعناع المغربي الأصلي - 250 جرام" />
+    <meta name="author" content="متجر السباعي" />
+    <meta property="og:image" content="/images/tea1.jpg" />
+    <meta name="theme-color" content="#FF9E2C">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#C8A574',
+                        'dark': '#1A1A1A',
+                        'light': '#F5F5F5',
+                        'secondary': '#6F5E47',
+                        'accent': '#E8D6BB',
+                    },
+                    fontFamily: {
+                        'arabic': ['Noto Kufi Arabic', 'sans-serif'],
+                        'display': ['Amiri', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        body {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            background-color: #FFFFFF;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: #e5e7eb;
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            border-left: none;
+            border-right: none;
+            -moz-appearance: textfield;
+        }
+
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-button {
+            position: relative;
+        }
+
+        .tab-button:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: #C8A574;
+            transition: width 0.3s ease;
+        }
+
+        .tab-button.active:after {
+            width: 100%;
+        }
+
+        .quantity-selector {
+            display: none;
+            /* Hidden by default */
+        }
+
+        .add-to-cart {
+            display: block;
+            /* Visible by default */
+        }
+
+        /* For quantity selector layout */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+
+<body class="text-right">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden text-dark focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+
+                <!-- Logo -->
+                <a href="/" class="text-2xl font-display font-bold text-primary">متجر السباعي</a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-6 space-x-reverse">
+                    <ul class="flex space-x-6 space-x-reverse">
+                        <li><a href="index.html" class="font-medium hover:text-primary transition-colors">الرئيسية</a>
+                        </li>
+                        <li><a href="products.html"
+                                class="font-medium hover:text-primary transition-colors">منتجاتنا</a></li>
+                        <li><a href="index.htmlcategories.html"
+                                class="font-medium hover:text-primary transition-colors">فئات المنتجات</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Cart Icon -->
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <a href="cart.html" class="text-green-500 transition-colors relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        <span id="cartCount"
+                            class="absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <div class="p-4">
+                <ul class="space-y-2">
+                    <li><a href="index.html"
+                            class="font-medium hover:text-primary transition-colors block py-2">الرئيسية</a></li>
+                    <li><a href="products.html"
+                            class="font-medium hover:text-primary transition-colors block py-2">منتجاتنا</a></li>
+                    <li><a href="index.htmlcategories.html"
+                            class="font-medium hover:text-primary transition-colors block py-2">فئات المنتجات</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Section -->
+    <section class="py-12 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="mb-4">
+                <div class="text-sm text-gray-600">
+                    <a href="index.html" class="hover:text-primary">الرئيسية</a> /
+                    <a href="products.html" class="hover:text-primary">منتجاتنا</a> /
+                    <span class="text-primary productTitle"></span>
+                </div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Product Image (Single) -->
+                <div class="lg:w-1/2">
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="relative overflow-hidden rounded-lg" style="padding-bottom: 100%;">
+                            <img src="" id="productImage" alt="" class="absolute w-full h-full object-cover">
+                            <div dir="ltr"
+                                class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded discountPercentage">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="lg:w-1/2">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h1 class="text-2xl font-display font-bold mb-2 productTitle"></h1>
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-yellow-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            </div>
+                            <!-- <span class="text-gray-600 text-sm mr-2">(12 تقييم)</span> -->
+                            <span class="text-green-600 text-sm font-medium">متوفر في المخزن</span>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="flex items-center">
+                                <span class="text-primary font-bold text-2xl" id="discountPrice"></span>
+                                <span class="text-gray-400 text-lg line-through ml-2" id="sellingPrice"></span>
+                                <span dir="ltr"
+                                    class="bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded discountPercentage">
+                                    15% خصم
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- <div class="mb-6">
+                            <p class="text-gray-700 description truncate overflow-hidden text-ellipsis" dir="rtl"></p>
+                        </div> -->
+
+                        <div class="mb-6">
+                            <!-- <div class="flex items-center mb-2">
+                                <span class="text-gray-600 w-24">الوزن:</span>
+                                <span class="font-medium">250 جرام</span>
+                            </div> -->
+                            <div class="flex items-center mb-2">
+                                <span class="text-gray-600 w-24">الفئة:</span>
+                                <a href="#" class="font-medium text-primary hover:underline">الشاي والأعشاب</a>
+                            </div>
+                            <!-- <div class="flex items-center">
+                                <span class="text-gray-600 w-24">العلامة:</span>
+                                <span class="font-medium">السباعي</span>
+                            </div> -->
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="flex items-center space-x-4 space-x-reverse mb-4">
+                                <span class="text-gray-600">الكمية:</span>
+                                <div class="flex items-center border border-gray-200 rounded-md">
+                                    <button class="quantity-btn minus" disabled>-</button>
+                                    <input type="number" value="0" min="0" max="99" class="quantity-input">
+                                    <button class="quantity-btn plus">+</button>
+                                </div>
+                            </div>
+
+                            <!-- <button id="addToCartBtn"
+                                class="w-full bg-primary text-white py-3 rounded-md font-medium hover:bg-secondary transition-colors mb-4">
+                                أضف إلى السلة
+                            </button> -->
+                            <!-- <button
+                                class="w-full bg-white border border-primary text-primary py-3 rounded-md font-medium hover:bg-accent transition-colors">
+                                أضف إلى المفضلة
+                            </button> -->
+                        </div>
+
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex items-center">
+                                <span class="text-2xl ml-2">😊</span>
+                                <span class="text-gray-600">ضمان الجودة والرضا 100%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Tabs -->
+            <div class="mt-8">
+                <div class="bg-white rounded-lg shadow-sm">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px space-x-8 space-x-reverse">
+                            <button
+                                class="tab-button py-4 px-1 font-medium text-primary border-b-2 border-primary active"
+                                data-tab="description">
+                                الوصف
+                            </button>
+                            <!-- <button class="tab-button py-4 px-1 font-medium text-gray-500 hover:text-primary"
+                                data-tab="details">
+                                التفاصيل
+                            </button>
+                            <button class="tab-button py-4 px-1 font-medium text-gray-500 hover:text-primary"
+                                data-tab="reviews">
+                                التقييمات (12)
+                            </button> -->
+                        </nav>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- Description Tab -->
+                        <div id="description" class="tab-content active">
+                            <h3 class="font-display font-bold text-lg mb-4">وصف المنتج</h3>
+                            <div class="prose prose-sm max-w-none text-gray-700">
+                                <p class="description"></p>
+                            </div>
+                        </div>
+
+                        <!-- Details Tab -->
+                        <div id="details" class="tab-content">
+                            <h3 class="font-display font-bold text-lg mb-4">تفاصيل المنتج</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h4 class="font-medium mb-2">المواصفات</h4>
+                                    <table class="w-full text-sm text-gray-700">
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 font-medium text-gray-600">الوزن</td>
+                                            <td class="py-2">250 جرام</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 font-medium text-gray-600">العمر الافتراضي</td>
+                                            <td class="py-2">12 شهر</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 font-medium text-gray-600">بلد المنشأ</td>
+                                            <td class="py-2">المغرب</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-2">معلومات إضافية</h4>
+                                    <table class="w-full text-sm text-gray-700">
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 font-medium text-gray-600">المكونات</td>
+                                            <td class="py-2">شاي أخضر، نعناع مجفف</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-200">
+                                            <td class="py-2 font-medium text-gray-600">طريقة التخزين</td>
+                                            <td class="py-2">في مكان بارد وجاف</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reviews Tab -->
+                        <!-- <div id="reviews" class="tab-content">
+                            <h3 class="font-display font-bold text-lg mb-6">تقييمات العملاء</h3>
+
+                            <div class="flex items-center mb-6">
+                                <div class="mr-4">
+                                    <span class="text-3xl font-bold">4.8</span>
+                                    <span class="text-gray-500">/5</span>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-1">
+                                        <div class="flex text-yellow-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600">بناءً على 12 تقييم</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-6">
+                                
+                                <div class="border-b border-gray-200 pb-6">
+                                    <div class="flex items-center mb-2">
+                                        <div class="flex text-yellow-400 mr-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        </div>
+                                        <span class="font-medium">أحمد محمد</span>
+                                    </div>
+                                    <p class="text-gray-700 mb-2">نكهة رائعة تشبه تماماً الشاي الذي يتناولونه في المغرب.
+                                        التغليف جميل والكمية مناسبة.</p>
+                                    <p class="text-sm text-gray-500">تم الشراء في 15 مارس 2023</p>
+                                </div> -->
+
+                        <!-- Review Form -->
+                        <!--<div class="pt-4">
+                                    <h4 class="font-medium mb-4">أضف تقييمك</h4>
+                                    <form>
+                                        <div class="mb-4">
+                                            <label class="block text-gray-700 mb-2">تقييمك</label>
+                                            <div class="flex space-x-1 space-x-reverse">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-6 w-6 text-gray-300 hover:text-yellow-400 cursor-pointer"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-6 w-6 text-gray-300 hover:text-yellow-400 cursor-pointer"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-6 w-6 text-gray-300 hover:text-yellow-400 cursor-pointer"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-6 w-6 text-gray-300 hover:text-yellow-400 cursor-pointer"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="h-6 w-6 text-gray-300 hover:text-yellow-400 cursor-pointer"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="reviewTitle" class="block text-gray-700 mb-2">عنوان
+                                                التقييم</label>
+                                            <input type="text" id="reviewTitle"
+                                                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="reviewText" class="block text-gray-700 mb-2">التقييم</label>
+                                            <textarea id="reviewText" rows="4"
+                                                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"></textarea>
+                                        </div>
+                                        <button type="submit"
+                                            class="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary transition-colors">
+                                            إرسال التقييم
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-light">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl font-bold mb-6">منتجات مشابهة</h2>
+            <!-- <div class="flex space-x-4 overflow-x-auto"></div> -->
+            <div class="w-full flex space-x-4 w-[max-content] px-4 gap-2 overflow-x-auto p-4"
+                id="similar-products-container">
+
+            </div>
+            <!-- Add more product cards here -->
+        </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Logo and About -->
+                <div class="md:col-span-1">
+                    <h3 class="text-2xl font-display font-bold text-primary mb-4">متجر السباعي</h3>
+                    <p class="text-gray-400 mb-4">اكتشف مجموعة واسعة من انواع الشاي الصحراوي الأصيل.</p>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.597 0-2.917-.01-3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-primary transition-colors">الرئيسية</a>
+                        </li>
+                        <li><a href="products.html"
+                                class="text-gray-400 hover:text-primary transition-colors">منتجاتنا</a></li>
+                        <li><a href="categories.html" class="text-gray-400 hover:text-primary transition-colors">فئات
+                                المنتجات</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">فئات المنتجات</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">التوابل والبهارات</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">الزيوت الطبيعية</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">الحلويات المغربية</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">الشاي والأعشاب</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">منتجات التجميل</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">معلومات التواصل</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mt-1 ml-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-gray-400">123 شارع ماكجيل، مونتريال، كيبيك</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mt-1 ml-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <span class="text-gray-400">info@maghrebmarket.ca</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mt-1 ml-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                </path>
+                            </svg>
+                            <span class="text-gray-400">+1 (514) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mt-1 ml-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-gray-400">الإثنين - الجمعة: 9 صباحاً - 6 مساءً<br>السبت: 10 صباحاً - 4
+                                مساءً</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-6 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p class="text-gray-500 text-sm">© 2023 متجر السباعي. جميع الحقوق محفوظة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="client-JS/product.js"></script>
+</body>
+
+</html>
