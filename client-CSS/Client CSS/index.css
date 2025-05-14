@@ -1,0 +1,131 @@
+body {
+    font-family: 'Noto Kufi Arabic', sans-serif;
+    background-color: #FFFFFF;
+}
+
+.hero-section {
+    background-image: url('../Images/Tassaout\ tea.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.fadeIn {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.category-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-item:hover img {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Swiper Styles */
+.swiper-container {
+    width: 100%;
+    height: 100%;
+    padding: 10px 0 30px;
+}
+
+.swiper-slide {
+    height: auto;
+}
+
+.swiper-pagination {
+    position: relative;
+    bottom: 0;
+    margin-top: 20px;
+}
+
+.swiper-pagination-bullet {
+    background: #C8A574;
+    opacity: 0.5;
+    width: 10px;
+    height: 10px;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    width: 30px;
+    border-radius: 50px !important;
+}
+
+/* Search bar styles */
+.search-container {
+    position: relative;
+    width: 200px;
+    transition: width 0.3s ease;
+}
+
+.search-container.expanded {
+    width: 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #C8A574;
+    box-shadow: 0 0 0 2px rgba(200, 165, 116, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Quantity selector styles */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #C8A574;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.quantity-btn {
+    padding: 0.25rem 0.5rem;
+    color: #C8A574;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-display {
+    min-width: 1.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+}
