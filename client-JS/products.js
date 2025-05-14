@@ -64,12 +64,6 @@ async function fetchProducts() {
     initializeProducts();
     initializeCategories();
     updatePagination();
-
-    // After products are loaded, check if we need to filter immediately
-    const searchTerm = localStorage.getItem('searchTerm');
-    if (searchTerm) {
-      filterProducts();
-    }
   } catch (error) {
     console.error("❌ Error fetching products:", error);
     handleFetchError(error);
@@ -197,11 +191,10 @@ function updatePagination(filteredProducts = null) {
   // Page numbers
   for (let i = 1; i <= totalPages; i++) {
     const pageButton = document.createElement("button");
-    pageButton.className = `px-3 py-1 rounded border ${
-      currentPage === i
-        ? "border-primary bg-primary text-white"
-        : "border-gray-300 hover:bg-primary hover:text-white"
-    } transition-colors`;
+    pageButton.className = `px-3 py-1 rounded border ${currentPage === i
+      ? "border-primary bg-primary text-white"
+      : "border-gray-300 hover:bg-primary hover:text-white"
+      } transition-colors`;
     pageButton.textContent = i;
     pageButton.addEventListener("click", () => {
       currentPage = i;
@@ -248,7 +241,7 @@ function renderProducts(productsToRender) {
       percentage = Math.round(
         ((product.selling_price - product.discount_price) /
           product.selling_price) *
-          100
+        100
       );
     }
     const cartItem = cart.find((item) => item.id === product.id);
@@ -256,87 +249,83 @@ function renderProducts(productsToRender) {
 
     const productElement = document.createElement("div");
     productElement.className =
-      "product-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow";
+      "product-card bg-white rounded-lg overflow-hidden shadow-md md:hover:shadow-lg transition-shadow";
     productElement.innerHTML = `
       <div class="relative">
-        <img src="${product.image_url}" alt="${
-      product.label
-    }" class="w-full h-48 object-cover">
-        ${
-          product.discount_price
-            ? `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded flex flex-col items-center">
+        <img src="${product.image_url}" alt="${product.label}" 
+        class="w-full h-48 object-cover" onclick="window.location.href='product.html?id=${product.id}'">
+        ${product.discount_price
+        ? `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded flex flex-col items-center">
                 <span class="font-bold">${percentage}% خصم</span>
               </div>`
-            : ""
-        }
+        : ""
+      }
       </div>
       <div class="p-4">
-        <h3 class="font-bold text-lg mb-1">${product.label}</h3>
+        <h3 class="font-semibold md:font-bold text-md md:text-lg mb-1">${product.label}</h3>
         <div class="flex justify-between items-center">
-          ${
-            product.discount_price
-              ? `<div>
-                <span class="text-primary font-bold text-lg">${product.discount_price} درهم</span>
+          ${product.discount_price
+        ? `<div>
+                <span class="text-primary font-semibold md:font-bold text-md md:text-lg">${product.discount_price} درهم</span>
                 <span class="text-gray-400 text-sm line-through block">${product.selling_price} درهم</span>
               </div>`
-              : `<span class="text-primary font-bold text-lg">${product.selling_price} درهم</span>`
-          }
-          ${
-            quantity > 0
-              ? `<div class="quantity-selector flex items-center">
-                <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
+        : `<span class="text-primary font-semibold md:font-bold text-md md:text-lg">${product.selling_price} درهم</span>`
+      }
+            <div class="quantity-selector flex items-center ${quantity > 0 ? '' : 'hidden'}">
+                <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded-r-[9999px]" data-id="${product.id}">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                   </svg>
                 </button>
                 <span class="quantity-display mx-2">${quantity}</span>
-                <button class="quantity-btn increase-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
+                <button class="quantity-btn increase-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded-l-[9999px]" data-id="${product.id}">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </button>
-              </div>`
-              : `<button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
+            </div>
+            <button class="add-to-cart ${quantity > 0 ? 'hidden' : ''} bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
-              </button>`
-          }
+            </button>
         </div>
       </div>
     `;
     productsGrid.appendChild(productElement);
   });
+}
 
-  addCartEventListeners();
+function updateProductUI(productId) {
+  const productElement = document.querySelector(`[data-id="${productId}"]`)?.closest('.product-card');
+  if (!productElement) return;
+
+  const cartItem = cart.find(item => item.id === productId);
+  const quantity = cartItem?.quantity || 0;
+
+  productElement.querySelector('.quantity-display').textContent = quantity;
+  productElement.querySelector('.quantity-selector').classList.toggle('hidden', quantity === 0);
+  productElement.querySelector('.add-to-cart').classList.toggle('hidden', quantity > 0);
 }
 
 // Add cart event listeners
-function addCartEventListeners() {
-  document.querySelectorAll(".add-to-cart").forEach((button) => {
-    button.addEventListener("click", function () {
-      const productId = parseInt(this.dataset.id);
-      addToCart(productId, 1);
-    });
-  });
+async function handleCartClicks(event) {
+  const target = event.target.closest('.add-to-cart, .increase-quantity, .decrease-quantity');
+  if (!target) return;
 
-  document.querySelectorAll(".increase-quantity").forEach((button) => {
-    button.addEventListener("click", function () {
-      const productId = parseInt(this.dataset.id);
-      addToCart(productId, 1);
-    });
-  });
+  // Prevent multiple handlers
+  event.stopImmediatePropagation();
 
-  document.querySelectorAll(".decrease-quantity").forEach((button) => {
-    button.addEventListener("click", function () {
-      const productId = parseInt(this.dataset.id);
-      decreaseQuantity(productId);
-    });
-  });
+  const productId = parseInt(target.dataset.id);
+  if (target.classList.contains('add-to-cart') || target.classList.contains('increase-quantity')) {
+    addToCart(productId, 1);
+  } else if (target.classList.contains('decrease-quantity')) {
+    decreaseQuantity(productId);
+  }
 }
 
 // Add to cart
-function addToCart(productId, quantity) {
+async function addToCart(productId, quantity) {
   const product = products.find((p) => p.id === productId);
 
   if (!product) return;
@@ -353,10 +342,11 @@ function addToCart(productId, quantity) {
   }
 
   updateCart();
+  updateProductUI(productId); // Add this
 }
 
 // Decrease quantity
-function decreaseQuantity(productId) {
+async function decreaseQuantity(productId) {
   const existingItem = cart.find((item) => item.id === productId);
 
   if (existingItem) {
@@ -367,28 +357,30 @@ function decreaseQuantity(productId) {
   }
 
   updateCart();
+  updateProductUI(productId); // Add this
 }
 
 // Update cart
-function updateCart() {
+async function updateCart() {
   updateCartCount();
-  filterProducts();
+  // filterProducts();
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
+
 // Update cart count
-function updateCartCount() {
+async function updateCartCount() {
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
   document.getElementById("cartCount").textContent = cartCount;
 }
 
 // Update results count
-function updateResultsCount(count) {
+async function updateResultsCount(count) {
   document.getElementById("resultsCount").textContent = count + " منتجات";
 }
 
 // Initialize categories
-function initializeCategories() {
+async function initializeCategories() {
   const categoriesFilter = document.getElementById("categoriesFilter");
   const footerCategories = document.getElementById("footerCategories");
 
@@ -432,7 +424,7 @@ function initializeCategories() {
 }
 
 // Filter products
-function filterProducts() {
+async function filterProducts() {
   const searchTerm = document
     .getElementById("searchFilter")
     .value.toLowerCase();
@@ -449,10 +441,13 @@ function filterProducts() {
 
   // Search filter
   if (searchTerm) {
+    console.log(searchTerm)
     filteredProducts = filteredProducts.filter((product) =>
       product.label.toLowerCase().includes(searchTerm)
     );
   }
+
+  console.log(filteredProducts)
 
   // Category filter
   if (!selectedCategories.includes("الكل") && selectedCategories.length > 0) {
@@ -535,7 +530,7 @@ function resetFilters() {
 }
 
 // Load cart from localStorage
-function loadCart() {
+async function loadCart() {
   const savedCart = localStorage.getItem("cart");
   if (savedCart) {
     try {
@@ -596,6 +591,11 @@ document
 
 // Initialize the page
 document.addEventListener("DOMContentLoaded", function () {
+  initApp()
+});
+
+async function initApp() {
+
   // Update pagination container
   const paginationNav = document.querySelector(
     "nav.flex.items-center.space-x-2.space-x-reverse"
@@ -606,20 +606,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   loadCart();
-
-  // Check for search term in localStorage
-  const searchTerm = localStorage.getItem('searchTerm');
-  if (searchTerm) {
-    // Set the search input value
-    const searchInput = document.getElementById("searchFilter");
-    if (searchInput) {
-      searchInput.value = searchTerm;
-      // Focus on the search input
-      searchInput.focus();
-      // Clear the stored search term
-      localStorage.removeItem('searchTerm');
-    }
-  }
 
   if (!navigator.onLine) {
     Swal.fire({
@@ -633,11 +619,47 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  fetchProducts();
+  await fetchProducts();
 
   window.addEventListener("online", () => {
     if (products.length === 0) {
       fetchProducts();
     }
   });
-});
+
+  // Check if 'q' parameter exists in the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchQuery = urlParams.get('q');
+  if (searchQuery) {
+    // Fill all search inputs with the query value and trigger input event
+    document.querySelectorAll('.search-input').forEach((input) => {
+      input.value = searchQuery;
+      input.addEventListener('input', function () {
+        const value = this.value;
+        document.querySelectorAll('.search-input').forEach((otherInput) => {
+          if (otherInput !== this) {
+            otherInput.value = value;
+          }
+        });
+        filterProducts();
+      });
+    });
+
+    // Auto-focus the main search filter input
+    const searchFilterInput = document.querySelector('.searchFilter');
+    if (searchFilterInput) {
+      searchFilterInput.value = searchQuery;
+      searchFilterInput.focus();
+    }
+
+    // Remove the URL param 'q'
+    urlParams.delete('q');
+    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+    window.history.replaceState({}, document.title, newUrl);
+
+    // Filter products immediately
+    filterProducts();
+  }
+
+  document.getElementById('productsGrid').addEventListener('click', handleCartClicks);
+}

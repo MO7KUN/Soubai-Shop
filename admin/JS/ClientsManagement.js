@@ -106,7 +106,7 @@ async function addClient() {
     return;
   }
 
-  fetch(apiUrl + "/client", {
+  fetch(apiUrl + apiUrl + "/client", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

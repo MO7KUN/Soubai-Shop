@@ -62,7 +62,7 @@ async function fetchProducts() {
                 <td class="px-4 py-3 text-center whitespace-nowrap">${product.category.label || "----"}</td>
                 <td class="px-4 py-3 text-center">
                     <div class="flex items-center justify-center gap-2">
-                        <a href="NewProduct.php?id=${product.id}&action=edit"
+                        <a href="newProduct.php?id=${product.id}&action=edit"
                             class="bg-blue-500 text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -201,6 +201,11 @@ async function deleteProduct(id) {
             timer: 1200,
         });
 
+        // Destroy the DataTable instance before fetching products
+        const dataTableInstance = $('#productsTable').DataTable();
+        if (dataTableInstance) {
+            dataTableInstance.destroy();
+        }
         fetchProducts(); // Refresh product list after successful deletion
 
     } catch (response) {

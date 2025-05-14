@@ -578,7 +578,6 @@ async function fetchDiscountedProducts() {
       throw error;
     });
 }
-
 async function fetchCategories() {
   console.log("Fetching categories...");
   // Show loading state
