@@ -8,12 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body {
-            font-family: 'Tajawal', sans-serif;
-            padding-top: 64px;
-        }
+    body {
+        font-family: 'Tajawal', sans-serif;
+        padding-top: 64px;
+    }
 
-        /* Add padding for navbar */
+    /* Add padding for navbar */
     </style>
 </head>
 
@@ -62,8 +62,18 @@
                     <!-- sub totals -->
                     <div class="mt-6 flex justify-between items-center">
                         <h2 class="font-semibold text-lg">المجموع</h2>
-                        <h2 class="font-semibold text-lg" dir="ltr">0 DH</h2>
+                        <h2 class="font-semibold text-lg" id="order-subtotal" dir="ltr">0 DH</h2>
                     </div>
+                    <!-- shipping fee -->
+                    <!-- <div class="mt-2 flex justify-between items-center">
+                        <h2 class="font-semibold text-lg">تكلفة الشحن</h2>
+                        <h2 class="font-semibold text-lg" id="shipping-price" dir="ltr">0 DH</h2>
+                    </div> -->
+                    <!-- total -->
+                    <!-- <div class="mt-4 flex justify-between items-center border-t pt-2">
+                        <h2 class="font-bold text-xl">الإجمالي</h2>
+                        <h2 class="font-bold text-xl text-blue-500" id="order-total" dir="ltr">0 DH</h2>
+                    </div> -->
                 </div>
                 <!-- client list -->
                 <div class="order-1 md:order-2 rounded-md bg-white border border-gray-300 w-full md:w-2/5 p-2">
@@ -72,7 +82,7 @@
                         <div class="flex gap-2 ">
                             <input type="text" id="clientSearchInput" placeholder="🔍 ابحث عن عميل" autocomplete="off"
                                 class="w-full px-4 py-2 border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button id="addClientButton" onclick="window.open('NewClient.php', '_blank')"
+                            <button id="addClientButton" onclick="window.open('newClient.php', '_blank')"
                                 class="bg-transparent hover:bg-blue-500 text-blue-500 hover:text-white px-2 py-1 rounded-lg border-2 border-blue-500 font-extrabold text-xl focus:border-blue-500"><i
                                     class="fa-solid fa-plus"></i></button>
 

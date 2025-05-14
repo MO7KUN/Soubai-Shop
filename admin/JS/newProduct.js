@@ -19,7 +19,7 @@ async function showProductInfos(productId) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
+                'Authorization': "Bearer " + token,
             },
         });
         if (!response.ok) {
@@ -298,7 +298,6 @@ async function saveProduct() {
     // });
 
     if (!isValid) {
-        alert('الرجاء ملء جميع الحقول المطلوبة (المميزة باللون الأحمر)');
         Swal.fire({
             icon: "error",
             title: "خطأ",
@@ -306,6 +305,16 @@ async function saveProduct() {
         });
         return;
     }
+
+    // Show loading Swal popup
+    Swal.fire({
+        title: 'جاري الحفظ...',
+        text: 'يرجى الانتظار قليلاً.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
     try {
         const url = isEditMode
@@ -317,7 +326,7 @@ async function saveProduct() {
             body: formData,
             headers: {
                 // "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
+                'Authorization': "Bearer " + token,
             },
         });
 
@@ -326,8 +335,8 @@ async function saveProduct() {
         if (response.ok) {
             Swal.fire({
                 icon: "success",
-                title: "تم تسجيل الطلب بنجاح",
-                text: "تم تسجيل معلومات الطلب بنجاح",
+                title: "تم تسجيل المنتج بنجاح",
+                text: "تم تسجيل معلومات المنتج بنجاح",
                 showConfirmButton: false,
                 timer: 1200, // The timer is 1200 ms (1.2 seconds)
             }).then(() => {
@@ -432,7 +441,7 @@ async function addCategory() {
 
         const response = await fetch(apiUrl + "/category", {
             method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${token}` },
             body: formData,
         });
 

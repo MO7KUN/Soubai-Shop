@@ -3,6 +3,7 @@ let apiUrl = "https://sbaishop.com/api"
 async function getOrders() {
     let allOrders = [];
     const tbody = document.getElementById('ordersTableBody');
+    tbody.innerHTML = ''
     try {
 
 
@@ -10,7 +11,7 @@ async function getOrders() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
+                "Authorization": "Bearer " + token,
             }
         });
         if (!response.ok) {
@@ -36,11 +37,11 @@ async function getOrders() {
                             <td class="px-6 py-4 text-center" dir="ltr">${order.total_price} DH</td>
                             <td class="px-6 py-4 text-center">${new Date(order.created_at).toLocaleDateString()}</td>
                             <td class="p-3 border-b text-center whitespace-nowrap">
-                                <button onclick="window.open('NewOrder.php?action=edit&order=${order.id}','_self')"
+                                <button onclick="window.open('newOrder.php?action=edit&order=${order.id}','_self')"
                                     class="bg-blue-500 text-white text-center px-2 py-1 rounded-full hover:bg-blue-600">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button
+                                <button onclick="deleteOrder(${order.id})"
                                     class="bg-red-500 text-white text-center px-2 py-1 rounded-full hover:bg-red-600">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -57,6 +58,7 @@ async function getOrders() {
                     `;
             })
 
+            $('#ordersTable').DataTable().destroy();
             // Initialize DataTable FIRST
             const table = $('#ordersTable').DataTable({
                 dom: 't', // إخفاء عناصر التحكم الافتراضية
@@ -67,6 +69,7 @@ async function getOrders() {
                 lengthChange: true, // تفعيل تغيير عدد الصفوف
                 pageLength: 10, // القيمة الافتراضية
                 pagingType: 'full_numbers',
+                order: [],
                 language: {
                     "paginate": {
                         "previous": "السابق",
@@ -176,7 +179,7 @@ async function changeOrderStatus(orderId, selectElement) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify({ status: selectElement.value }),
         });
@@ -211,6 +214,80 @@ async function changeOrderStatus(orderId, selectElement) {
 
     } catch (error) {
         console.error("❌ حدث خطأ:", error);
+        Swal.fire({
+            icon: "error",
+            title: "خطأ",
+            text: error.message || "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا",
+        });
+    }
+}
+
+async function deleteOrder(id) {
+    // Show confirmation pop-up
+    const confirmDelete = await Swal.fire({
+        icon: "warning",
+        title: "تأكيد الحذف",
+        text: "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+        showCancelButton: true,
+        confirmButtonText: "نعم، احذف",
+        cancelButtonText: "إلغاء",
+    });
+
+    if (!confirmDelete.isConfirmed) {
+        return; // Exit if the user cancels
+    }
+
+    try {
+        // Show loading pop-up
+        Swal.fire({
+            title: "جاري الحذف...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        // Send delete request
+        const response = await fetch(apiUrl + `/order/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const data = await response.json().catch(() => ({})); // Handle potential invalid JSON response
+
+        if (response.ok) {
+            // Show success pop-up
+            Swal.fire({
+                icon: "success",
+                title: "تم الحذف",
+                text: "تم حذف الطلب بنجاح",
+                timer: 1500,
+                showConfirmButton: false,
+            });
+
+            // Destroy the existing DataTable instance before refetching orders
+            $('#ordersTable').DataTable().destroy();
+
+            // Optionally refresh the orders list or remove the deleted row
+            getOrders();
+        } else {
+            // Handle specific error cases
+            if (response.status === 404) {
+                return Swal.fire({ icon: "error", title: "خطأ", text: "الطلب غير موجود" });
+            }
+
+            if (response.status === 403) {
+                return Swal.fire({ icon: "error", title: "خطأ", text: "غير مصرح لك بتنفيذ هذا الإجراء" });
+            }
+
+            // Default error handling
+            throw new Error(data.message || "فشل في حذف الطلب");
+        }
+    } catch (error) {
+        console.error("❌ حدث خطأ أثناء الحذف:", error);
         Swal.fire({
             icon: "error",
             title: "خطأ",

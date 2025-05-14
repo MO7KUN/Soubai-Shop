@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        body {
-            font-family: 'Tajawal', sans-serif;
-            padding-top: 64px;
-        }
+    body {
+        font-family: 'Tajawal', sans-serif;
+        padding-top: 64px;
+    }
 
-        /* Add padding for navbar */
+    /* Add padding for navbar */
     </style>
 
 
@@ -187,9 +187,9 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            sidebarHandler("gererDashboard");
-        })
+    document.addEventListener("DOMContentLoaded", function() {
+        sidebarHandler("vueDashboard");
+    })
     </script>
     <script src="JS/dashboard.js"></script>
 </body>

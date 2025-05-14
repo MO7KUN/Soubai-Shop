@@ -38,6 +38,10 @@ const priviliges = [
         forDB: "gererUsers"
     },
     {
+        forUser: "تغيير الاعدادات",
+        forDB: "gererSettings"
+    },
+    {
         forUser: "الاطلاع على لوحة التحكم",
         forDB: "vueDashboard"
     },
@@ -166,7 +170,12 @@ async function submitForm() {
 
 async function showUserInfos(userId) {
     try {
-        const response = await fetch(apiUrl + `/user/${userId}`);
+        const response = await fetch(apiUrl + `/user/${userId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Try to parse error JSON, fallback to empty object
             throw { status: response.status, message: errorData.message || "حدث خطأ أثناء جلب المنتجات" };

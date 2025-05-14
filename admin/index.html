@@ -82,6 +82,34 @@
 
     <!-- JavaScript for Show Password -->
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const header = urlParams.get('header') ?? null;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+            const userId = localStorage.getItem('userId') || sessionStorage.getItem('userId');
+            const permissions = (localStorage.getItem('permissions') || sessionStorage.getItem('permissions') || '').split('&');
+
+            const redirectToPage = (permission) => {
+                const routes = {
+                    vueDashboard: "dashboard.php",
+                    gererProducts: "products.php",
+                    gererOrders: "orders.php",
+                    gererUsers: "users.php",
+                    gererClients: "clients.php"
+                };
+                window.location.href = routes[permission] || "index.html";
+            };
+
+            if (header && permissions.includes(header)) {
+                redirectToPage(header);
+                return;
+            }
+
+            if (token && userId && permissions.length > 0) {
+                redirectToPage(permissions[0]);
+            }
+        });
 
         function Login() {
             const email = document.getElementById('email');
@@ -146,8 +174,12 @@
 
                     const permissions = data.permissions.split('&');
 
+                    if (header !== null) {
+                        permissions[0] = header
+                    }
+
                     switch (permissions[0]) {
-                        case 'gererDashboard':
+                        case 'vueDashboard':
                             window.location.href = "dashboard.php";
                             break;
                         case 'gererProducts':
@@ -157,10 +189,19 @@
                             window.location.href = "orders.php";
                             break;
                         case 'gererUsers':
-                            window.location.href = "clients.php";
+                            window.location.href = "users.php";
+                            break;
+                        case 'gererCategorys':
+                            window.location.href = "categories.php"
+                            break;
+                        case 'gererSettings':
+                            window.location.href = "parametrs.php"
+                            break;
+                        case 'gererClients':
+                            window.location.href = "clients.php"
                             break;
                         default:
-                            window.location.href = "index.php";
+                            window.location.href = "index.html";
                             break;
                     }
                 })
