@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>منتجاتنا - متجر السباعي</title>
+    <meta name="description" content="اكتشف منتجاتنا الفريدة في متجر السباعي" />
+    <meta name="author" content="متجر السباعي" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta name="theme-color" content="#FF9E2C">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- SweetAlert CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#C8A574',
+                        'dark': '#1A1A1A',
+                        'light': '#F5F5F5',
+                        'secondary': '#6F5E47',
+                        'accent': '#E8D6BB',
+                    },
+                    fontFamily: {
+                        'arabic': ['Noto Kufi Arabic', 'sans-serif'],
+                        'display': ['Amiri', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        body {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            background-color: #FFFFFF;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            /*transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);*/
+        }
+
+        .search-container {
+            position: relative;
+            width: 200px;
+            transition: width 0.3s ease;
+        }
+
+        .search-container.expanded {
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #C8A574;
+            box-shadow: 0 0 0 2px rgba(200, 165, 116, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Range slider styles */
+        .price-range {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #E8D6BB;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .price-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #C8A574;
+            cursor: pointer;
+        }
+
+        .price-range::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #C8A574;
+            cursor: pointer;
+        }
+
+        /* Filter sidebar styles */
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .filter-options {
+            margin-top: 0.5rem;
+        }
+
+        .filter-option {
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-option input {
+            margin-left: 0.5rem;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+        }
+
+        /* Mobile filters button */
+        .mobile-filters-btn {
+            display: none;
+        }
+
+        @media (max-width: 1023px) {
+            .mobile-filters-btn {
+                display: flex;
+            }
+
+            .filters-sidebar {
+                display: none;
+            }
+
+            .filters-sidebar.active {
+                display: block;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 80%;
+                height: 100vh;
+                background: white;
+                z-index: 100;
+                padding: 1.5rem;
+                overflow-y: auto;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .close-filters {
+                display: block;
+                text-align: left;
+                margin-bottom: 1rem;
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Quantity selector styles */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid #C8A574;
+            border-radius: 9999px;
+            /* overflow: hidden; */
+        }
+
+        .quantity-btn {
+            padding: 0.25rem 0.5rem;
+            color: #C8A574;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-display {
+            min-width: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body class="text-right">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden text-dark focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+
+                <!-- Logo -->
+                <a href="/" class="text-2xl font-display font-bold text-primary">متجر
+                    السباعي</a>
+
+                <!-- Desktop Navigation with Search -->
+                <nav class="hidden md:flex items-center space-x-6 space-x-reverse">
+                    <ul class="flex space-x-6 space-x-reverse">
+                        <li><a href="index.html" class="font-medium hover:text-primary transition-colors">الرئيسية</a>
+                        </li>
+                        <li><a href="products.html"
+                                class="font-medium hover:text-primary transition-colors">منتجاتنا</a></li>
+                        <li><a href="categories.html" class="font-medium hover:text-primary transition-colors">فئات
+                                المنتجات</a></li>
+                    </ul>
+
+                    <!-- Desktop Search Bar -->
+                    <div class="search-container">
+                        <form class="relative">
+                            <input type="text" placeholder="ابحث عن منتجات..."
+                                class="search-input focus:ring-2 focus:ring-primary focus:border-primary">
+                            <button type="submit" class="search-icon text-gray-500 hover:text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </nav>
+
+                <!-- Cart Icon -->
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <a href="cart.html" class="text-green-500 transition-colors relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        <span id="cartCount"
+                            class="absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <div class="p-4">
+                <!-- Mobile Search Bar -->
+                <div class="mb-4">
+                    <div class="relative">
+                        <input type="text" placeholder="ابحث عن منتجات..."
+                            class="search-input w-full py-2 px-3 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                        <div
+                            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="space-y-2">
+                    <li><a href="index.html"
+                            class="font-medium hover:text-primary transition-colors block py-2">الرئيسية</a></li>
+                    <li><a href="products.html"
+                            class="font-medium hover:text-primary transition-colors block py-2">منتجاتنا</a></li>
+                    <li><a href="categories.html"
+                            class="font-medium hover:text-primary transition-colors block py-2">فئات
+                            المنتجات</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Products Section -->
+    <section class="py-12 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="mb-8">
+                <h1 class="text-3xl font-display font-bold mb-2">منتجاتنا</h1>
+                <div class="text-sm text-gray-600">
+                    <a href="index.html" class="hover:text-primary">الرئيسية</a> /
+                    <span class="text-primary">منتجاتنا</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Filters Sidebar -->
+                <div class="lg:w-1/4">
+                    <!-- Mobile Filters Button -->
+                    <button
+                        class="mobile-filters-btn mb-4 flex items-center justify-center w-full bg-primary text-white py-2 rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                        </svg>
+                        تصفية المنتجات
+                    </button>
+
+                    <!-- Filters Sidebar Content -->
+                    <div class="filters-sidebar bg-white p-6 rounded-lg shadow-md">
+                        <button class="close-filters lg:hidden text-gray-500 hover:text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <!-- Search Filter -->
+                        <div class="filter-section">
+                            <div class="relative mb-4">
+                                <input type="text" id="searchFilter" placeholder="ابحث عن منتج..."
+                                    class="search-input w-full py-2 px-3 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                <button
+                                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Categories Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                <h3>فئات المنتجات</h3>
+                            </div>
+                            <div class="filter-options" id="categoriesFilter">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="category-all" name="category" value="الكل" checked
+                                        class="text-primary focus:ring-primary">
+                                    <label for="category-all">الكل</label>
+                                </div>
+                                <!-- Categories will be loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Price Range Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                <h3>نطاق السعر</h3>
+                            </div>
+                            <div class="filter-options">
+                                <div class="mb-4">
+                                    <div class="flex justify-between mb-2">
+                                        <span id="minPriceValue">0
+                                            درهم</span>
+                                        <span id="maxPriceValue">500
+                                            درهم</span>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <input type="range" id="priceRange" min="0" max="500" value="500"
+                                            class="price-range">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tags Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                <h3>علامات</h3>
+                            </div>
+                            <div class="filter-options">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="tag-new" name="tag" value="جديد"
+                                        class="text-primary focus:ring-primary">
+                                    <label for="tag-new">جديد</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="tag-sale" name="tag" value="خصم"
+                                        class="text-primary focus:ring-primary">
+                                    <label for="tag-sale">خصم</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="tag-bestseller" name="tag" value="الأكثر مبيعاً"
+                                        class="text-primary focus:ring-primary">
+                                    <label for="tag-bestseller">الأكثر
+                                        مبيعاً</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sort Options -->
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                <h3>ترتيب حسب</h3>
+                            </div>
+                            <div class="filter-options">
+                                <select id="sortOptions"
+                                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option value="default">الإفتراضي</option>
+                                    <option value="price-low">السعر: من
+                                        الأقل للأعلى</option>
+                                    <option value="price-high">السعر: من
+                                        الأعلى للأقل</option>
+                                    <option value="name-asc">الإسم:
+                                        أ-ي</option>
+                                    <option value="name-desc">الإسم:
+                                        ي-أ</option>
+                                    <option value="newest">الأحدث</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button id="applyFilters"
+                            class="w-full bg-primary text-white py-2 rounded-md mt-4 hover:bg-secondary transition-colors">
+                            تطبيق الفلاتر
+                        </button>
+                        <button id="resetFilters"
+                            class="w-full bg-gray-200 text-gray-700 py-2 rounded-md mt-2 hover:bg-gray-300 transition-colors">
+                            إعادة تعيين
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="lg:w-3/4">
+                    <!-- Products Header with Results Count -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <span id="resultsCount" class="font-medium">جاري
+                                التحميل...</span>
+                        </div>
+                        <div class="hidden lg:block">
+                            <select id="sortOptionsDesktop"
+                                class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                <option value="default">الإفتراضي</option>
+                                <option value="price-low">السعر: من الأقل
+                                    للأعلى</option>
+                                <option value="price-high">السعر: من الأعلى
+                                    للأقل</option>
+                                <option value="name-asc">الإسم: أ-ي</option>
+                                <option value="name-desc">الإسم:
+                                    ي-أ</option>
+                                <option value="newest">الأحدث</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6" id="productsGrid">
+                        <!-- Loading indicator -->
+                        <div class="col-span-full text-center py-12">
+                            <div
+                                class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto">
+                            </div>
+                            <p class="mt-4 text-gray-600">جاري تحميل
+                                المنتجات...</p>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-8 flex justify-center">
+                        <nav class="flex items-center space-x-2 space-x-reverse">
+                            <button
+                                class="px-3 py-1 rounded border border-gray-300 text-gray-500 hover:bg-primary hover:text-white transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                            <button class="px-3 py-1 rounded border border-primary bg-primary text-white">1</button>
+                            <button
+                                class="px-3 py-1 rounded border border-gray-300 hover:bg-primary hover:text-white transition-colors">2</button>
+                            <button
+                                class="px-3 py-1 rounded border border-gray-300 text-gray-500 hover:bg-primary hover:text-white transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Logo and About -->
+                <div class="md:col-span-1">
+                    <h3 class="text-2xl font-display font-bold text-primary mb-4">متجر
+                        السباعي</h3>
+                    <p class="text-gray-400 mb-4">اكتشف مجموعة واسعة من
+                        انواع الشاي الصحراوي الأصيل.</p>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.597 0-2.917-.01-3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <svg class="w-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-primary transition-colors">الرئيسية</a>
+                        </li>
+                        <li><a href="products.html"
+                                class="text-gray-400 hover:text-primary transition-colors">منتجاتنا</a></li>
+                        <li><a href="categories.html" class="text-gray-400 hover:text-primary transition-colors">فئات
+                                المنتجات</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">فئات المنتجات</h4>
+                    <ul class="space-y-2" id="footerCategories">
+                        <!-- Categories will be loaded dynamically -->
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="font-bold text-lg mb-4">معلومات التواصل</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mt-1 ml-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span class="text-gray-400">123 شارع ماكجيل،
+                                مونتريال، كيبيك</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mt-1 ml-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <span class="text-gray-400">info@maghrebmarket.ca</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mt-1 ml-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                </path>
+                            </svg>
+                            <span class="text-gray-400">+1 (514)
+                                123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mt-1 ml-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-gray-400">الإثنين - الجمعة: 9
+                                صباحاً - 6 مساءً<br>السبت: 10 صباحاً - 4
+                                مساءً</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-6 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p class="text-gray-500 text-sm">© 2023 متجر
+                            السباعي. جميع الحقوق محفوظة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="client-JS/products.js"></script>
+
+</body>
+
+</html>
