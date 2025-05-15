@@ -30,18 +30,21 @@ async function initializeProductPage() {
     if (!response.ok) throw new Error('Product not found');
 
     currentProduct = await response.json();
+    //populate the product infos
+    populateProductData();
 
     // Load similar products after main product loads
     if (currentProduct.category?.id) {
         const similarProducts = await fetchSimilarProducts(currentProduct.category.id);
         // Filter out current product from similar products
         const filteredSimilar = similarProducts.products.filter(p => p.id !== currentProduct.id);
-        renderSimilarProducts(filteredSimilar);
+        if (filteredSimilar.length > 0)
+            renderSimilarProducts(filteredSimilar);
+        else document.getElementById('similar-products-section').classList.add('hidden')
     }
 
     setupCartHandlers();
     initializeQuantity();
-    populateProductData();
     updateCartDisplay();
 }
 
@@ -186,7 +189,7 @@ async function renderSimilarProducts(products) {
             : 0;
 
         const productCard = document.createElement('div');
-        productCard.className = 'product-card bg-white min-w-[22%] max-w-[22%] w-full rounded-lg overflow-hidden shadow-md md:hover:shadow-lg transition-shadow';
+        productCard.className = 'product-card flex-shrink-0 bg-white w-[70vw] sm:w-[45vw] md:w-[30vw] lg:w-[22vw] rounded-lg overflow-hidden shadow-md md:hover:shadow-lg transition-shadow';
         productCard.innerHTML = `
             <div class="relative">
                 <img src="${product.image_url}" alt="${product.label}" 
