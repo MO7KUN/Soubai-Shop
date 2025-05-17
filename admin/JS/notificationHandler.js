@@ -25,10 +25,7 @@ function isInStandaloneMode() {
 }
 
 // Main logic
-document.addEventListener("DOMContentLoaded", () => {
-    const tokenAlreadyRegistered = localStorage.getItem('tokenHasBeenRegistred');
-
-    if (tokenAlreadyRegistered) return;
+function main() {
 
     if (isIOS() && !isInStandaloneMode()) {
         console.log("iOS device detected – app is not installed as PWA. Notifications won't work.");
@@ -41,7 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Auto request permission for Android/Desktop
         requestPermissionAndRegister();
     }
-});
+};
+
+main()
 
 function requestPermissionManually() {
     Notification.requestPermission().then(permission => {
