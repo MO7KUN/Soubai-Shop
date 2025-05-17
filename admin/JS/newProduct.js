@@ -31,9 +31,7 @@ async function showProductInfos(productId) {
         // Fill main product fields
         document.getElementById('ref').value = product.ref || null;
         document.getElementById('label').value = product.label;
-        if (product.category) {
-            document.getElementById('category_id').value = product.category.id;
-        }
+        document.getElementById('category_id').value = product.category.id;
         document.getElementById('buying_price').value = product.buying_price || null;
         document.getElementById('selling_price').value = product.selling_price;
         document.getElementById('discount_price').value = product.discount_price || null;
