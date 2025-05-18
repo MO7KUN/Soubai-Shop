@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>فئة المنتجات - متجر السباعي</title>
-    <meta name="description" content="تصفح منتجاتنا في متجر السباعي" />
-    <meta name="author" content="متجر السباعي" />
-    <meta property="og:image" content="/og-image.png" />
-    <meta name="theme-color" content="#FF9E2C">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap"
-        rel="stylesheet">
-    <!-- SweetAlert CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>فئة المنتجات - متجر السباعي</title>
+        <meta name="description" content="تصفح منتجاتنا في متجر السباعي" />
+        <meta name="author" content="متجر السباعي" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta name="theme-color" content="#FF9E2C">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap"
+            rel="stylesheet">
+        <!-- SweetAlert CSS -->
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -36,7 +37,7 @@
             }
         }
     </script>
-    <style type="text/css">
+        <style type="text/css">
         body {
             font-family: 'Noto Kufi Arabic', sans-serif;
             background-color: #FFFFFF;
@@ -83,104 +84,122 @@
             font-size: 0.875rem;
         }
     </style>
-</head>
+    </head>
 
-<body class="text-right">
-    <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden text-dark focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                        class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-
-                <!-- Logo -->
-                <a href="/" class="text-2xl font-display font-bold text-primary">متجر السباعي</a>
-
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex items-center space-x-6 space-x-reverse">
-                    <ul class="flex space-x-6 space-x-reverse">
-                        <li><a href="index.html" class="font-medium hover:text-primary transition-colors">الرئيسية</a>
-                        </li>
-                        <li><a href="products.html"
-                                class="font-medium hover:text-primary transition-colors">منتجاتنا</a></li>
-                        <li><a href="categories.html" class="font-medium text-primary transition-colors">فئات
-                                المنتجات</a>
-                        </li>
-                    </ul>
-                </nav>
-
-                <!-- Cart Icon -->
-                <div class="flex items-center space-x-4 space-x-reverse">
-                    <a href="cart.html" class="text-green-500 transition-colors relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+    <body class="text-right">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-50">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex justify-between items-center">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn"
+                        class="md:hidden text-dark focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor"
                             class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
-                        <span id="cartCount"
-                            class="absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+                    </button>
 
-        <!-- Mobile Menu (Hidden by default) -->
-        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
-            <div class="p-4">
-                <ul class="space-y-2">
-                    <li><a href="index.html"
-                            class="font-medium hover:text-primary transition-colors block py-2">الرئيسية</a></li>
-                    <li><a href="products.html"
-                            class="font-medium hover:text-primary transition-colors block py-2">منتجاتنا</a></li>
-                    <li><a href="categories.html" class="font-medium text-primary transition-colors block py-2">فئات
-                            المنتجات</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+                    <!-- Logo -->
+                    <a href="/"
+                        class="text-2xl font-display font-bold text-primary">متجر
+                        السباعي</a>
 
-    <!-- Category Banner -->
-    <section class="category-banner py-16 text-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-2xl mx-auto text-center">
-                <h1 class="text-4xl font-display font-bold mb-4" id="categoryTitle"></h1>
-                <!-- <p class="text-lg">اكتشف مجموعة واسعة من أنواع الشاي الصحراوي الأصيل والأعشاب الطبيعية</p> -->
-            </div>
-        </div>
-    </section>
+                    <!-- Desktop Navigation -->
+                    <nav
+                        class="hidden md:flex items-center space-x-6 space-x-reverse">
+                        <ul class="flex space-x-6 space-x-reverse">
+                            <li><a href="index.html"
+                                    class="font-medium hover:text-primary transition-colors">الرئيسية</a>
+                            </li>
+                            <li><a href="products.html"
+                                    class="font-medium hover:text-primary transition-colors">منتجاتنا</a></li>
+                            <li><a href="categories.html"
+                                    class="font-medium text-primary transition-colors">فئات
+                                    المنتجات</a>
+                            </li>
+                        </ul>
+                    </nav>
 
-    <!-- Category Content -->
-    <section class="py-12 bg-light">
-        <div class="container mx-auto px-4">
-            <!-- Category Filters -->
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-                <div class="mb-4 md:mb-0">
-                    <p class="text-gray-600 product-count"></p>
-                </div>
-                <div>
-                    <!-- sorting select options -->
-                    <select
-                        class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                        <option value="newest">ترتيب حسب: الأحدث</option>
-                        <option value="price-low">ترتيب حسب: السعر من الأقل للأعلى</option>
-                        <option value="price-high">ترتيب حسب: السعر من الأعلى للأقل</option>
-                    </select>
+                    <!-- Cart Icon -->
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <a href="cart.html"
+                            class="text-green-500 transition-colors relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor"
+                                class="w-6 h-6">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                            </svg>
+                            <span id="cartCount"
+                                class="absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Products Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="productsGrid">
-                <!-- Products will be loaded dynamically -->
+            <!-- Mobile Menu (Hidden by default) -->
+            <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+                <div class="p-4">
+                    <ul class="space-y-2">
+                        <li><a href="index.html"
+                                class="font-medium hover:text-primary transition-colors block py-2">الرئيسية</a></li>
+                        <li><a href="products.html"
+                                class="font-medium hover:text-primary transition-colors block py-2">منتجاتنا</a></li>
+                        <li><a href="categories.html"
+                                class="font-medium text-primary transition-colors block py-2">فئات
+                                المنتجات</a></li>
+                    </ul>
+                </div>
             </div>
+        </header>
 
-            <!-- Pagination -->
-            <!-- <div class="flex justify-center mt-12">
+        <!-- Category Banner -->
+        <section class="category-banner py-16 text-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-2xl mx-auto text-center">
+                    <h1 class="text-4xl font-display font-bold mb-4"
+                        id="categoryTitle"></h1>
+                    <!-- <p class="text-lg">اكتشف مجموعة واسعة من أنواع الشاي الصحراوي الأصيل والأعشاب الطبيعية</p> -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Content -->
+        <section class="py-12 bg-light">
+            <div class="container mx-auto px-4">
+                <!-- Category Filters -->
+                <div
+                    class="flex flex-col md:flex-row justify-between items-center mb-8">
+                    <div class="mb-4 md:mb-0">
+                        <p class="text-gray-600 product-count"></p>
+                    </div>
+                    <div>
+                        <!-- sorting select options -->
+                        <select
+                            class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="newest">ترتيب حسب: الأحدث</option>
+                            <option value="price-low">ترتيب حسب: السعر من الأقل
+                                للأعلى</option>
+                            <option value="price-high">ترتيب حسب: السعر من
+                                الأعلى للأقل</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                    id="productsGrid">
+                    <!-- Products will be loaded dynamically -->
+                </div>
+
+                <!-- Pagination -->
+                <!-- <div class="flex justify-center mt-12">
                 <nav class="flex items-center space-x-2 space-x-reverse">
                     <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -203,502 +222,134 @@
                     </button>
                 </nav>
             </div> -->
-            <!-- Update the pagination container -->
-            <div class="flex justify-center mt-12">
-                <nav class="flex items-center space-x-2 space-x-reverse pagination-container"></nav>
+                <!-- Update the pagination container -->
+                <div class="flex justify-center mt-12">
+                    <nav
+                        class="flex items-center space-x-2 space-x-reverse pagination-container"></nav>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-            <footer class="bg-dark text-white pt-12 pb-6">
-                <div class="container mx-auto px-4">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                        <!-- Logo and About -->
-                        <div class="md:col-span-1">
-                            <h3
-                                class="text-2xl font-display font-bold text-primary mb-4">متجر
-                                السباعي</h3>
-                            <p class="text-gray-400 mb-4">اكتشف مجموعة واسعة من
-                        انواع الشاي الصحراوي الأصيل، الشوكولاتة و العطور الفاخرة</p>
-                            <div class="flex space-x-4 space-x-reverse">
-                                <a href="https://facebook.com"
-                                    class="text-gray-400 hover:text-primary transition-colors">
-                                    <svg class="w-6 h-6" fill="currentColor"
-                                        viewBox="0 0 24 24" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </a>
-                                <a href="https://instagram.com" target="_blank"
-                                    rel="noopener" title="تابعنا على إنستغرام"
-                                    class="text-gray-400 hover:text-primary transition-colors">
-                                    <svg class="w-6 h-6" fill="currentColor"
-                                        viewBox="0 0 24 24" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </a>
-                                <a href="https://www.tiktok.com" target="_blank"
-                                    rel="noopener" title="تابعنا على تيك توك"
-                                    class="text-gray-400 hover:text-primary transition-colors">
-                                    <svg class="w-6 h-6" fill="currentColor"
-                                        viewBox="0 0 24 24" aria-hidden="true">
-                                        <path
-                                            d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Quick Links -->
-                        <div>
-                            <h4 class="font-bold text-lg mb-4">روابط سريعة</h4>
-                            <ul class="space-y-2">
-                                <li><a href="index.html"
-                                        class="text-gray-400 hover:text-primary transition-colors">الرئيسية</a>
-                                </li>
-                                <li><a href="products.html"
-                                        class="text-gray-400 hover:text-primary transition-colors">منتجاتنا</a></li>
-                                <li><a href="categories.html"
-                                        class="text-gray-400 hover:text-primary transition-colors">فئات
-                                        المنتجات</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Contact Info -->
-                        <div>
-                            <h4 class="font-bold text-lg mb-4">معلومات
-                                التواصل</h4>
-                            <ul class="space-y-2">
-                                <li class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5 text-primary mt-1 ml-2"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                        </path>
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                    <span class="text-gray-400">رقم 02 شارع عبد
-                                        الرحمن ناصر قرب شارع القيروان،
-                                        العيون</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5 text-primary mt-1 ml-2"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-                                        </path>
-                                    </svg>
-                                    <span
-                                        class="left-to-right text-gray-400">+212
-                                        618 433 802</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5 text-primary mt-1 ml-2"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-                                        </path>
-                                    </svg>
-                                    <span
-                                        class="left-to-right text-gray-400">+212
-                                        661 561 186</span>
-                                </li>
-                            </ul>
+        <!-- Footer -->
+        <footer class="bg-dark text-white pt-12 pb-6">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                    <!-- Logo and About -->
+                    <div class="md:col-span-1">
+                        <h3
+                            class="text-2xl font-display font-bold text-primary mb-4"
+                            onclick="window.location.href = 'index.html';">متجر
+                            السباعي</h3>
+                        <p class="text-gray-400 mb-4">اكتشف مجموعة واسعة من
+                            انواع الشاي الصحراوي الأصيل، الشوكولاتة و العطور
+                            الفاخرة</p>
+                        <div class="flex space-x-4 space-x-reverse">
+                            <a href="https://facebook.com"
+                                class="text-gray-400 hover:text-primary transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                            <a href="https://instagram.com" target="_blank"
+                                rel="noopener" title="تابعنا على إنستغرام"
+                                class="text-gray-400 hover:text-primary transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                            <a href="https://www.tiktok.com" target="_blank"
+                                rel="noopener" title="تابعنا على تيك توك"
+                                class="text-gray-400 hover:text-primary transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path>
+                                </svg>
+                            </a>
                         </div>
                     </div>
 
-                    <div class="border-t border-gray-800 pt-6 mt-8">
-                        <div
-                            class="flex flex-col md:flex-row justify-between items-center">
-                            <div class="mb-4 md:mb-0">
-                                <p class="text-gray-500 text-sm">© 2023 متجر
-                                    السباعي. جميع الحقوق محفوظة.</p>
-                            </div>
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="font-bold text-lg mb-4">روابط سريعة</h4>
+                        <ul class="space-y-2">
+                            <li><a href="index.html"
+                                    class="text-gray-400 hover:text-primary transition-colors">الرئيسية</a>
+                            </li>
+                            <li><a href="products.html"
+                                    class="text-gray-400 hover:text-primary transition-colors">منتجاتنا</a></li>
+                            <li><a href="categories.html"
+                                    class="text-gray-400 hover:text-primary transition-colors">فئات
+                                    المنتجات</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div>
+                        <h4 class="font-bold text-lg mb-4">معلومات
+                            التواصل</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5 text-primary mt-1 ml-2"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                    </path>
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <span class="text-gray-400">رقم 02 شارع عبد
+                                    الرحمن ناصر قرب شارع القيروان،
+                                    العيون</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5 text-primary mt-1 ml-2"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                    </path>
+                                </svg>
+                                <span
+                                    class="left-to-right text-gray-400">+212
+                                    618 433 802</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 pt-6 mt-8">
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-center">
+                        <div class="mb-4 md:mb-0">
+                            <p class="text-gray-500 text-sm">© 2023 متجر
+                                السباعي. جميع الحقوق محفوظة.</p>
                         </div>
                     </div>
                 </div>
-            </footer>
+            </div>
+        </footer>
 
-    <!-- SweetAlert JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-        let currentPage = 1;
-        const productsPerPage = 6;
-        let currentSort = 'newest';
-
-        // Sample products data
-        let products = [
-        ];
-
-        // Cart data
-        let cart = [];
-
-        // Mobile Menu Toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function () {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
-
-        // Initialize products
-        async function initializeProducts() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const categoryId = urlParams.get('id');
-            const productsGrid = document.getElementById('productsGrid');
-
-            if (!categoryId) {
-                productsGrid.classList = "w-full flex justify-center items-center h-64 text-center"
-                productsGrid.innerHTML = `
-                <div class="">
-                <p class="w-full text-center text-gray-500 text-lg">تمت إزالة الفئة أو أنها غير موجودة</p>
-                </div>`;
-                return;
-            }
-
-            try {
-                const response = await fetch(`https://sbaishop.com/api/website/category/${categoryId}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-
-                const data = await response.json();
-                document.getElementById('categoryTitle').innerText = data.label
-                const categoryBanner = document.querySelector('.category-banner');
-                if (categoryBanner && data.image_url && data.image_url.trim() !== "") {
-                    categoryBanner.style.background = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${data.image_url})`;
-                }
-                if (data && data.products && data.products.length > 0) {
-                    products = data.products
-                    applySorting(); // Apply default sorting
-                    renderProducts(data.products);
-                } else {
-                    productsGrid.classList = "w-full flex justify-center items-center h-64 text-center"
-                    productsGrid.innerHTML = `
-                <div class="">
-                    <p class="text-center text-gray-500 text-lg">لا توجد منتجات في هذه الفئة</p>
-                </div>`;
-                }
-            } catch (error) {
-                console.error('Error fetching products:', error);
-                productsGrid.classList = "w-full flex justify-center items-center h-64 text-center"
-                productsGrid.innerHTML = `
-                <div class="">
-                <p class="text-center text-gray-500 text-lg">حدث خطأ أثناء تحميل المنتجات</p>
-                </div>`;
-            }
-        }
-
-        function applySorting() {
-            switch (currentSort) {
-                case 'newest':
-                    products.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
-                    break;
-                case 'price-low':
-                    products.sort((a, b) => (a.discount_price || a.selling_price) - (b.discount_price || b.selling_price));
-                    break;
-                case 'price-high':
-                    products.sort((a, b) => (b.discount_price || b.selling_price) - (a.discount_price || a.selling_price));
-                    break;
-            }
-        }
-
-        function renderProducts() {
-            const startIndex = (currentPage - 1) * productsPerPage;
-            const endIndex = startIndex + productsPerPage;
-            const paginatedProducts = products.slice(startIndex, endIndex);
-
-            // Update product count display
-            document.querySelector('.product-count').innerHTML = `
-            عرض <span class="font-medium">${startIndex + 1}-${Math.min(endIndex, products.length)}</span> 
-            منتج من أصل <span class="font-medium">${products.length}</span>
-        `;
-
-            renderProductsGrid(paginatedProducts);
-            renderPagination();
-        }
-
-        // Render products
-        function renderProductsGrid(productsToRender) {
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = '';
-
-            productsToRender.forEach(product => {
-                const cartItem = cart.find(item => item.id === product.id);
-                const quantity = cartItem ? cartItem.quantity : 0;
-
-                const productElement = document.createElement('div');
-                productElement.className = 'product-card bg-white rounded-lg shadow-sm overflow-hidden';
-                productElement.setAttribute('data-product-id', product.id); // Add this
-                productElement.innerHTML = `
-                <div class="relative">
-                    <img src="${product.image_url}" alt="${product.label}" class="w-full h-64 object-cover" onclick="window.open('product.html?id=${product.id}','_self')">                    
-                    ${new Date(product.created_at) >= new Date(new Date().setMonth(new Date().getMonth() - 2)) ?
-                        '<div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">جديد</div>' : ''}
-                    ${product.discount_price && product.selling_price && product.discount_price < product.selling_price ?
-                        `<div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-                            ${Math.round(((product.selling_price - product.discount_price) / product.selling_price) * 100)}% خصم
-                        </div>` : ''}
-                </div>
-                <div class="p-4">
-                    <h3 class="font-medium mb-1">${product.label}</h3>
-                    <div class="flex items-center justify-between">
-                        ${product.discount_price ?
-                        `<div>
-                                <span class="font-medium text-primary">${parseFloat(product.discount_price).toFixed(2)} درهم</span>
-                                <span class="text-gray-500 text-sm line-through mr-2">${parseFloat(product.selling_price).toFixed(2)} درهم</span>
-                            </div>` :
-                        product.selling_price ?
-                            `<span class="font-medium text-primary">${parseFloat(product.selling_price).toFixed(2)} درهم</span>` :
-                            ``
-                    }
-                        <div class="quantity-controls ${quantity > 0 ? '' : 'hidden'}">
-                            <div class="quantity-selector">
-                                <button class="quantity-btn decrease-quantity" data-id="${product.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                                    </svg>
-                                </button>
-                                <span class="quantity-display">${quantity}</span>
-                                <button class="quantity-btn increase-quantity" data-id="${product.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                </button>
-                            </div>
-                            </div>
-                            <button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary ${quantity > 0 ? 'hidden' : ''}" data-id="${product.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                            </button>
-                </div>
-            `;
-                productsGrid.appendChild(productElement);
-            });
-
-
-            // Add event listeners to cart buttons
-            addCartEventListeners();
-        }
-
-        // New function to handle pagination rendering
-        function renderPagination() {
-            const totalPages = Math.ceil(products.length / productsPerPage);
-            const paginationContainer = document.querySelector('.pagination-container');
-
-            let paginationHTML = `
-            <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50 prev-page" 
-                ${currentPage === 1 ? 'disabled' : ''}>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-        `;
-
-            for (let i = 1; i <= totalPages; i++) {
-                paginationHTML += `
-                <button class="px-4 py-1 rounded-md border ${i === currentPage ? 'border-primary bg-primary text-white' : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                    } page-button">${i}</button>
-            `;
-            }
-
-            paginationHTML += `
-            <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50 next-page" 
-                ${currentPage === totalPages ? 'disabled' : ''}>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
-        `;
-
-            paginationContainer.innerHTML = paginationHTML;
-            addPaginationListeners();
-        }
-
-        // New function to handle pagination events
-        function addPaginationListeners() {
-            document.querySelectorAll('.page-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    currentPage = parseInt(button.textContent);
-                    renderProducts();
-                });
-            });
-
-            document.querySelector('.prev-page')?.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderProducts();
-                }
-            });
-
-            document.querySelector('.next-page')?.addEventListener('click', () => {
-                if (currentPage < Math.ceil(products.length / productsPerPage)) {
-                    currentPage++;
-                    renderProducts();
-                }
-            });
-        }
-
-        // Add sorting event listener (add this in DOMContentLoaded)
-        document.querySelector('select').addEventListener('change', (e) => {
-            currentSort = e.target.value;
-            currentPage = 1; // Reset to first page when sorting changes
-            applySorting();
-            renderProducts();
-        });
-
-        // Add event listeners for all cart interactions
-        function addCartEventListeners() {
-            // Add to cart buttons
-            document.querySelectorAll('.add-to-cart').forEach(button => {
-                button.addEventListener('click', function () {
-                    const productId = parseInt(this.dataset.id);
-                    addToCart(productId, 1);
-                });
-            });
-
-            // Quantity buttons
-            document.querySelectorAll('.increase-quantity, .decrease-quantity').forEach(button => {
-                button.addEventListener('click', function () {
-                    const productId = parseInt(this.dataset.id);
-                    if (this.classList.contains('increase-quantity')) {
-                        addToCart(productId, 1);
-                    } else {
-                        decreaseQuantity(productId);
-                    }
-                });
-            });
-        }
-
-        // Add product to cart with specific quantity
-        function addToCart(productId, quantity) {
-            const product = products.find(p => p.id === productId);
-
-            // Check if product already in cart
-            const existingItem = cart.find(item => item.id === productId);
-
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({
-                    id: product.id,
-                    name: product.name,
-                    description: product.description,
-                    image: product.image,
-                    price: product.price,
-                    quantity: quantity,
-                    originalPrice: product.discount_price
-                });
-            }
-
-            updateCart();
-
-            // Show success message only when adding from the "+" button
-            // if (quantity === 1) {
-            //     Swal.fire({
-            //         title: 'تمت الإضافة إلى السلة!',
-            //         text: `${product.name} تمت إضافته إلى سلة التسوق`,
-            //         icon: 'success',
-            //         confirmButtonText: 'حسناً',
-            //         confirmButtonColor: '#C8A574'
-            //     });
-            // }
-
-            updateProductQuantity(productId, getCartQuantity(productId));
-        }
-
-        // Decrease product quantity in cart
-        function decreaseQuantity(productId) {
-            const existingItem = cart.find(item => item.id === productId);
-
-            if (existingItem) {
-                existingItem.quantity -= 1;
-
-                // Remove item if quantity reaches 0
-                if (existingItem.quantity <= 0) {
-                    cart = cart.filter(item => item.id !== productId);
-                }
-            }
-
-            updateCart();
-            updateProductQuantity(productId, getCartQuantity(productId));
-        }
-
-        // Helper function to get current quantity
-        function getCartQuantity(productId) {
-            return cart.find(item => item.id === productId)?.quantity || 0;
-        }
-
-        // Update cart and UI
-        function updateCart() {
-            updateCartCount();
-            // renderProducts(products); // Re-render the products with updated quantities
-
-            // Save cart to localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        // New function to update individual product quantity display
-        function updateProductQuantity(productId, quantity) {
-            const productCard = document.querySelector(`[data-product-id="${productId}"]`);
-            if (!productCard) return;
-
-            const quantityDisplay = productCard.querySelector('.quantity-display');
-            const addButton = productCard.querySelector('.add-to-cart');
-            const quantityControls = productCard.querySelector('.quantity-controls');
-
-            if (quantity > 0) {
-                quantityDisplay.textContent = quantity;
-                addButton.classList.add('hidden');
-                quantityControls.classList.remove('hidden');
-            } else {
-                addButton.classList.remove('hidden');
-                quantityControls.classList.add('hidden');
-            }
-        }
-
-        // Update cart count in header
-        function updateCartCount() {
-            const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-            document.getElementById('cartCount').textContent = cartCount;
-        }
-
-        // Load cart from localStorage on page load
-        function loadCart() {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-                updateCartCount();
-            }
-        }
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function () {
-            loadCart();
-            initializeProducts();
-        });
-    </script>
-</body>
+        <!-- SweetAlert JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="client-JS/category.js"></script>
+    </body>
 
 </html>

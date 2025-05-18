@@ -1,4 +1,5 @@
- let currentPage = 1;
+
+        let currentPage = 1;
         const productsPerPage = 6;
         let currentSort = 'newest';
 
@@ -105,7 +106,7 @@
                 productElement.setAttribute('data-product-id', product.id); // Add this
                 productElement.innerHTML = `
                 <div class="relative">
-                    <img src="${product.image_url}" alt="${product.label}" class="w-full h-64 object-cover">                        
+                    <img src="${product.image_url}" alt="${product.label}" class="w-full h-64 object-cover" onclick="window.open('product.html?id=${product.id}','_self')">                    
                     ${new Date(product.created_at) >= new Date(new Date().setMonth(new Date().getMonth() - 2)) ?
                         '<div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">جديد</div>' : ''}
                     ${product.discount_price && product.selling_price && product.discount_price < product.selling_price ?
@@ -116,13 +117,13 @@
                 <div class="p-4">
                     <h3 class="font-medium mb-1">${product.label}</h3>
                     <div class="flex items-center justify-between">
-                        ${product.discount_price && product.selling_price && product.discount_price < product.selling_price ?
+                        ${product.discount_price ?
                         `<div>
-                                <span class="font-medium text-primary">${product.discount_price.toFixed(2)} درهم</span>
-                                <span class="text-gray-500 text-sm line-through mr-2">${product.selling_price.toFixed(2)} درهم</span>
+                                <span class="font-medium text-primary">${parseFloat(product.discount_price).toFixed(2)} درهم</span>
+                                <span class="text-gray-500 text-sm line-through mr-2">${parseFloat(product.selling_price).toFixed(2)} درهم</span>
                             </div>` :
                         product.selling_price ?
-                            `<span class="font-medium text-primary">${product.selling_price.toFixed(2)} درهم</span>` :
+                            `<span class="font-medium text-primary">${parseFloat(product.selling_price).toFixed(2)} درهم</span>` :
                             ``
                     }
                         <div class="quantity-controls ${quantity > 0 ? '' : 'hidden'}">
@@ -164,7 +165,7 @@
             <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50 prev-page" 
                 ${currentPage === 1 ? 'disabled' : ''}>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
             </button>
         `;
@@ -180,7 +181,7 @@
             <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50 next-page" 
                 ${currentPage === totalPages ? 'disabled' : ''}>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
             </button>
         `;
