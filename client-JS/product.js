@@ -13,7 +13,7 @@ const domElements = {
     quantityInput: document.querySelector('.quantity-input'),
     minusButton: document.querySelector('.quantity-btn.minus'),
     plusButton: document.querySelector('.quantity-btn.plus'),
-    categoryLink: document.querySelector('a[href*="categories.html"]'),
+    categoryLink: document.getElementById('categoryLink'),
     cartCount: document.getElementById('cartCount'),
 
     similarProductsContainer: document.getElementById('similar-products-container')
@@ -77,10 +77,10 @@ async function populateProductData() {
     }
 
     // Category link
-    if (category) {
-        domElements.categoryLink.textContent = category.label;
-        domElements.categoryLink.href = `category.html?id=${category.id}`;
-    }
+    // if (category) {
+    domElements.categoryLink.textContent = category.label;
+    domElements.categoryLink.href = `category.html?id=${category.id}`;
+    // }
 }
 
 async function initializeQuantity() {

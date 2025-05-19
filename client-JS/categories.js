@@ -126,39 +126,34 @@ async function fetchAllCategoriesWithProducts() {
             slide.innerHTML = `
                 <div class="product-card bg-white rounded-lg shadow-md overflow-hidden h-full">
                     <div class="relative">
-                        <img src="${product.image_url}" alt="${product.label}" 
+                        <img src="${product.image_url}" alt="${product.label}"  onclick="window.open('product.html?id=${product.id}','_self')"
                             class="w-full h-48 object-cover" loading="lazy">
-                        ${
-                          product.discount_price
-                            ? `
+                        ${product.discount_price
+                ? `
                             <span class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">خصم</span>
                         `
-                            : ""
-                        }
+                : ""
+              }
                     </div>
                     <div class="p-4">
-                        <h3 class="font-medium text-lg mb-2">${
-                          product.label
-                        }</h3>
+                        <h3 class="font-medium text-lg mb-2">${product.label
+              }</h3>
                         <div class="flex justify-between items-center">
                             <div>
-                                ${
-                                  product.discount_price
-                                    ? `
+                                ${product.discount_price
+                ? `
                                     <span class="font-bold text-primary">${product.discount_price} درهم</span>
                                     <span class="font-light text-dark text-sm line-through block">${product.selling_price} درهم</span>
                                 `
-                                    : `
+                : `
                                     <span class="font-bold text-primary">${product.selling_price} درهم</span>
                                 `
-                                }
+              }
                             </div>
-                            <div class="add-to-cart-container" data-id="${
-                              product.id
-                            }">
-                                ${
-                                  quantity > 0
-                                    ? `
+                            <div class="add-to-cart-container" data-id="${product.id
+              }">
+                                ${quantity > 0
+                ? `
                                     <div class="quantity-selector flex items-center">
                                         <button class="quantity-btn decrease-quantity bg-gray-100 hover:bg-gray-200 p-1 rounded" data-id="${product.id}">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -173,14 +168,14 @@ async function fetchAllCategoriesWithProducts() {
                                         </button>
                                     </div>
                                 `
-                                    : `
+                : `
                                     <button class="add-to-cart bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors" data-id="${product.id}">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                         </svg>
                                     </button>
                                 `
-                                }
+              }
                             </div>
                         </div>
                     </div>
