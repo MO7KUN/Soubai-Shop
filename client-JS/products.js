@@ -13,7 +13,7 @@ async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
     return await response.json();
   } catch (error) {
     if (retries > 0) {
-      console.log(`Retrying... (${retries} attempts left)`);
+      
       await new Promise((resolve) => setTimeout(resolve, delay));
       return await fetchWithRetry(url, options, retries - 1, delay * 2);
     }
@@ -36,7 +36,7 @@ async function fetchProducts() {
       }
     );
 
-    console.log("✅ API response:", data);
+    
 
     if (!data || !Array.isArray(data)) {
       throw new Error("Invalid data structure");
@@ -441,13 +441,13 @@ async function filterProducts() {
 
   // Search filter
   if (searchTerm) {
-    console.log(searchTerm)
+    
     filteredProducts = filteredProducts.filter((product) =>
       product.label.toLowerCase().includes(searchTerm)
     );
   }
 
-  console.log(filteredProducts)
+  
 
   // Category filter
   if (!selectedCategories.includes("الكل") && selectedCategories.length > 0) {

@@ -138,7 +138,7 @@ async function renderCartItems(mergedCart) {
         const itemElement = document.createElement('div');
         itemElement.className = 'cart-item bg-white p-4 rounded-lg shadow-sm relative';
         itemElement.dataset.id = item.id;
-        console.log(item)
+        
         itemElement.innerHTML = `
                 <button class="remove-item text-gray-400 hover:text-red-500 hover:bg-red-200 bg-transpraent rounded-full px-1.5 py-1 absolute top-2 left-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -301,7 +301,7 @@ async function addCartEventListeners() {
 //     const shippingElement = document.getElementById('shipping');
 //     const totalElement = document.getElementById('total');
 //     const remainingAmountElement = document.getElementById('remainingAmount');
-//     console.log(remainingAmountElement)
+//     
 //     const freeShippingMessageElement = document.getElementById('freeShippingMessage');
 //     const subtotalElement = document.getElementById('subtotal');
 

@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Calculate totals
         const subtotal = mergedCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const shipping = subtotal >= parseFloat(productsData.free_shipping_threshold) ? 0 : parseFloat(productsData.shipping_price);
-        console.log(shipping)
+        
         const total = subtotal + shipping;
 
         // Store checkout data for later use
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function renderOrderSummary(checkoutData) {
-    console.log(checkoutData)
+    
     const orderItemsContainer = document.getElementById('orderItems');
     const subtotalElement = document.getElementById('subtotal');
     const shippingElement = document.getElementById('shipping');

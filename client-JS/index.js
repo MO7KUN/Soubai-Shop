@@ -35,7 +35,7 @@ async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
     return await response.json();
   } catch (error) {
     if (retries > 0) {
-      console.log(`Retrying... (${retries} attempts left)`);
+      
       await new Promise((resolve) => setTimeout(resolve, delay));
       return await fetchWithRetry(url, options, retries - 1, delay * 2);
     }
@@ -87,7 +87,6 @@ function handleFetchError(error) {
 
 // Fetch featured products (renamed from fetchprod)
 async function fetchFeaturedProducts() {
-  console.log("Fetching featured products...");
   showLoadingIndicator();
 
   return fetchWithRetry(
@@ -100,7 +99,6 @@ async function fetchFeaturedProducts() {
     }
   )
     .then((data) => {
-      console.log("✅ API response:", data);
 
       // Check if the response is valid
       if (!data || !Array.isArray(data)) {
@@ -119,14 +117,25 @@ async function fetchFeaturedProducts() {
       }
 
       // Store products globally
-      products = data.map((product) => ({
-        id: product.id,
-        label: product.label,
-        image_url: product.image_url,
-        selling_price: product.selling_price,
-        discount_price: product.discount_price,
-        is_visible: product.is_visible,
-      }));
+products = [
+        ...products,
+        ...data.map((product) => ({
+          id: product.id,
+          label: product.label,
+          image_url: product.image_url,
+          selling_price: product.selling_price,
+          discount_price: product.discount_price,
+        })),
+      ];
+
+      // products = data.map((product) => ({
+      //   id: product.id,
+      //   label: product.label,
+      //   image_url: product.image_url,
+      //   selling_price: product.selling_price,
+      //   discount_price: product.discount_price,
+      //   is_visible: product.is_visible,
+      // }));
 
       const ProductsGrid = document.getElementById("Products-grid");
       if (ProductsGrid) {
@@ -135,7 +144,7 @@ async function fetchFeaturedProducts() {
         data.forEach((product) => {
           // Check if product is valid
           if (product.is_visible) {
-            console.log("Product:", product);
+            
             const productcard = document.createElement("div");
             productcard.className =
               "product-card bg-white rounded-lg w-full shadow-md hover:shadow-lg transition-shadow cursor-pointer";
@@ -268,6 +277,7 @@ async function setupCartButtons() {
   document.querySelectorAll(".add-to-cart-container").forEach((container) => {
     const productId = container.dataset.id;
     const product = products.find((p) => p.id == productId);
+    
 
     if (!product) {
       console.error("Product not found:", productId);
@@ -435,7 +445,7 @@ async function initCategoriesSwiper() {
 }
 
 async function fetchDiscountedProducts() {
-  console.log("Fetching discounted products...");
+  
   showLoadingIndicator("promotions-grid");
 
   return fetchWithRetry(
@@ -448,7 +458,7 @@ async function fetchDiscountedProducts() {
     }
   )
     .then((data) => {
-      console.log("✅ API response:", data);
+      
 
       if (!data || !Array.isArray(data)) {
         console.error("❌ Invalid data structure:", data);
@@ -579,7 +589,7 @@ async function fetchDiscountedProducts() {
     });
 }
 async function fetchCategories() {
-  console.log("Fetching categories...");
+  
   // Show loading state
   document.getElementById("Categories-loading").style.display = "block";
   document.querySelector(".swiper-container").style.display = "none";
@@ -601,7 +611,7 @@ async function fetchCategories() {
       const categoriesContainer = document.getElementById("Categories");
       categoriesContainer.innerHTML = "";
 
-      console.log("✅ API response:", data);
+      
 
       // Check if data is an array
       if (!Array.isArray(data)) {
