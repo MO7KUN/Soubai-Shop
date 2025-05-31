@@ -600,10 +600,6 @@ async function initApp() {
   const paginationNav = document.querySelector(
     "nav.flex.items-center.space-x-2.space-x-reverse"
   );
-  if (paginationNav) {
-    paginationNav.className =
-      "pagination-container flex items-center space-x-2 space-x-reverse";
-  }
 
   loadCart();
 
