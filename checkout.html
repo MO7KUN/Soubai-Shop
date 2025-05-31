@@ -392,7 +392,8 @@
                                     </path>
                                 </svg>
                                 <span
-                                    class="left-to-right text-gray-400">+212
+                                    dir="ltr"
+                                    class="text-gray-400">+212
                                     618 433 802</span>
                             </li>
                         </ul>
@@ -414,122 +415,5 @@
         <!-- SweetAlert JS -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="client-JS/checkout.js"></script>
-
-        <!-- <script>
-        // Mobile Menu Toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
-
-        // Load cart data from localStorage
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
-            
-            if (!checkoutData) {
-                Swal.fire({
-                    title: 'لا توجد منتجات!',
-                    text: 'الرجاء إضافة منتجات إلى السلة أولاً',
-                    icon: 'error',
-                    confirmButtonText: 'حسناً',
-                    confirmButtonColor: '#C8A574'
-                }).then(() => {
-                    window.location.href = 'Cart.html';
-                });
-                return;
-            }
-
-            // Update order summary
-            document.getElementById('subtotal').textContent = checkoutData.subtotal.toFixed(2) + ' درهم';
-            document.getElementById('total').textContent = checkoutData.total.toFixed(2) + ' درهم';
-            
-            // Render order items
-            const orderItemsContainer = document.getElementById('orderItems');
-            orderItemsContainer.innerHTML = '';
-            
-            checkoutData.items.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'flex justify-between items-center border-b pb-4';
-                itemElement.innerHTML = `
-                    <div class="flex items-center">
-                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-md">
-                        <div class="mr-3">
-                            <h4 class="font-medium">${item.name}</h4>
-                            <p class="text-sm text-gray-500">${item.quantity} × ${item.price.toFixed(2)} درهم</p>
-                        </div>
-                    </div>
-                    <span class="font-medium">${(item.price * item.quantity).toFixed(2)} درهم</span>
-                `;
-                orderItemsContainer.appendChild(itemElement);
-            });
-        });
-
-        // Place Order Button with SweetAlert
-        document.getElementById('placeOrderBtn').addEventListener('click', function() {
-            // Validate required fields
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const phone = document.getElementById('phone').value;
-            const city = document.getElementById('city').value;
-            const termsChecked = document.getElementById('terms').checked;
-            
-            if (!firstName || !lastName || !phone || !city) {
-                Swal.fire({
-                    title: 'حقول مطلوبة!',
-                    text: 'الرجاء ملء جميع الحقول المطلوبة',
-                    icon: 'error',
-                    confirmButtonText: 'حسناً',
-                    confirmButtonColor: '#C8A574'
-                });
-                return;
-            }
-            
-            if (!termsChecked) {
-                Swal.fire({
-                    title: 'الشروط والأحكام',
-                    text: 'الرجاء الموافقة على الشروط والأحكام قبل المتابعة',
-                    icon: 'warning',
-                    confirmButtonText: 'حسناً',
-                    confirmButtonColor: '#C8A574'
-                });
-                return;
-            }
-            
-            // Prepare order data
-            const orderData = {
-                customer: {
-                    firstName,
-                    lastName,
-                    phone,
-                    city
-                },
-                ...JSON.parse(localStorage.getItem('checkoutData'))
-            };
-            
-            // Show loading indicator
-            Swal.fire({
-                title: 'جاري معالجة الطلب',
-                html: 'الرجاء الانتظار...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                    
-                    // Simulate server request (replace with actual AJAX call)
-                    setTimeout(() => {
-                        Swal.fire({
-                            title: 'تم بنجاح!',
-                            text: 'تم استلام طلبك بنجاح! سيتم التواصل معك لتأكيد التفاصيل',
-                            icon: 'success',
-                            confirmButtonText: 'حسناً',
-                            confirmButtonColor: '#C8A574'
-                        }).then(() => {
-                            // Clear cart and redirect to home page
-                            localStorage.removeItem('checkoutData');
-                            window.location.href = 'index.html';
-                        });
-                    }, 1500);
-                }
-            });
-        });
-    </script> -->
     </body>
 </html>
