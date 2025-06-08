@@ -116,13 +116,12 @@ async function setupFormSubmission(checkoutData) {
 
         // Get form values
         const firstName = document.getElementById('firstName').value.trim();
-        const lastName = document.getElementById('lastName').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const city = document.getElementById('city').value.trim();
         const termsChecked = document.getElementById('terms').checked;
 
         // Validate form
-        if (!firstName || !lastName || !phone || !city) {
+        if (!firstName || !phone || !city) {
             Swal.fire({
                 title: 'حقول مطلوبة!',
                 text: 'الرجاء ملء جميع الحقول المطلوبة',
@@ -146,7 +145,7 @@ async function setupFormSubmission(checkoutData) {
 
         // Prepare order data
         const orderData = {
-            client_name: `${firstName} ${lastName}`,
+            client_name: `${firstName}`,
             client_phone: phone,
             city: city,
             products: checkoutData.items.map(item => ({
@@ -181,7 +180,7 @@ async function setupFormSubmission(checkoutData) {
             // Success handling
             Swal.fire({
                 title: 'تم بنجاح!',
-                text: 'تم استلام طلبك بنجاح!',
+                text: 'لقد تم استلام طلبك بنجاح، وسيتصل بك أحد أعضاء الفريق قريبًا لتأكيد طلبك',
                 icon: 'success',
                 confirmButtonText: 'حسناً',
                 confirmButtonColor: '#C8A574'
